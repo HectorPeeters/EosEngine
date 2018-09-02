@@ -20,10 +20,10 @@ public class SystemManager {
             return;
         }
 
-        addSystem(system);
+        addSystemToArray(system);
     }
 
-    private void addSystem(AbstractSystem system) {
+    private void addSystemToArray(AbstractSystem system) {
         int priority = system.getInitPriority();
 
         for (int i = 0; i < systems.size(); i++) {
@@ -50,12 +50,12 @@ public class SystemManager {
 
     public void initSystems() {
         for (AbstractSystem system : systems)
-            system.init();
+            system.initModule();
     }
 
     public void destroySystems() {
         for (int i = systems.size() - 1; i >= 0; i--)
-            systems.get(i).destroy();
+            systems.get(i).destroyModule();
 
         systems.clear();
     }

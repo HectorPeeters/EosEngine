@@ -49,4 +49,8 @@ public class XMLLoader {
     public Element getDocumentElement() {
         return document.getDocumentElement();
     }
+
+    public String getPath() {
+        return path;
+    }
 }

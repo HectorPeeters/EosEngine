@@ -1,22 +1,35 @@
 package com.hector.engine.systems;
 
+import com.hector.engine.xml.XMLConfigFile;
+
 public abstract class AbstractSystem {
 
     protected final String name;
     protected final int initPriority;
+    protected final XMLConfigFile config;
 
     public AbstractSystem(String name, int initPriority) {
         this.name = name;
         this.initPriority = initPriority;
+        this.config = new XMLConfigFile("assets/config/" + name.toLowerCase() + ".xml");
     }
 
-    public abstract void init();
+    public void initModule() {
+        config.load();
+        init();
+    }
 
-    public abstract void update(float delta);
+    protected abstract void init();
 
-    public abstract void render();
+    public void update(float delta) {}
 
-    public abstract void destroy();
+    public void render() {}
+
+    public void destroyModule() {
+        destroy();
+    }
+
+    protected abstract void destroy();
 
     public String getName() {
         return name;

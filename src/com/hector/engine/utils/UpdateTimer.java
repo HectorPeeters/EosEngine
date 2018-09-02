@@ -1,4 +1,4 @@
-package com.hector.engine;
+package com.hector.engine.utils;
 
 public class UpdateTimer {
 

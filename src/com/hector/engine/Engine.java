@@ -1,11 +1,16 @@
 package com.hector.engine;
 
+import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.systems.SystemManager;
+import com.hector.engine.utils.UpdateTimer;
+import com.hector.engine.xml.XMLConfigFile;
 
 public class Engine {
 
     private SystemManager manager;
+
+    private boolean running = true;
 
     public Engine() {
         Logger.init("assets/config/logging.xml");
@@ -13,12 +18,15 @@ public class Engine {
         Logger.info("Engine", "Starting engine");
 
         manager = new SystemManager();
-
+        manager.addSystem(EventSystem.class);
         manager.initSystems();
 
-        UpdateTimer timer = new UpdateTimer(60);
+        XMLConfigFile engineConfig = new XMLConfigFile("assets/config/engine.xml");
+        engineConfig.load();
 
-        while (true) {
+        UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
+
+        while (running) {
             boolean shouldUpdate = timer.shouldUpdateFPS();
             float delta = (float) timer.getDelta();
 
@@ -31,6 +39,8 @@ public class Engine {
 
             render();
         }
+
+        manager.destroySystems();
     }
 
     private void update(float delta) {
