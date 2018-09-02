@@ -9,9 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO: add log to file functionality
+//TODO: add log filter
 public final class Logger {
 
-    private Logger() {}
+    private Logger() { }
 
     private static final String ANSI_RESET = "\u001B[0m";
 
@@ -77,6 +78,7 @@ public final class Logger {
 
     private static void log(String channelTag, LogType logType, Object message) {
         LogChannel logChannel = logChannels.get(channelTag);
+
         if (logChannel == null) {
             System.err.println("LogChannel " + channelTag + " is not defined in config file");
             return;
