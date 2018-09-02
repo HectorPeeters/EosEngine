@@ -1,4 +1,4 @@
-package com.hector.engine.task;
+package com.hector.engine.process;
 
 import com.hector.engine.systems.AbstractSystem;
 
@@ -30,6 +30,7 @@ public class ProcessSystem extends AbstractSystem {
 
         for (int i = 0; i < processList.size(); i++) {
             AbstractProcess process = processList.get(i);
+
             if (process.getState() == AbstractProcess.State.UNINITIALIZED)
                 process.onInit();
 
@@ -40,6 +41,7 @@ public class ProcessSystem extends AbstractSystem {
                 switch (process.getState()) {
                     case SUCCEEDED: {
                         process.onSuccess();
+                        System.out.println("Process Finished");
                         AbstractProcess child = process.removeChild();
                         if (child != null)
                             attachProcess(child);
@@ -60,10 +62,10 @@ public class ProcessSystem extends AbstractSystem {
                         break;
                     }
                 }
-            }
 
-            processList.remove(process);
-            i++;
+                processList.remove(process);
+                i++;
+            }
         }
 
         return ((successCount << 16) | failCount);
@@ -80,7 +82,7 @@ public class ProcessSystem extends AbstractSystem {
 
             if (process.isAlive()) {
                 process.setState(AbstractProcess.State.ABORTED);
-                
+
                 if (immediate) {
                     process.onAbort();
                     iterator.remove();

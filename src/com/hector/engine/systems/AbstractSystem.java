@@ -22,7 +22,8 @@ public abstract class AbstractSystem {
     }
 
     public void initModule() {
-        config.load();
+        if (config != null)
+            config.load();
         init();
     }
 
