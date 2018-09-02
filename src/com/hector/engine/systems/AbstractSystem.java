@@ -2,6 +2,8 @@ package com.hector.engine.systems;
 
 import com.hector.engine.xml.XMLConfigFile;
 
+import java.io.File;
+
 public abstract class AbstractSystem {
 
     protected final String name;
@@ -11,7 +13,12 @@ public abstract class AbstractSystem {
     public AbstractSystem(String name, int initPriority) {
         this.name = name;
         this.initPriority = initPriority;
-        this.config = new XMLConfigFile("assets/config/" + name.toLowerCase() + ".xml");
+
+        String configFile = "assets/config/" + name.toLowerCase() + ".xml";
+        if (new File(configFile).exists())
+            this.config = new XMLConfigFile(configFile);
+        else
+            this.config = null;
     }
 
     public void initModule() {
