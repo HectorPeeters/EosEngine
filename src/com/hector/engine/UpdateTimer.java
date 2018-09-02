@@ -8,6 +8,11 @@ public class UpdateTimer {
 
     private long timer;
 
+    private int updates;
+    private int frames;
+
+    private boolean secondPassed = false;
+
     public UpdateTimer(float targetFPS) {
         ns = 1000000000.0 / targetFPS;
         lastTime = System.nanoTime();
@@ -20,8 +25,11 @@ public class UpdateTimer {
         delta += (now - lastTime) / ns;
         lastTime = now;
 
+        frames++;
+
         if (delta >= 1) {
             delta--;
+            updates++;
             return true;
         }
 
@@ -29,8 +37,15 @@ public class UpdateTimer {
     }
 
     public boolean shouldUpdateSecond() {
+        if (secondPassed) {
+            updates = 0;
+            frames = 0;
+            secondPassed = false;
+        }
+
         if (System.currentTimeMillis() - timer > 1000) {
             timer += 1000;
+            secondPassed = true;
             return true;
         }
 
@@ -39,5 +54,13 @@ public class UpdateTimer {
 
     public double getDelta() {
         return delta;
+    }
+
+    public int getUpdates() {
+        return updates;
+    }
+
+    public int getFrames() {
+        return frames;
     }
 }

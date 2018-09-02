@@ -18,26 +18,18 @@ public class Engine {
 
         UpdateTimer timer = new UpdateTimer(60);
 
-        int updates = 0;
-        int frames = 0;
-
         while (true) {
             boolean shouldUpdate = timer.shouldUpdateFPS();
             float delta = (float) timer.getDelta();
 
             if (shouldUpdate) {
                 update(delta);
-                updates++;
             }
 
-            if (timer.shouldUpdateSecond()) {
-                System.out.println("FPS: " + frames + ", UPS: " + updates + ", delta: " + delta);
-                updates = 0;
-                frames = 0;
-            }
+            if (timer.shouldUpdateSecond())
+                System.out.println("FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates() + ", delta: " + delta);
 
             render();
-            frames++;
         }
     }
 
