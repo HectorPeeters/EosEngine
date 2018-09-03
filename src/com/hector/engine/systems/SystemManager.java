@@ -1,5 +1,6 @@
 package com.hector.engine.systems;
 
+import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
 
 import java.util.ArrayList;
@@ -49,8 +50,11 @@ public class SystemManager {
     }
 
     public void initSystems() {
-        for (AbstractSystem system : systems)
+        for (AbstractSystem system : systems) {
             system.initModule();
+            EventSystem.subscribe(system);
+        }
+
         Logger.info("System", "Initialized " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
     }
 
