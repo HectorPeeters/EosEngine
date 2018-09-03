@@ -12,6 +12,8 @@ import java.util.Map;
 //TODO: add log filter
 public final class Logger {
 
+    private static int logLevelFilter;
+
     private Logger() { }
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -22,6 +24,8 @@ public final class Logger {
         boolean loadedConfig = loadConfig(configFile);
         if (!loadedConfig)
             return;
+
+        Logger.info("Logger", "Initialized logger");
     }
 
     private static boolean loadConfig(String configFile) {
@@ -37,6 +41,15 @@ public final class Logger {
         if (!root.getNodeName().equals("Logging")) {
             System.err.println("Failed to load log config file: Root node incorrect");
             return false;
+        }
+
+        logLevelFilter = 0;
+        if (root.hasAttribute("filter_level")) {
+            try {
+                logLevelFilter = Integer.parseInt(root.getAttribute("filter_level"));
+            } catch (NumberFormatException ignored) {
+                Logger.warn("Logger", "Invalid log level filter value");
+            }
         }
 
         NodeList list = root.getChildNodes();
@@ -77,6 +90,9 @@ public final class Logger {
     }
 
     private static void log(String channelTag, LogType logType, Object message) {
+        if (logType.logLevel < logLevelFilter)
+            return;
+
         LogChannel logChannel = logChannels.get(channelTag);
 
         if (logChannel == null) {

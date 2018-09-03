@@ -1,9 +1,9 @@
 package com.hector.engine;
 
 import com.hector.engine.event.EventSystem;
+import com.hector.engine.event.EngineStateEvent;
+import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.process.AddProcessEvent;
-import com.hector.engine.process.DelayProcess;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.profiling.Profiling;
 import com.hector.engine.systems.SystemManager;
@@ -26,6 +26,8 @@ public class Engine {
         manager.addSystem(ProcessSystem.class);
         manager.initSystems();
 
+        EventSystem.subscribe(this);
+
         XMLConfigFile engineConfig = new XMLConfigFile("assets/config/engine.xml");
         engineConfig.load();
 
@@ -38,13 +40,24 @@ public class Engine {
             if (timer.shouldUpdateSecond()) {
                 Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
                 Profiling.printProfilingInfo();
-                running = false;
             }
 
             render();
         }
 
         manager.destroySystems();
+    }
+
+    @Handler
+    private void onExitReceived(EngineStateEvent event) {
+        switch (event.state) {
+            case STOP:
+                running = false;
+                break;
+
+            default:
+                Logger.warn("Engine", "Engine state not handled");
+        }
     }
 
     private void update(float delta) {
