@@ -1,5 +1,6 @@
 package com.hector.engine.process;
 
+import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.systems.AbstractSystem;
 
@@ -28,6 +29,11 @@ public class ProcessSystem extends AbstractSystem {
     @Override
     protected void destroy() {
         clearProcesses();
+    }
+
+    @Handler
+    private void onAddProcessEvent(AddProcessEvent event) {
+        attachProcess(event.process);
     }
 
     private int updateProcesses(float delta) {

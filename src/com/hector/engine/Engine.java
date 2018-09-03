@@ -2,16 +2,17 @@ package com.hector.engine;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
+import com.hector.engine.process.AddProcessEvent;
 import com.hector.engine.process.DelayProcess;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
+import sun.plugin2.message.EventMessage;
 
 public class Engine {
 
     private SystemManager manager;
-    private ProcessSystem processSystem;
 
     private boolean running = true;
 
@@ -30,10 +31,9 @@ public class Engine {
 
         UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
 
-        processSystem = new ProcessSystem();
         DelayProcess process1 = new DelayProcess(3000);
         process1.attachChild(new DelayProcess(2000));
-        processSystem.attachProcess(process1);
+        EventSystem.publish(new AddProcessEvent(process1));
 
         while (running) {
             while (timer.shouldUpdateFPS())
@@ -49,7 +49,6 @@ public class Engine {
     }
 
     private void update(float delta) {
-        processSystem.update(delta);
         manager.updateSystems(delta);
     }
 

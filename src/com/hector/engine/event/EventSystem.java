@@ -110,7 +110,7 @@ public class EventSystem extends AbstractSystem {
                         subscriptions.get(parameterType).add(new Tuple<>(method, listener));
                     }
 
-                    Logger.debug("Event", "Added event listener \"" + method.getName() + "\" to class " + listener.getClass().getSimpleName());
+                    Logger.debug("Event", "Added event listener \"" + method.getName() + "\" of class " + listener.getClass().getSimpleName());
                 }
             }
 
