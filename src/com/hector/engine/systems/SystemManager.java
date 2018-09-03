@@ -51,11 +51,14 @@ public class SystemManager {
     public void initSystems() {
         for (AbstractSystem system : systems)
             system.initModule();
+        Logger.info("System", "Initialized " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
     }
 
     public void destroySystems() {
         for (int i = systems.size() - 1; i >= 0; i--)
             systems.get(i).destroyModule();
+
+        Logger.info("System", "Destroyed " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
 
         systems.clear();
     }

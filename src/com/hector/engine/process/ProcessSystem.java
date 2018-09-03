@@ -1,5 +1,6 @@
 package com.hector.engine.process;
 
+import com.hector.engine.logging.Logger;
 import com.hector.engine.systems.AbstractSystem;
 
 import java.util.ArrayList;
@@ -20,11 +21,16 @@ public class ProcessSystem extends AbstractSystem {
     }
 
     @Override
+    public void update(float delta) {
+        updateProcesses(delta);
+    }
+
+    @Override
     protected void destroy() {
         clearProcesses();
     }
 
-    public int updateProcesses(float delta) {
+    private int updateProcesses(float delta) {
         int successCount = 0;
         int failCount = 0;
 
@@ -38,10 +44,13 @@ public class ProcessSystem extends AbstractSystem {
                 process.onUpdate(delta);
 
             if (process.isDead()) {
+
+                Logger.debug("Process", "Process " + process.getClass().getSimpleName() + " finished with state " + process.getState());
+
                 switch (process.getState()) {
                     case SUCCEEDED: {
                         process.onSuccess();
-                        System.out.println("Process Finished");
+
                         AbstractProcess child = process.removeChild();
                         if (child != null)
                             attachProcess(child);

@@ -2,8 +2,8 @@ package com.hector.engine.process;
 
 public class DelayProcess extends AbstractProcess {
 
-    private long delay;
-    private long timeDelayedSoFar;
+    private float delay;
+    private float timeDelayedSoFar;
 
     public DelayProcess(long delay) {
         this.delay = delay;

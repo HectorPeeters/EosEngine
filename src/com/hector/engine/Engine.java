@@ -3,14 +3,15 @@ package com.hector.engine;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.process.DelayProcess;
-import com.hector.engine.systems.SystemManager;
 import com.hector.engine.process.ProcessSystem;
+import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
 
 public class Engine {
 
     private SystemManager manager;
+    private ProcessSystem processSystem;
 
     private boolean running = true;
 
@@ -29,29 +30,17 @@ public class Engine {
 
         UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
 
-        ProcessSystem processSystem = new ProcessSystem();
+        processSystem = new ProcessSystem();
         DelayProcess process1 = new DelayProcess(3000);
         process1.attachChild(new DelayProcess(2000));
         processSystem.attachProcess(process1);
 
         while (running) {
-            boolean shouldUpdate = timer.shouldUpdateFPS();
-            float delta = (float) timer.getDelta();
-
-
-            if (shouldUpdate) {
-                processSystem.updateProcesses(delta);
-                update(delta);
-            }
+            while (timer.shouldUpdateFPS())
+                update((float) timer.getDelta());
 
             if (timer.shouldUpdateSecond())
-                System.out.println("FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates() + ", delta: " + delta);
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
 
             render();
         }
@@ -60,6 +49,7 @@ public class Engine {
     }
 
     private void update(float delta) {
+        processSystem.update(delta);
         manager.updateSystems(delta);
     }
 

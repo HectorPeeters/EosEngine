@@ -2,7 +2,7 @@ package com.hector.engine.utils;
 
 public class UpdateTimer {
 
-    private final double ns;
+    private final double ms;
     private long lastTime;
     private double delta;
 
@@ -14,7 +14,7 @@ public class UpdateTimer {
     private boolean secondPassed = false;
 
     public UpdateTimer(float targetFPS) {
-        ns = 1000000000.0 / targetFPS;
+        ms = 1000.0 / targetFPS;
         lastTime = System.nanoTime();
 
         timer = System.currentTimeMillis();
@@ -22,13 +22,13 @@ public class UpdateTimer {
 
     public boolean shouldUpdateFPS() {
         long now = System.nanoTime();
-        delta += (now - lastTime) / ns;
+        delta += (now - lastTime) / 1000000.0;
         lastTime = now;
 
         frames++;
 
-        if (delta >= 1) {
-            delta--;
+        if (delta >= ms) {
+            delta -= ms;
             updates++;
             return true;
         }
@@ -53,7 +53,7 @@ public class UpdateTimer {
     }
 
     public double getDelta() {
-        return delta;
+        return ms;
     }
 
     public int getUpdates() {
