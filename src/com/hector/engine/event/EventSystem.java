@@ -24,7 +24,7 @@ public class EventSystem extends AbstractSystem {
     public static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;
 
     public EventSystem() {
-        super("Event", 100);
+        super("event", 100);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class EventSystem extends AbstractSystem {
 
     public static void publishImmediate(Object message) {
         List<Tuple<Method, Object>> subscriptionMethods = subscriptions.get(message.getClass());
+
         if (subscriptionMethods == null)
             return;
 
@@ -121,23 +122,23 @@ public class EventSystem extends AbstractSystem {
     public static void unsubscribe(Object listener) {
         for (Method m : listener.getClass().getDeclaredMethods()) {
 
-            if (m.getParameterCount() == 1) {
+            if (m.getParameterCount() != 1)
+                continue;
 
-                for (Annotation annotation : m.getDeclaredAnnotations()) {
-                    if (annotation instanceof Handler) {
-                        Class parameterType = m.getParameterTypes()[0];
+            for (Annotation annotation : m.getDeclaredAnnotations()) {
+                if (annotation instanceof Handler) {
 
-                        CopyOnWriteArrayList<Tuple<Method, Object>> subsList = subscriptions.get(parameterType);
+                    Class parameterType = m.getParameterTypes()[0];
 
-                        if (subsList == null)
-                            continue;
+                    CopyOnWriteArrayList<Tuple<Method, Object>> subsList = subscriptions.get(parameterType);
 
-                        subsList.removeIf(sub -> sub.getY() == listener);
+                    if (subsList == null)
+                        continue;
 
-                        if (subsList.isEmpty()) {
-                            subscriptions.remove(parameterType);
-                        }
-                    }
+                    subsList.removeIf(sub -> sub.getY() == listener);
+
+                    if (subsList.isEmpty())
+                        subscriptions.remove(parameterType);
                 }
             }
         }

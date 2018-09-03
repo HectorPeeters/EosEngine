@@ -5,10 +5,10 @@ import com.hector.engine.logging.Logger;
 import com.hector.engine.process.AddProcessEvent;
 import com.hector.engine.process.DelayProcess;
 import com.hector.engine.process.ProcessSystem;
+import com.hector.engine.profiling.Profiling;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
-import sun.plugin2.message.EventMessage;
 
 public class Engine {
 
@@ -31,16 +31,15 @@ public class Engine {
 
         UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
 
-        DelayProcess process1 = new DelayProcess(3000);
-        process1.attachChild(new DelayProcess(2000));
-        EventSystem.publish(new AddProcessEvent(process1));
-
         while (running) {
             while (timer.shouldUpdateFPS())
                 update((float) timer.getDelta());
 
-            if (timer.shouldUpdateSecond())
+            if (timer.shouldUpdateSecond()) {
                 Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
+                Profiling.printProfilingInfo();
+                running = false;
+            }
 
             render();
         }
