@@ -8,4 +8,5 @@
     <Log tag="Profiling" debugger="1" file="0"/>
     <Log tag="Logger" debugger="1" file="0"/>
     <Log tag="IO" debugger="1" file="0"/>
+    <Log tag="ECS" debugger="1" file="0"/>
 </Logging>

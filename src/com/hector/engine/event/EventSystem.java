@@ -39,6 +39,8 @@ public class EventSystem extends AbstractSystem {
             if (message == null)
                 continue;
 
+            Logger.debug("Event", "EVENT: " + message.getClass().getSimpleName());
+
             publishImmediate(message);
         }
     }
