@@ -19,7 +19,7 @@ public class Engine {
 
     public Engine() {
         Logger.init("assets/config/logging.xml");
-        
+
         Logger.info("Engine", "Starting engine");
 
         manager = new SystemManager();
