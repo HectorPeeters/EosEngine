@@ -1,8 +1,12 @@
 package com.hector.engine.utils;
 
+/**
+ * This is a utility class which is used by the engine to determine when to update and render the scene.
+ */
 public class UpdateTimer {
 
     private final double ms;
+
     private long lastTime;
     private double delta;
 
@@ -13,6 +17,10 @@ public class UpdateTimer {
 
     private boolean secondPassed = false;
 
+    /**
+     * Takes in the target fps and calculates the ms per frame and sets the lastTime and timer variable.
+     * @param targetFPS The frame rate is used to check when updating needs to happen.
+     */
     public UpdateTimer(float targetFPS) {
         ms = 1000.0 / targetFPS;
         lastTime = System.nanoTime();

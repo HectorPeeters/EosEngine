@@ -10,16 +10,28 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This is a very basic XMLLoader class. Basically just a wrapper for the w3c dom xml loading code. It makes it easier
+ * to load an XML document but adds no special functionality.
+ */
 public class XMLLoader {
 
     private String path;
 
     private Document document;
 
+    /**
+     * Just a basic constructor which takes in a path and sets the class variable.
+     * @param path
+     */
     public XMLLoader(String path) {
         this.path = path;
     }
 
+    /**
+     * This method loads the XML file and sets the document variable.
+     * @return Returns true if the document was loaded correctly, false if not
+     */
     public boolean load() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;

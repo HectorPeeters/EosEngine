@@ -4,8 +4,17 @@ import com.hector.engine.logging.Logger;
 
 import java.io.*;
 
+/**
+ * This class handles all types of file IO utilities like loading files with #include statements
+ */
 public class FileUtils {
 
+    /**
+     * Loads a text file and processes includeTags. These tags can be anything. Most likely something like "#include".
+     * @param path The path of the file that needs to be loaded
+     * @param includeTag The special tags to process
+     * @return The string of the full file with included files
+     */
     public static String loadWithInclude(String path, String includeTag) {
         File file = new File(path);
         if (!file.exists()) {
