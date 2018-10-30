@@ -14,6 +14,8 @@ public class ECS {
 
     private static int entityIdCounter = 0;
 
+    private List<EntityListener> entityListeners = new ArrayList<>();
+
     private List<AbstractEntitySystem> systems = new ArrayList<>();
 
     private Map<Integer, List<IEntityComponent>> entities = new HashMap<>();
@@ -28,18 +30,16 @@ public class ECS {
 
         EventSystem.publish(new AddEntityEvent(id));
 
+        for(EntityListener el : entityListeners)
+            el.onEntityCreate(id);
+
         return id;
     }
 
     public int addEntity() {
         int id = entityIdCounter++;
-        entities.put(id, new ArrayList<>());
 
-        EventSystem.publish(new AddEntityEvent(id));
-
-        Logger.debug("ECS", "Added new entity with id: " + id);
-
-        return id;
+        return addEntity(id);
     }
 
     public List<Integer> getEntities() {
@@ -50,6 +50,9 @@ public class ECS {
         EventSystem.publish(new RemoveEntityEvent(entityId));
 
         entities.remove(entityId);
+
+        for(EntityListener el : entityListeners)
+            el.onEntityCreate(entityId);
     }
 
 
@@ -60,6 +63,9 @@ public class ECS {
         }
 
         entities.get(entityId).add(component);
+
+        for(EntityListener el : entityListeners)
+            el.onComponentAdd(entityId, component);
     }
 
     public List<IEntityComponent> getComponents(int entityId) {
@@ -73,6 +79,9 @@ public class ECS {
         }
 
         entities.get(entityId).remove(component);
+
+        for(EntityListener el : entityListeners)
+            el.onComponentRemove(entityId, component);
     }
 
     public <T extends IEntityComponent> T getComponent(int entityId, Class<T> component) {
@@ -118,5 +127,13 @@ public class ECS {
 
     private interface IEntityAction {
         void onAction(int entity, AbstractEntitySystem system);
+    }
+
+    public void addListener(EntityListener listener) {
+        entityListeners.add(listener);
+    }
+
+    public void removeListener(EntityListener listener) {
+        entityListeners.remove(listener);
     }
 }
