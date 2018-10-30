@@ -52,7 +52,7 @@ public class ECS {
         entities.remove(entityId);
 
         for(EntityListener el : entityListeners)
-            el.onEntityCreate(entityId);
+            el.onEntityRemove(entityId);
     }
 
 
