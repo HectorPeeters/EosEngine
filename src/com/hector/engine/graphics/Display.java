@@ -2,6 +2,7 @@ package com.hector.engine.graphics;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.events.EngineStateEvent;
+import com.hector.engine.event.events.WindowResizeEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
@@ -16,7 +17,12 @@ public class Display {
     private long window;
     private boolean closing = false;
 
+    private int width, height;
+
     public boolean create(int width, int height) {
+        this.width = width;
+        this.height = height;
+
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!GLFW.glfwInit()) {
@@ -26,7 +32,7 @@ public class Display {
 
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
 
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
 
@@ -40,8 +46,11 @@ public class Display {
                 GLFW.glfwSetWindowShouldClose(window, true);
         });
 
-        GLFW.glfwSetWindowSizeCallback(window, (window, width1, height1) -> {
+        GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
+            EventSystem.publish(new WindowResizeEvent(width, height, w, h));
 
+            this.width = w;
+            this.height = h;
         });
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -51,6 +60,11 @@ public class Display {
             GLFW.glfwGetWindowSize(window, pWidth, pHeight);
 
             GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+            if (vidmode == null) {
+                Logger.err("Graphics", "Failed to get vidmode");
+                return false;
+            }
 
             GLFW.glfwSetWindowPos(
                     window,
