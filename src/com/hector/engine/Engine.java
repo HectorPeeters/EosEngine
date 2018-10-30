@@ -48,6 +48,14 @@ public class Engine {
         manager.destroySystems();
     }
 
+    private void update(float delta) {
+        manager.updateSystems(delta);
+    }
+
+    private void render() {
+        manager.renderSystems();
+    }
+
     @Handler
     private void onExitReceived(EngineStateEvent event) {
         switch (event.state) {
@@ -58,14 +66,6 @@ public class Engine {
             default:
                 Logger.warn("Engine", "Engine state not handled");
         }
-    }
-
-    private void update(float delta) {
-        manager.updateSystems(delta);
-    }
-
-    private void render() {
-        manager.renderSystems();
     }
 
     public static void main(String[] args) {

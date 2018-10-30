@@ -1,11 +1,18 @@
 package com.hector.engine.logging;
 
+import com.hector.engine.event.AbstractListener;
+import com.hector.engine.event.EventSystem;
+import com.hector.engine.event.Handler;
+import com.hector.engine.event.events.EngineStateEvent;
 import com.hector.engine.xml.XMLLoader;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +27,8 @@ public final class Logger {
     private static final String ANSI_RESET = "\u001B[0m";
 
     private static Map<String, LogChannel> logChannels = new HashMap<>();
+
+    private static Map<String, BufferedWriter> fileWriters = new HashMap<>();
 
     public static void init(String configFile) {
         boolean loadedConfig = loadConfig(configFile);
@@ -69,6 +78,16 @@ public final class Logger {
             LogChannel logChannel = new LogChannel(tag, debugger, file);
 
             logChannels.put(tag, logChannel);
+
+            if (file) {
+                //TODO: put "logs/" in config file
+                try {
+                    fileWriters.put(tag, new BufferedWriter(new FileWriter(new File("logs/" + tag + ".log"))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.err("Logger", "Failed to create FileWriter for log channel: " + tag);
+                }
+            }
         }
 
         return true;
@@ -102,8 +121,21 @@ public final class Logger {
         }
 
 
+        String fullMessage = "[" + logType.name().charAt(0) + "] [" + logChannel.tag + "] " + message;
+
         if (logChannel.debugger)
-            System.out.println(logType.colorPrefix + "[" + logType.name().charAt(0) + "] [" + logChannel.tag + "] " + message + ANSI_RESET);
+            System.out.println(logType.colorPrefix + fullMessage + ANSI_RESET);
+
+        if (logChannel.file && fileWriters.containsKey(channelTag)) {
+            try {
+                fileWriters.get(channelTag).write(fullMessage + "\n");
+                //TODO: optimize this because flush() is pretty slow
+                fileWriters.get(channelTag).flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logger.err("Logger", "Failed to write to log file: " + channelTag);
+            }
+        }
     }
 
     private static class LogChannel {
