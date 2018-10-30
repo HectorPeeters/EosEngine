@@ -6,6 +6,7 @@ import com.hector.engine.event.events.AddEntityComponentEvent;
 import com.hector.engine.event.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.events.RemoveEntityEvent;
 import com.hector.engine.systems.AbstractSystem;
+import org.lwjgl.opengl.GL11;
 
 public class GraphicsSystem extends AbstractSystem {
 
@@ -47,6 +48,27 @@ public class GraphicsSystem extends AbstractSystem {
             return;
 
 
+    }
+
+    @Override
+    public void render() {
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        GL11.glLoadIdentity();
+
+        shader.bind();
+
+        GL11.glBegin(GL11.GL_TRIANGLES);//start drawing a line loop
+        GL11.glVertex3f(-1.0f,-0.25f,0.0f);//triangle one first vertex
+        GL11.glVertex3f(-0.5f,-0.25f,0.0f);//triangle one second vertex
+        GL11.glVertex3f(-0.75f,0.25f,0.0f);//triangle one third vertex
+        //drawing a new triangle
+        GL11.glVertex3f(0.5f,-0.25f,0.0f);//triangle two first vertex
+        GL11.glVertex3f(1.0f,-0.25f,0.0f);//triangle two second vertex
+        GL11.glVertex3f(0.75f,0.25f,0.0f);//triangle two third vertex
+        GL11.glEnd();
+
+        shader.unbind();
     }
 
     @Override

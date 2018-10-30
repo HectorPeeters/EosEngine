@@ -181,11 +181,11 @@ public class Shader {
 
 
 
-    private void bind() {
+    public void bind() {
         GL20.glUseProgram(programId);
     }
 
-    private void unbind() {
+    public void unbind() {
         GL20.glUseProgram(0);
     }
 
