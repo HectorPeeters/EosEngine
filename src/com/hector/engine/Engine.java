@@ -3,6 +3,7 @@ package com.hector.engine;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.events.EngineStateEvent;
 import com.hector.engine.event.Handler;
+import com.hector.engine.graphics.GraphicsSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.profiling.Profiling;
@@ -24,6 +25,7 @@ public class Engine {
         manager = new SystemManager();
         manager.addSystem(EventSystem.class);
         manager.addSystem(ProcessSystem.class);
+        manager.addSystem(GraphicsSystem.class);
         manager.initSystems();
 
         EventSystem.subscribe(this);
@@ -39,7 +41,7 @@ public class Engine {
 
             if (timer.shouldUpdateSecond()) {
                 Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
-                Profiling.printProfilingInfo();
+//                Profiling.printProfilingInfo();
             }
 
             render();

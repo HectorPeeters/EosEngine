@@ -2,7 +2,6 @@ package com.hector.engine.systems;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.profiling.Profiling;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,19 +40,25 @@ public class SystemManager {
     }
 
     public void updateSystems(float delta) {
-        for (AbstractSystem system : systems) {
-            Profiling.start("Update: " + system.name);
+        for (AbstractSystem system : systems)
+            system.preUpdate(delta);
+
+        for (AbstractSystem system : systems)
             system.update(delta);
-            Profiling.stop("Update: " + system.name);
-        }
+
+        for (AbstractSystem system : systems)
+            system.postUpdate(delta);
     }
 
     public void renderSystems() {
-        for (AbstractSystem system : systems) {
-            Profiling.start("Render: " + system.name);
+        for (AbstractSystem system : systems)
+            system.preRender();
+
+        for (AbstractSystem system : systems)
             system.render();
-            Profiling.stop("Render: " + system.name);
-        }
+
+        for (AbstractSystem system : systems)
+            system.postRender();
     }
 
     public void initSystems() {

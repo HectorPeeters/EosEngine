@@ -1,9 +1,5 @@
 package com.hector.engine.logging;
 
-import com.hector.engine.event.AbstractListener;
-import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.Handler;
-import com.hector.engine.event.events.EngineStateEvent;
 import com.hector.engine.xml.XMLLoader;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,13 +12,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: add log to file functionality
-//TODO: add log filter
 public final class Logger {
 
     private static int logLevelFilter;
 
-    private Logger() { }
+    private Logger() {
+    }
 
     private static final String ANSI_RESET = "\u001B[0m";
 
@@ -82,7 +77,7 @@ public final class Logger {
             if (file) {
                 //TODO: put "logs/" in config file
                 try {
-                    fileWriters.put(tag, new BufferedWriter(new FileWriter(new File("logs/" + tag + ".log"))));
+                    fileWriters.put(tag, new BufferedWriter(new FileWriter(new File("logs/" + tag.toLowerCase() + ".log"))));
                 } catch (IOException e) {
                     e.printStackTrace();
                     Logger.err("Logger", "Failed to create FileWriter for log channel: " + tag);

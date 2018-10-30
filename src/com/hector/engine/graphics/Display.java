@@ -1,0 +1,102 @@
+package com.hector.engine.graphics;
+
+import com.hector.engine.event.EventSystem;
+import com.hector.engine.event.events.EngineStateEvent;
+import com.hector.engine.logging.Logger;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
+
+import java.nio.IntBuffer;
+
+public class Display {
+
+    private long window;
+    private boolean closing = false;
+
+    public boolean create(int width, int height) {
+        GLFWErrorCallback.createPrint(System.err).set();
+
+        if (!GLFW.glfwInit()) {
+            Logger.err("Graphics", "Failed to init GLFW");
+            return false;
+        }
+
+        GLFW.glfwDefaultWindowHints();
+        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
+
+        window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
+
+        if (window == MemoryUtil.NULL) {
+            Logger.err("Graphics", "Failed to create GLFW window");
+            return false;
+        }
+
+        GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
+                GLFW.glfwSetWindowShouldClose(window, true);
+        });
+
+        GLFW.glfwSetWindowSizeCallback(window, (window, width1, height1) -> {
+
+        });
+
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer pWidth = stack.mallocInt(1);
+            IntBuffer pHeight = stack.mallocInt(1);
+
+            GLFW.glfwGetWindowSize(window, pWidth, pHeight);
+
+            GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+
+            GLFW.glfwSetWindowPos(
+                    window,
+                    (vidmode.width() - pWidth.get(0)) / 2,
+                    (vidmode.height() - pHeight.get(0)) / 2
+            );
+        }
+
+        GLFW.glfwMakeContextCurrent(window);
+
+        GLFW.glfwSwapInterval(0);
+
+        GLFW.glfwShowWindow(window);
+
+        GL.createCapabilities();
+
+        GL11.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+
+        return true;
+    }
+
+    public void update() {
+        if (GLFW.glfwWindowShouldClose(window)) {
+            if (!closing)
+                EventSystem.publish(new EngineStateEvent(EngineStateEvent.EngineState.STOP));
+
+            closing = true;
+            return;
+        }
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        GLFW.glfwSwapBuffers(window);
+
+        GLFW.glfwPollEvents();
+    }
+
+    public void destroy() {
+        Callbacks.glfwFreeCallbacks(window);
+        GLFW.glfwDestroyWindow(window);
+
+        GLFW.glfwTerminate();
+
+        GLFW.glfwSetErrorCallback(null).free();
+
+        Logger.info("Graphics", "Terminated GLFW");
+    }
+
+}

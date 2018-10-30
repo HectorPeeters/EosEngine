@@ -29,9 +29,20 @@ public abstract class AbstractSystem {
 
     protected abstract void init();
 
+
+    public void preUpdate(float delta) {}
+
     public void update(float delta) {}
 
+    public void postUpdate(float delta) {}
+
+
+    public void preRender() {}
+
     public void render() {}
+
+    public void postRender() {}
+
 
     public void destroyModule() {
         destroy();
