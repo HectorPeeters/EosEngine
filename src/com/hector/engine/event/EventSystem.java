@@ -90,7 +90,6 @@ public class EventSystem extends AbstractSystem {
                 Annotation annotationInstance = method.getAnnotation(Handler.class);
 
                 if (annotationInstance != null) {
-
                     if (method.getParameterCount() != 1) {
                         Logger.err("Event", "Handler methods can only have one parameter");
                         continue;

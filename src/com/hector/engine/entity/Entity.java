@@ -14,7 +14,7 @@ public class Entity {
     private int id;
     public String name;
 
-    private List<EntityComponent> components;
+    private List<AbstractEntityComponent> components;
 
     public Entity() {
         this.id = ID_COUNTER++;
@@ -23,26 +23,30 @@ public class Entity {
         this.components = new ArrayList<>();
     }
 
-    public void addComponent(EntityComponent component) {
+    public void addComponent(AbstractEntityComponent component) {
         components.add(component);
+        component.setParent(this);
+
         EventSystem.publish(new AddEntityComponentEvent(this, component));
     }
 
-    public void removeComponent(EntityComponent component) {
+    public void removeComponent(AbstractEntityComponent component) {
         EventSystem.publish(new RemoveEntityComponentEvent(this, component));
+
         components.remove(component);
+        component.setParent(null);
     }
 
-    public <T extends EntityComponent> T getComponent(Class<? extends EntityComponent> componentClass) {
-        for (EntityComponent component : components)
+    public <T extends AbstractEntityComponent> T getComponent(Class<? extends AbstractEntityComponent> componentClass) {
+        for (AbstractEntityComponent component : components)
             if (component.getClass() == componentClass)
                 return (T) component;
 
         return null;
     }
 
-    public boolean hasComponent(Class<? extends EntityComponent> componentClass) {
-        for (EntityComponent component : components)
+    public boolean hasComponent(Class<? extends AbstractEntityComponent> componentClass) {
+        for (AbstractEntityComponent component : components)
             if (component.getClass() == componentClass)
                 return true;
 
