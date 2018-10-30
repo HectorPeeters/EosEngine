@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +100,7 @@ public final class Logger {
             System.err.println("LogChannel " + channelTag + " is not defined in config file");
             return;
         }
+
 
         if (logChannel.debugger)
             System.out.println(logType.colorPrefix + "[" + logType.name().charAt(0) + "] [" + logChannel.tag + "] " + message + ANSI_RESET);

@@ -1,4 +1,6 @@
-package com.hector.engine.process;
+package com.hector.engine.event.events;
+
+import com.hector.engine.process.AbstractProcess;
 
 public class AddProcessEvent {
 
