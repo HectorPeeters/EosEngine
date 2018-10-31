@@ -2,6 +2,7 @@ package com.hector.engine.graphics;
 
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
+import com.hector.engine.maths.Vector2f;
 import com.hector.engine.utils.FileUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -181,6 +182,18 @@ public class Shader {
         return attributes.containsKey(name);
     }
 
+
+    public void setFloat(String name, float value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniform1f(location, value);
+    }
+
+    public void setVector2f(String name, Vector2f value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniform2f(location, value.x, value.y);
+    }
 
     public void setMatrix3f(String name, Matrix3f value) {
         int location = getUniformLocation(name);
