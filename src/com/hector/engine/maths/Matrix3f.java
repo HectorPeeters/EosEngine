@@ -4,11 +4,14 @@ public class Matrix3f {
 
     public float[] m = new float[9];
 
+    public Matrix3f() {
+    }
+
     public Matrix3f(float[] m) {
         this.m = m;
     }
 
-    public void initIdentity() {
+    public Matrix3f initIdentity() {
         m[0] = 1;
         m[1] = 0;
         m[2] = 0;
@@ -18,23 +21,29 @@ public class Matrix3f {
         m[6] = 0;
         m[7] = 0;
         m[8] = 1;
+
+        return this;
     }
 
-    public void initTranslation(Vector2f transform) {
+    public Matrix3f initTranslation(Vector2f transform) {
         initIdentity();
 
         m[2] = transform.x;
         m[5] = transform.y;
+
+        return this;
     }
 
-    public void initScale(Vector2f scale) {
+    public Matrix3f initScale(Vector2f scale) {
         initIdentity();
 
         m[0] = scale.x;
         m[4] = scale.y;
+
+        return this;
     }
 
-    public void initRotation(float angle) {
+    public Matrix3f initRotation(float angle) {
         initIdentity();
 
         float radians = (float) Math.toRadians(angle);
@@ -43,6 +52,24 @@ public class Matrix3f {
         m[1] = (float) Math.sin(radians);
         m[3] = (float) -Math.sin(radians);
         m[4] = (float) Math.cos(radians);
+
+        return this;
+    }
+
+    public Matrix3f initTransformation(Vector2f pos, Vector2f scale, float rotation) {
+        initIdentity();
+
+        float radiansAngle = (float) Math.toRadians(rotation);
+
+        m[0] = (float) (Math.cos(radiansAngle) * scale.x);
+        m[1] = (float) (-Math.sin(radiansAngle) * scale.x);
+        m[2] = pos.x;
+
+        m[3] = (float) (Math.sin(radiansAngle) * scale.y);
+        m[4] = (float) (Math.cos(radiansAngle) * scale.y);
+        m[5] = pos.y;
+
+        return this;
     }
 
     public Matrix3f multiply(Matrix3f other) {

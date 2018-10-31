@@ -5,6 +5,8 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.event.events.AddEntityComponentEvent;
 import com.hector.engine.event.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.events.RemoveEntityEvent;
+import com.hector.engine.maths.Matrix3f;
+import com.hector.engine.maths.Vector2f;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.opengl.GL11;
 
@@ -13,6 +15,8 @@ public class GraphicsSystem extends AbstractSystem {
     private Display display;
 
     private Shader shader;
+
+    private Matrix3f transformationMatrix;
 
     public GraphicsSystem() {
         super("graphics", 1500);
@@ -27,6 +31,8 @@ public class GraphicsSystem extends AbstractSystem {
         display.create(displayWidth, displayHeight);
 
         shader = new Shader("basic");
+
+        transformationMatrix = new Matrix3f().initTransformation(new Vector2f(0, 0), new Vector2f(1f, 1), 0f);
     }
 
     @Handler
@@ -57,6 +63,8 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glLoadIdentity();
 
         shader.bind();
+
+        shader.setMatrix3f("transformationMatrix", transformationMatrix);
 
         GL11.glBegin(GL11.GL_TRIANGLES);//start drawing a line loop
         GL11.glVertex3f(-1.0f,-0.25f,0.0f);//triangle one first vertex

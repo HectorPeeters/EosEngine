@@ -1,12 +1,14 @@
 package com.hector.engine.graphics;
 
 import com.hector.engine.logging.Logger;
+import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.utils.FileUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -179,6 +181,12 @@ public class Shader {
         return attributes.containsKey(name);
     }
 
+
+    public void setMatrix3f(String name, Matrix3f value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniformMatrix3fv(location, false, value.m);
+    }
 
 
     public void bind() {
