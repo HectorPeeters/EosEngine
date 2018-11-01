@@ -16,8 +16,6 @@ public class GraphicsSystem extends AbstractSystem {
 
     private Shader shader;
 
-    private Matrix3f transformationMatrix;
-
     public GraphicsSystem() {
         super("graphics", 1500);
     }
@@ -28,23 +26,30 @@ public class GraphicsSystem extends AbstractSystem {
 
         int displayWidth = config.getInt("width");
         int displayHeight = config.getInt("height");
+        float aspectRatio = displayWidth / (float) displayHeight;
         display.create(displayWidth, displayHeight);
 
         shader = new Shader("basic");
 
-        transformationMatrix = new Matrix3f().initTransformation(new Vector2f(0, 0), new Vector2f(1f, 1), 0f);
+        //Setup orthographic projection matrix
+        Matrix3f orthographic = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
+        shader.bind().setMatrix3f("orthographicMatrix", orthographic);
     }
 
     @Handler
     private void onComponentAddEvent(AddEntityComponentEvent event) {
         if (!(event.component instanceof SpriteComponent))
             return;
+
+
     }
 
     @Handler
     private void onComponentRemoveEvent(RemoveEntityComponentEvent event) {
         if (!(event.component instanceof SpriteComponent))
             return;
+
+
     }
 
     @Handler
@@ -56,6 +61,8 @@ public class GraphicsSystem extends AbstractSystem {
 
     }
 
+    float rotation = 0f;
+
     @Override
     public void render() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -64,16 +71,18 @@ public class GraphicsSystem extends AbstractSystem {
 
         shader.bind();
 
+        Matrix3f transformationMatrix = new Matrix3f().initTransformation(new Vector2f(0, 0), new Vector2f(1f, 1), rotation);
+        rotation += 0.002f;
         shader.setMatrix3f("transformationMatrix", transformationMatrix);
 
         GL11.glBegin(GL11.GL_TRIANGLES);//start drawing a line loop
-        GL11.glVertex3f(-1.0f,-0.25f,0.0f);//triangle one first vertex
-        GL11.glVertex3f(-0.5f,-0.25f,0.0f);//triangle one second vertex
-        GL11.glVertex3f(-0.75f,0.25f,0.0f);//triangle one third vertex
+        GL11.glVertex3f(-1.0f, -0.25f, 0.0f);//triangle one first vertex
+        GL11.glVertex3f(-0.5f, -0.25f, 0.0f);//triangle one second vertex
+        GL11.glVertex3f(-0.75f, 0.25f, 0.0f);//triangle one third vertex
         //drawing a new triangle
-        GL11.glVertex3f(0.5f,-0.25f,0.0f);//triangle two first vertex
-        GL11.glVertex3f(1.0f,-0.25f,0.0f);//triangle two second vertex
-        GL11.glVertex3f(0.75f,0.25f,0.0f);//triangle two third vertex
+        GL11.glVertex3f(0.5f, -0.25f, 0.0f);//triangle two first vertex
+        GL11.glVertex3f(1.0f, -0.25f, 0.0f);//triangle two second vertex
+        GL11.glVertex3f(0.75f, 0.25f, 0.0f);//triangle two third vertex
         GL11.glEnd();
 
         shader.unbind();

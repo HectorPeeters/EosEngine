@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -157,7 +156,7 @@ public class Shader {
         Attrib attrib = attributes.get(name);
 
         if (attrib == null)
-            Logger.err("Graphics", "Attribute '" + attrib.name + "' not found in shader: " + name);
+            Logger.err("Graphics", "Attribute '" + name + "' not found in shader: " + name);
 
         return attrib;
     }
@@ -202,8 +201,10 @@ public class Shader {
     }
 
 
-    public void bind() {
+    public Shader bind() {
         GL20.glUseProgram(programId);
+
+        return this;
     }
 
     public void unbind() {

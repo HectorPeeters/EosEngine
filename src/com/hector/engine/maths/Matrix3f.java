@@ -72,6 +72,16 @@ public class Matrix3f {
         return this;
     }
 
+    public Matrix3f initOrtho(float left, float right, float top, float bottom, float near, float far) {
+        initIdentity();
+
+        m[0] = 2 / (right - left);
+        m[4] = 2 / (top - bottom);
+        m[8] = 2 / (far - near);
+
+        return this;
+    }
+
     public Matrix3f multiply(Matrix3f other) {
         float[] result = new float[9];
 
