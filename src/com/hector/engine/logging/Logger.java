@@ -25,10 +25,14 @@ public final class Logger {
 
     private static Map<String, BufferedWriter> fileWriters = new HashMap<>();
 
+    private static long startTime;
+
     public static void init(String configFile) {
         boolean loadedConfig = loadConfig(configFile);
         if (!loadedConfig)
             return;
+
+        startTime = System.currentTimeMillis();
 
         Logger.info("Logger", "Initialized logger");
     }
@@ -123,8 +127,7 @@ public final class Logger {
 
         if (logChannel.file && fileWriters.containsKey(channelTag)) {
             try {
-                fileWriters.get(channelTag).write(fullMessage + "\n");
-                //TODO: optimize this because flush() is pretty slow
+                fileWriters.get(channelTag).write((System.currentTimeMillis() - startTime) + ": " + fullMessage + "\n");
                 fileWriters.get(channelTag).flush();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -1,14 +1,10 @@
 package com.hector.engine;
 
 import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.events.EngineStateEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.maths.Matrix3f;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.process.ProcessSystem;
-import com.hector.engine.profiling.Profiling;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;

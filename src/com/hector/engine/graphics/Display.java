@@ -1,8 +1,8 @@
 package com.hector.engine.graphics;
 
 import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.events.EngineStateEvent;
-import com.hector.engine.event.events.WindowResizeEvent;
+import com.hector.engine.EngineStateEvent;
+import com.hector.engine.graphics.events.WindowResizeEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;

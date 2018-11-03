@@ -1,4 +1,4 @@
-package com.hector.engine.event.events;
+package com.hector.engine;
 
 public class EngineStateEvent {
 

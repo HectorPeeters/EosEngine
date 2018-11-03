@@ -1,8 +1,6 @@
 package com.hector.engine.entity;
 
-import com.hector.engine.event.events.AddEntityComponentEvent;
-import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.events.RemoveEntityComponentEvent;
+import com.hector.engine.maths.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,16 @@ public class Entity {
     private int id;
     public String name;
 
+    public Vector2f position = new Vector2f(0, 0);
+    public Vector2f scale = new Vector2f(1, 1);
+    public float rotation = 0f;
+
     private List<AbstractEntityComponent> components;
+
+    public Entity(Vector2f position) {
+        super();
+        this.position = position;
+    }
 
     public Entity() {
         this.id = ID_COUNTER++;
@@ -26,13 +33,9 @@ public class Entity {
     public void addComponent(AbstractEntityComponent component) {
         components.add(component);
         component.setParent(this);
-
-        EventSystem.publish(new AddEntityComponentEvent(this, component));
     }
 
     public void removeComponent(AbstractEntityComponent component) {
-        EventSystem.publish(new RemoveEntityComponentEvent(this, component));
-
         components.remove(component);
         component.setParent(null);
     }
