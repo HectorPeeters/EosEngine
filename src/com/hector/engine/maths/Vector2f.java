@@ -8,4 +8,43 @@ public class Vector2f {
         this.x = x;
         this.y = y;
     }
+
+
+    public Vector2f add(Vector2f other) {
+        return new Vector2f(x + other.x, y + other.y);
+    }
+
+    public Vector2f sub(Vector2f other) {
+        return new Vector2f(x - other.x, y - other.y);
+    }
+
+    public Vector2f mul(Vector2f other) {
+        return new Vector2f(x * other.x, y * other.y);
+    }
+
+    public Vector2f div(Vector2f other) {
+        return new Vector2f(x / other.x, y / other.y);
+    }
+
+
+    public Vector2f add(float other) {
+        return new Vector2f(x + other, y + other);
+    }
+
+    public Vector2f sub(float other) {
+        return new Vector2f(x - other, y - other);
+    }
+
+    public Vector2f mul(float other) {
+        return new Vector2f(x * other, y * other);
+    }
+
+    public Vector2f div(float other) {
+        return new Vector2f(x / other, y / other);
+    }
+
+
+    public float dot(Vector2f other) {
+        return x * other.x + y * other.y;
+    }
 }
