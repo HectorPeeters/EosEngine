@@ -70,7 +70,7 @@ public final class Logger {
 
             Element element = (Element) node;
 
-            String tag = element.getAttribute("tag");
+            String tag = element.getAttribute("channel");
             boolean debugger = element.getAttribute("debugger").equals("1");
             boolean file = element.getAttribute("file").equals("1");
 
