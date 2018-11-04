@@ -34,7 +34,6 @@ public class GraphicsSystem extends AbstractSystem {
 
         shader = new Shader("basic");
 
-        //Setup orthographic projection matrix
         Matrix3f orthographic = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
         shader.bind().setMatrix3f("orthographicMatrix", orthographic);
     }

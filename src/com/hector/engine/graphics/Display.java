@@ -3,6 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.EngineStateEvent;
 import com.hector.engine.graphics.events.WindowResizeEvent;
+import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
@@ -10,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.awt.*;
 import java.nio.IntBuffer;
 
 public class Display {
@@ -44,6 +46,8 @@ public class Display {
         GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
                 GLFW.glfwSetWindowShouldClose(window, true);
+
+            EventSystem.publish(new KeyEvent(key, action == GLFW.GLFW_PRESS));
         });
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {

@@ -17,7 +17,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class EventSystem extends AbstractSystem {
 
     private static BlockingQueue<Object> messageQueue;
-    public static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;
+    private static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;
+
+    private static int maxQueueSize;
 
     public EventSystem() {
         super( "event", 100);
@@ -25,7 +27,7 @@ public class EventSystem extends AbstractSystem {
 
     @Override
     public void init() {
-        int maxQueueSize = config.getInt("max_queue_size");
+        maxQueueSize = config.getInt("max_queue_size");
 //        int threadAmount = config.getInt("thread_amount");
         messageQueue = new ArrayBlockingQueue<>(maxQueueSize);
         subscriptions = new ConcurrentHashMap<>();
@@ -43,6 +45,7 @@ public class EventSystem extends AbstractSystem {
 
             publishImmediate(message);
         }
+
     }
 
     @Override
@@ -73,6 +76,9 @@ public class EventSystem extends AbstractSystem {
 
     public static void publish(Object message) {
         try {
+            if (messageQueue.size() == maxQueueSize)
+                Logger.warn("Event", "Max queue size of " + maxQueueSize + " reached");
+
             messageQueue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();

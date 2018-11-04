@@ -3,6 +3,7 @@ package com.hector.engine;
 import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.EntitySystem;
 import com.hector.engine.entity.events.AddEntityEvent;
+import com.hector.engine.entity.events.RemoveEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
@@ -20,7 +21,31 @@ public class Engine {
 
     private boolean running = true;
 
+    private UpdateTimer timer;
+
     public Engine() {
+        init();
+
+
+        for (int y = 0; y < 20; y++)
+            for (int x = 0; x < 20; x++)
+                EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f((x - 10f) / 10f, (y - 10f) / 10f), new Vector2f(.1f, .1f), 0).addComponent(new SpriteComponent(1))));
+
+
+        while (running) {
+            while (timer.shouldUpdateFPS())
+                update((float) timer.getDelta());
+
+            if (timer.shouldUpdateSecond())
+                Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
+
+            render();
+        }
+
+        manager.destroySystems();
+    }
+
+    private void init() {
         Logger.init("assets/config/logging.xml");
 
         Logger.info("Engine", "Starting engine");
@@ -37,22 +62,7 @@ public class Engine {
         XMLConfigFile engineConfig = new XMLConfigFile("assets/config/engine.xml");
         engineConfig.load();
 
-        UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
-
-        EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(.5f, .5f), 45f).addComponent(new SpriteComponent(1))));
-        EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(1f, 0), new Vector2f(.1f, .1f), 0f).addComponent(new SpriteComponent(1))));
-
-        while (running) {
-            while (timer.shouldUpdateFPS())
-                update((float) timer.getDelta());
-
-            if (timer.shouldUpdateSecond())
-                Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
-
-            render();
-        }
-
-        manager.destroySystems();
+        timer = new UpdateTimer(engineConfig.getInt("target_fps"));
     }
 
     private void update(float delta) {
