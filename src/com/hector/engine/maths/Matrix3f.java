@@ -1,5 +1,7 @@
 package com.hector.engine.maths;
 
+import java.util.Arrays;
+
 public class Matrix3f {
 
     public float[] m = new float[9];
@@ -98,5 +100,12 @@ public class Matrix3f {
         }
 
         return new Matrix3f(result);
+    }
+
+    @Override
+    public String toString() {
+        return "Matrix3f{" +
+                "m=" + Arrays.toString(m) +
+                '}';
     }
 }

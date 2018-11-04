@@ -1,9 +1,14 @@
 package com.hector.engine;
 
+import com.hector.engine.entity.Entity;
+import com.hector.engine.entity.EntitySystem;
+import com.hector.engine.entity.events.AddEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
+import com.hector.engine.graphics.components.SpriteComponent;
 import com.hector.engine.logging.Logger;
+import com.hector.engine.maths.Vector2f;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
@@ -24,6 +29,7 @@ public class Engine {
         manager.addSystem(EventSystem.class);
         manager.addSystem(ProcessSystem.class);
         manager.addSystem(GraphicsSystem.class);
+        manager.addSystem(EntitySystem.class);
         manager.initSystems();
 
         EventSystem.subscribe(this);
@@ -33,14 +39,15 @@ public class Engine {
 
         UpdateTimer timer = new UpdateTimer(engineConfig.getInt("target_fps"));
 
+        EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(.5f, .5f), 45f).addComponent(new SpriteComponent(1))));
+        EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(1f, 0), new Vector2f(.1f, .1f), 0f).addComponent(new SpriteComponent(1))));
+
         while (running) {
             while (timer.shouldUpdateFPS())
                 update((float) timer.getDelta());
 
-            if (timer.shouldUpdateSecond()) {
+            if (timer.shouldUpdateSecond())
                 Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
-//                Profiling.printProfilingInfo();
-            }
 
             render();
         }

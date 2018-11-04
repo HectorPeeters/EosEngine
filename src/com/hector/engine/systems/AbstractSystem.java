@@ -29,7 +29,6 @@ public abstract class AbstractSystem {
 
     protected abstract void init();
 
-
     public void preUpdate(float delta) {}
 
     public void update(float delta) {}

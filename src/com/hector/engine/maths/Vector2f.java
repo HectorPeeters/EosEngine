@@ -47,4 +47,10 @@ public class Vector2f {
     public float dot(Vector2f other) {
         return x * other.x + y * other.y;
     }
+
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

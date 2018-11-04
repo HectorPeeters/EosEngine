@@ -1,5 +1,6 @@
 package com.hector.engine.entity;
 
+import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector2f;
 
 import java.util.ArrayList;
@@ -9,30 +10,49 @@ public class Entity {
 
     private static int ID_COUNTER = 0;
 
-    private int id;
+    private final int id;
     public String name;
-
-    public Vector2f position = new Vector2f(0, 0);
-    public Vector2f scale = new Vector2f(1, 1);
-    public float rotation = 0f;
 
     private List<AbstractEntityComponent> components;
 
+
+    //region Transform
+    public Vector2f position = new Vector2f(0, 0);
+    public Vector2f scale = new Vector2f(1, 1);
+    public float rotation = 0f;
+    //endregion
+
+
     public Entity(Vector2f position) {
-        super();
+        this();
         this.position = position;
+    }
+
+    public Entity(Vector2f position, Vector2f scale) {
+        this();
+        this.position = position;
+        this.scale = scale;
+    }
+
+    public Entity(Vector2f position, Vector2f scale, float rotation) {
+        this();
+        this.position = position;
+        this.scale = scale;
+        this.rotation = rotation;
     }
 
     public Entity() {
         this.id = ID_COUNTER++;
-        this.name = "";
+        this.name = "Entity " + id;
 
         this.components = new ArrayList<>();
     }
 
-    public void addComponent(AbstractEntityComponent component) {
+    public Entity addComponent(AbstractEntityComponent component) {
         components.add(component);
         component.setParent(this);
+
+        return this;
     }
 
     public void removeComponent(AbstractEntityComponent component) {
@@ -54,5 +74,13 @@ public class Entity {
                 return true;
 
         return false;
+    }
+
+    public Iterable<? extends AbstractEntityComponent> getComponents() {
+        return components;
+    }
+
+    public Matrix3f getTransformationMatrix() {
+        return new Matrix3f().initTransformation(position, scale, rotation);
     }
 }

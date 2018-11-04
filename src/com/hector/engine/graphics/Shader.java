@@ -197,7 +197,7 @@ public class Shader {
     public void setMatrix3f(String name, Matrix3f value) {
         int location = getUniformLocation(name);
 
-        GL20.glUniformMatrix3fv(location, false, value.m);
+        GL20.glUniformMatrix3fv(location, true, value.m);
     }
 
 

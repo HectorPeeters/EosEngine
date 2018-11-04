@@ -1,15 +1,23 @@
 package com.hector.engine.graphics;
 
+import com.hector.engine.entity.events.AddEntityComponentEvent;
+import com.hector.engine.entity.events.RemoveEntityComponentEvent;
+import com.hector.engine.event.Handler;
+import com.hector.engine.graphics.components.SpriteComponent;
 import com.hector.engine.maths.Matrix3f;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphicsSystem extends AbstractSystem {
 
     private Display display;
 
     private Shader shader;
+
+    private List<SpriteComponent> spriteComponents = new ArrayList<>();
 
     public GraphicsSystem() {
         super("graphics", 1500);
@@ -31,26 +39,25 @@ public class GraphicsSystem extends AbstractSystem {
         shader.bind().setMatrix3f("orthographicMatrix", orthographic);
     }
 
-    float rotation = 0f;
-
     @Override
     public void render() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         GL11.glLoadIdentity();
 
-
-        Matrix3f transformationMatrix = new Matrix3f().initTransformation(new Vector2f(0, 0), new Vector2f(1f, 1), rotation);
-        rotation += 0.002f;
-
         shader.bind();
-        shader.setMatrix3f("transformationMatrix", transformationMatrix);
 
-        GL11.glBegin(GL11.GL_TRIANGLES);
-        GL11.glVertex2f(-0.1f, -0.08f);
-        GL11.glVertex2f(0, 0.1f);
-        GL11.glVertex2f(0.1f, -0.08f);
-        GL11.glEnd();
+        for (SpriteComponent component : spriteComponents) {
+            Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
+            shader.setMatrix3f("transformationMatrix", transformationMatrix);
+
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glVertex2f(-0.5f, -0.5f);
+            GL11.glVertex2f(-0.5f, 0.5f);
+            GL11.glVertex2f(0.5f, 0.5f);
+            GL11.glVertex2f(0.5f, -0.5f);
+            GL11.glEnd();
+        }
 
         shader.unbind();
     }
@@ -58,6 +65,22 @@ public class GraphicsSystem extends AbstractSystem {
     @Override
     public void postRender() {
         display.update();
+    }
+
+    @Handler
+    private void onSpriteComponentAdded(AddEntityComponentEvent event) {
+        if (!(event.component instanceof SpriteComponent))
+            return;
+
+        spriteComponents.add((SpriteComponent) event.component);
+    }
+
+    @Handler
+    private void onSpriteComponentRemoved(RemoveEntityComponentEvent event) {
+        if (!(event.component instanceof SpriteComponent))
+            return;
+
+        spriteComponents.remove(event.component);
     }
 
     @Override
