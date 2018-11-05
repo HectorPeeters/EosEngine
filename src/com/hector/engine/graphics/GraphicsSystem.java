@@ -8,12 +8,19 @@ import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicsSystem extends AbstractSystem {
+
+    private float[] vertices = new float[] {
+            -0.5f, -0.5f,
+            0.5f, -0.5f,
+            -0.5f, 0.5f,
+            0.5f, 0.5f,
+    };
 
     private Display display;
 
@@ -38,6 +45,17 @@ public class GraphicsSystem extends AbstractSystem {
 
         Matrix3f orthographic = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
         shader.bind().setMatrix3f("orthographicMatrix", orthographic);
+
+        int vaoId = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoId);
+
+        int vboId = GL30.glGenBuffers();
+        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboId);
+        GL30.glBufferData(GL30.GL_ARRAY_BUFFER, vertices, GL30.GL_STATIC_DRAW);
+
+        GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, 0, 0);
+
+        GL30.glEnableVertexAttribArray(0);
     }
 
     private boolean pressed = false;
@@ -55,23 +73,12 @@ public class GraphicsSystem extends AbstractSystem {
         if (pressed)
             return;
 
-        GL11.glLoadIdentity();
-
-        shader.bind();
-
         for (SpriteComponent component : spriteComponents) {
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             shader.setMatrix3f("transformationMatrix", transformationMatrix);
 
-            GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(-0.5f, -0.5f);
-            GL11.glVertex2f(-0.5f, 0.5f);
-            GL11.glVertex2f(0.5f, 0.5f);
-            GL11.glVertex2f(0.5f, -0.5f);
-            GL11.glEnd();
+            GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, vertices.length);
         }
-
-        shader.unbind();
     }
 
     @Override
