@@ -2,11 +2,13 @@ package com.hector.engine.entity;
 
 public abstract class AbstractEntityComponent {
 
-    private Entity parent;
+    protected Entity parent;
 
     public Entity getParent() {
         return parent;
     }
+
+    public void init() {}
 
     void setParent(Entity parent) {
         this.parent = parent;

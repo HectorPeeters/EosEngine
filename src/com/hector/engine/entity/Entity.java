@@ -17,9 +17,9 @@ public class Entity {
 
 
     //region Transform
-    public Vector2f position = new Vector2f(0, 0);
-    public Vector2f scale = new Vector2f(1, 1);
-    public float rotation = 0f;
+    private Vector2f position = new Vector2f(0, 0);
+    private Vector2f scale = new Vector2f(1, 1);
+    private float rotation = 0f;
     //endregion
 
 
@@ -52,6 +52,8 @@ public class Entity {
         components.add(component);
         component.setParent(this);
 
+        component.init();
+
         return this;
     }
 
@@ -82,5 +84,29 @@ public class Entity {
 
     public Matrix3f getTransformationMatrix() {
         return new Matrix3f().initTransformation(position, scale, rotation);
+    }
+
+    public Vector2f getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2f position) {
+        this.position = position;
+    }
+
+    public Vector2f getScale() {
+        return scale;
+    }
+
+    public void setScale(Vector2f scale) {
+        this.scale = scale;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 }

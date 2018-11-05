@@ -63,7 +63,7 @@ public final class ResourceManager {
 
         loadedResources = new HashMap<>();
         availableResourceTypes = new HashMap<>();
-        availableResourceTypes.put(new String[]{".vert", ".frag", ".txt", ".xml", ".log"}, TextResource.class);
+        availableResourceTypes.put(new String[]{".vert", ".frag", ".txt", ".xml", ".log", ".lua"}, TextResource.class);
 
         Logger.info("Resource", "Initialized resource system with " + resourceLoader.getClass().getSimpleName());
     }
