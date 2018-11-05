@@ -1,14 +1,17 @@
 package com.hector.engine.xml;
 
 import com.hector.engine.resource.ResourceManager;
+import com.hector.engine.resource.resources.TextResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * This is a very basic XMLLoader class. Basically just a wrapper for the w3c dom xml loading code. It makes it easier
@@ -22,6 +25,7 @@ public class XMLLoader {
 
     /**
      * Just a basic constructor which takes in a path and sets the class variable.
+     *
      * @param path
      */
     public XMLLoader(String path) {
@@ -30,6 +34,7 @@ public class XMLLoader {
 
     /**
      * This method loads the XML file and sets the document variable.
+     *
      * @return Returns true if the document was loaded correctly, false if not
      */
     public boolean load() {
@@ -44,7 +49,7 @@ public class XMLLoader {
         }
 
         try {
-            document = builder.parse(ResourceManager.getStreamResource(path).getStream());
+            document = builder.parse(new InputSource(new StringReader(ResourceManager.<TextResource>getResource(path).getResource())));
         } catch (SAXException | IOException e) {
             e.printStackTrace();
             System.err.println("Failed to parse xml file: " + path);

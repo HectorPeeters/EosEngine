@@ -1,15 +1,20 @@
 package com.hector.engine.resource.resources;
 
-public class TextResource extends AbstractResource {
+import com.hector.engine.resource.AbstractResourceLoader;
 
-    private String text;
+public class TextResource extends AbstractResource<String> {
 
-    public TextResource(String path, String text) {
-        super(path, true);
-        this.text = text;
+    public TextResource(String path) {
+        super(path);
     }
 
-    public String getText() {
-        return text;
+    @Override
+    public boolean load(AbstractResourceLoader resourceLoader) {
+        resource = resourceLoader.loadText(path);
+
+        if (resource == null)
+            return false;
+
+        return true;
     }
 }

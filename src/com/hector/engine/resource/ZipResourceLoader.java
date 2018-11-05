@@ -1,7 +1,7 @@
 package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
-import com.hector.engine.resource.resources.StreamResource;
+import com.hector.engine.resource.resources.AbstractResource;
 import com.hector.engine.resource.resources.TextResource;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -18,7 +18,7 @@ public class ZipResourceLoader extends AbstractResourceLoader {
     private ZipFile zipFile;
 
     @Override
-    public TextResource getTextResource(String path) {
+    public String loadText(String path) {
         setupZipFile();
 
         ZipEntry entry = zipFile.getEntry(path);
@@ -40,31 +40,11 @@ public class ZipResourceLoader extends AbstractResourceLoader {
 
             br.close();
 
-            return new TextResource(path, sb.toString());
+            return sb.toString();
 
         } catch (IOException e) {
             e.printStackTrace();
             Logger.err("Resource", "Could not retrieve input stream for zip resource " + entry.getName());
-        }
-
-        return null;
-    }
-
-    @Override
-    public StreamResource getStreamResource(String path) {
-        setupZipFile();
-
-        ZipEntry entry = zipFile.getEntry(path);
-        if (entry == null) {
-            Logger.err("Resource", "Zip entry " + path + " not found");
-            return null;
-        }
-
-        try {
-            return new StreamResource(path, zipFile.getInputStream(entry));
-        } catch (IOException e) {
-            e.printStackTrace();
-            Logger.err("Resource", "Failed to get stream for resource " + path);
         }
 
         return null;

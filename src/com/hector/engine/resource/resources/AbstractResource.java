@@ -1,14 +1,24 @@
 package com.hector.engine.resource.resources;
 
-public abstract class AbstractResource {
+import com.hector.engine.resource.AbstractResourceLoader;
 
-    public String path;
+public abstract class AbstractResource<T> {
 
-    public boolean shouldReload;
+    protected T resource;
+    protected String path;
 
-    public AbstractResource(String path, boolean shouldReload) {
+    public AbstractResource(String path) {
         this.path = path;
-        this.shouldReload = shouldReload;
+        this.resource = resource;
     }
 
+    public abstract boolean load(AbstractResourceLoader resourceLoader);
+
+    public T getResource() {
+        return resource;
+    }
+
+    public String getPath() {
+        return path;
+    }
 }

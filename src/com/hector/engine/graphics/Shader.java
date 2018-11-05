@@ -4,6 +4,7 @@ import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector2f;
 import com.hector.engine.resource.ResourceManager;
+import com.hector.engine.resource.resources.TextResource;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -52,7 +53,7 @@ public class Shader {
     }
 
     private int compileShader(String path, int type) {
-        String source = ResourceManager.getTextResource(path).getText();
+        String source = ResourceManager.<TextResource>getResource(path).getResource();
 
         int shader = GL20.glCreateShader(type);
         if (shader == 0)
