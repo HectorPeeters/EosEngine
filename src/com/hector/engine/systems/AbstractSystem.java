@@ -1,6 +1,6 @@
 package com.hector.engine.systems;
 
-import com.hector.engine.resource.ResourceSystem;
+import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.xml.XMLConfigFile;
 
 public abstract class AbstractSystem {
@@ -17,7 +17,7 @@ public abstract class AbstractSystem {
     public void initModule() {
         String configFile = "config/" + name.toLowerCase() + ".xml";
 
-        if (ResourceSystem.doesFileExist(configFile)) {
+        if (ResourceManager.doesFileExist(configFile)) {
             this.config = new XMLConfigFile(configFile);
             this.config.load();
         }

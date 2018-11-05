@@ -11,7 +11,7 @@ import java.util.Map;
 
 public final class Logger {
 
-    private static int logLevelFilter;
+    private static int logLevelFilter = 0;
 
     private Logger() {
     }

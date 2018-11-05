@@ -1,2 +1,4 @@
+#!/bin/bash
 cd assets/
-zip -r ../out/artifacts/GameEngine_jar/Assets.zip *
+zip -r Assets.zip *
+cp Assets.zip ../out/artifacts/GameEngine_jar/

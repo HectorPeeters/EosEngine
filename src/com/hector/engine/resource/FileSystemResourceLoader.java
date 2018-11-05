@@ -5,7 +5,6 @@ import com.hector.engine.resource.resources.StreamResource;
 import com.hector.engine.resource.resources.TextResource;
 
 import java.io.*;
-import java.util.zip.ZipEntry;
 
 public class FileSystemResourceLoader extends AbstractResourceLoader {
 
@@ -39,17 +38,24 @@ public class FileSystemResourceLoader extends AbstractResourceLoader {
 
     @Override
     public StreamResource getStreamResource(String path) {
+        try {
+            return new StreamResource(path, new FileInputStream(new File(ASSETS_DIR + path)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Logger.err("Resource", "Failed to get stream resource " + path);
+        }
+
         return null;
     }
 
     @Override
     public boolean doesFileExist(String path) {
-        return new File(path).exists();
+        return new File(ASSETS_DIR + path).exists();
     }
 
     @Override
     public String[] listFiles(String path) {
-        File[] files = new File(path).listFiles();
+        File[] files = new File(ASSETS_DIR + path).listFiles();
         if (files == null)
             return null;
 
