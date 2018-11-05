@@ -47,6 +47,9 @@ public class Display {
             if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
                 GLFW.glfwSetWindowShouldClose(window, true);
 
+            if (action == GLFW.GLFW_REPEAT)
+                return;
+
             EventSystem.publish(new KeyEvent(key, action == GLFW.GLFW_PRESS));
         });
 

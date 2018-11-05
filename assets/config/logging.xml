@@ -8,6 +8,5 @@
     <Log channel="Profiling" debugger="0" file="0"/>
     <Log channel="Logger" debugger="1" file="0"/>
     <Log channel="Graphics" debugger="1" file="1"/>
-    <Log channel="IO" debugger="1" file="1"/>
-    <Log channel="ECS" debugger="1" file="0"/>
+    <Log channel="Resource" debugger="1" file="1"/>
 </Logging>

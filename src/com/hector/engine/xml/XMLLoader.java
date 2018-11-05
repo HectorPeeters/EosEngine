@@ -1,5 +1,6 @@
 package com.hector.engine.xml;
 
+import com.hector.engine.resource.ResourceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -7,7 +8,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -44,7 +44,7 @@ public class XMLLoader {
         }
 
         try {
-            document = builder.parse(new File(path));
+            document = builder.parse(ResourceSystem.getStreamResource(path).getStream());
         } catch (SAXException | IOException e) {
             e.printStackTrace();
             System.err.println("Failed to parse xml file: " + path);

@@ -4,8 +4,10 @@ import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.components.SpriteComponent;
+import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.systems.AbstractSystem;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -38,9 +40,20 @@ public class GraphicsSystem extends AbstractSystem {
         shader.bind().setMatrix3f("orthographicMatrix", orthographic);
     }
 
+    private boolean pressed = false;
+
+    @Handler
+    private void keyPress(KeyEvent event) {
+        if (event.keycode == GLFW.GLFW_KEY_SPACE)
+            pressed = event.pressed;
+    }
+
     @Override
     public void render() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        if (pressed)
+            return;
 
         GL11.glLoadIdentity();
 

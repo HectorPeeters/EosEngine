@@ -3,7 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector2f;
-import com.hector.engine.utils.FileUtils;
+import com.hector.engine.resource.ResourceSystem;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -29,13 +29,13 @@ public class Shader {
 
     public Shader(String name) {
         this.name = name;
-        String vertexSource = "assets/shaders/" + name + ".vert";
-        String fragmentSource = "assets/shaders/" + name + ".frag";
+        String vertexPath = "shaders/" + name + ".vert";
+        String fragmentPath = "shaders/" + name + ".frag";
 
         programId = createProgram();
 
-        vertexShader = compileShader(vertexSource, GL20.GL_VERTEX_SHADER);
-        fragmentShader = compileShader(fragmentSource, GL20.GL_FRAGMENT_SHADER);
+        vertexShader = compileShader(vertexPath, GL20.GL_VERTEX_SHADER);
+        fragmentShader = compileShader(fragmentPath, GL20.GL_FRAGMENT_SHADER);
 
         linkProgram();
 
@@ -52,7 +52,7 @@ public class Shader {
     }
 
     private int compileShader(String path, int type) {
-        String source = FileUtils.loadWithInclude(path, INCLUDE_TAG);
+        String source = ResourceSystem.getTextResource(path).getText();
 
         int shader = GL20.glCreateShader(type);
         if (shader == 0)

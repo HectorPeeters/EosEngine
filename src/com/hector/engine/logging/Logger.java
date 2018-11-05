@@ -1,9 +1,6 @@
 package com.hector.engine.logging;
 
-import com.hector.engine.xml.XMLLoader;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import com.hector.engine.Engine;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,23 +18,17 @@ public final class Logger {
 
     private static final String ANSI_RESET = "\u001B[0m";
 
-    private static Map<String, LogChannel> logChannels = new HashMap<>();
-
     private static Map<String, BufferedWriter> fileWriters = new HashMap<>();
 
     private static long startTime;
 
-    public static void init(String configFile) {
-        boolean loadedConfig = loadConfig(configFile);
-        if (!loadedConfig)
-            return;
-
+    public static void init() {
         startTime = System.currentTimeMillis();
 
         Logger.info("Logger", "Initialized logger");
     }
 
-    private static boolean loadConfig(String configFile) {
+   /* private static boolean loadConfig(String configFile) {
         logChannels.clear();
 
         XMLLoader loader = new XMLLoader(configFile);
@@ -90,7 +81,7 @@ public final class Logger {
         }
 
         return true;
-    }
+    }*/
 
     public static void debug(String channelTag, Object message) {
         log(channelTag, LogType.DEBUG, message);
@@ -112,27 +103,27 @@ public final class Logger {
         if (logType.logLevel < logLevelFilter)
             return;
 
-        LogChannel logChannel = logChannels.get(channelTag);
+        String fullMessage = "[" + logType.name().charAt(0) + "] [" + channelTag + "] " + message;
 
-        if (logChannel == null) {
-            System.err.println("LogChannel " + channelTag + " is not defined in config file");
+        System.out.println(logType.colorPrefix + fullMessage + ANSI_RESET);
+
+        if (!Engine.DEV_BUILD)
             return;
-        }
 
-
-        String fullMessage = "[" + logType.name().charAt(0) + "] [" + logChannel.tag + "] " + message;
-
-        if (logChannel.debugger)
-            System.out.println(logType.colorPrefix + fullMessage + ANSI_RESET);
-
-        if (logChannel.file && fileWriters.containsKey(channelTag)) {
+        if (!fileWriters.containsKey(channelTag)) {
             try {
-                fileWriters.get(channelTag).write((System.currentTimeMillis() - startTime) + ": " + fullMessage + "\n");
-                fileWriters.get(channelTag).flush();
+                fileWriters.put(channelTag, new BufferedWriter(new FileWriter(new File("logs/" + channelTag.toLowerCase() + ".log"))));
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.err("Logger", "Failed to write to log file: " + channelTag);
             }
+        }
+
+        try {
+            fileWriters.get(channelTag).write((System.currentTimeMillis() - startTime) + ": " + fullMessage + "\n");
+            fileWriters.get(channelTag).flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logger.err("Logger", "Failed to write to log file: " + channelTag);
         }
     }
 

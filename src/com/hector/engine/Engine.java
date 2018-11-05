@@ -3,19 +3,24 @@ package com.hector.engine;
 import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.EntitySystem;
 import com.hector.engine.entity.events.AddEntityEvent;
-import com.hector.engine.entity.events.RemoveEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
 import com.hector.engine.graphics.components.SpriteComponent;
+import com.hector.engine.input.InputSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Vector2f;
 import com.hector.engine.process.ProcessSystem;
+import com.hector.engine.resource.ResourceSystem;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
 
+import java.io.File;
+
 public class Engine {
+
+    public static final boolean DEV_BUILD = false;
 
     private SystemManager manager;
 
@@ -46,20 +51,23 @@ public class Engine {
     }
 
     private void init() {
-        Logger.init("assets/config/logging.xml");
-
-        Logger.info("Engine", "Starting engine");
+        System.setProperty("org.lwjgl.librarypath", new File("lib/lwjgl/natives/natives-linux/").getAbsolutePath());
 
         manager = new SystemManager();
+        manager.addSystem(ResourceSystem.class);
         manager.addSystem(EventSystem.class);
         manager.addSystem(ProcessSystem.class);
         manager.addSystem(GraphicsSystem.class);
+        manager.addSystem(InputSystem.class);
         manager.addSystem(EntitySystem.class);
         manager.initSystems();
 
+        Logger.init();
+        Logger.info("Engine", "Starting engine");
+
         EventSystem.subscribe(this);
 
-        XMLConfigFile engineConfig = new XMLConfigFile("assets/config/engine.xml");
+        XMLConfigFile engineConfig = new XMLConfigFile("config/engine.xml");
         engineConfig.load();
 
         timer = new UpdateTimer(engineConfig.getInt("target_fps"));
