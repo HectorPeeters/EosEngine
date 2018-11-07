@@ -7,7 +7,7 @@ import groovy.lang.GroovyClassLoader;
 
 public class GroovyScriptComponent extends AbstractScriptComponent {
 
-    private static GroovyClassLoader gcl = new GroovyClassLoader();
+    private static GroovyClassLoader gcl = new GroovyClassLoader(new CustomGroovyClassLoader());
 
     private String path;
 
@@ -39,5 +39,17 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
     public void updateScript(float delta) {
         if (script != null)
             script.update(delta);
+    }
+
+    private static class CustomGroovyClassLoader extends ClassLoader {
+        @Override
+        public Class<?> loadClass(String s) throws ClassNotFoundException {
+            return super.loadClass(s);
+        }
+
+        @Override
+        protected Class<?> loadClass(String s, boolean b) throws ClassNotFoundException {
+            return super.loadClass(s, b);
+        }
     }
 }
