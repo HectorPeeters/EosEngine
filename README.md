@@ -15,3 +15,4 @@ A fully custom game engine written in Java.
 - [ ] Add better serialization and file IO system
 - [ ] Add file watch
 - [ ] Then add auto reload
+- [ ] Resource dependency

@@ -16,5 +16,6 @@
     <orderEntry type="library" name="glfw" level="project" />
     <orderEntry type="library" name="opengl" level="project" />
     <orderEntry type="library" name="org.luaj:luaj-jse:3.0.1" level="project" />
+    <orderEntry type="library" name="groovy-2.4.15" level="application" />
   </component>
 </module>

@@ -48,6 +48,9 @@ public class Vector2f {
         return x * other.x + y * other.y;
     }
 
+    public float lengthSquared() {
+        return x * x + y * y;
+    }
 
     @Override
     public String toString() {

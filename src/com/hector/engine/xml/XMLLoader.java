@@ -26,7 +26,7 @@ public class XMLLoader {
     /**
      * Just a basic constructor which takes in a path and sets the class variable.
      *
-     * @param path
+     * @param path Path of the xml file
      */
     public XMLLoader(String path) {
         this.path = path;

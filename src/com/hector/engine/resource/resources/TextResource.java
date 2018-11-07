@@ -12,9 +12,6 @@ public class TextResource extends AbstractResource<String> {
     public boolean load(AbstractResourceLoader resourceLoader) {
         resource = resourceLoader.loadText(path);
 
-        if (resource == null)
-            return false;
-
-        return true;
+        return resource != null;
     }
 }

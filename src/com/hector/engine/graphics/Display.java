@@ -1,17 +1,19 @@
 package com.hector.engine.graphics;
 
-import com.hector.engine.event.EventSystem;
 import com.hector.engine.EngineStateEvent;
+import com.hector.engine.event.EventSystem;
 import com.hector.engine.graphics.events.WindowResizeEvent;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.logging.Logger;
-import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
-import java.awt.*;
 import java.nio.IntBuffer;
 
 public class Display {
@@ -58,6 +60,8 @@ public class Display {
 
             this.width = w;
             this.height = h;
+
+            GL11.glViewport(0, 0, w, h);
         });
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -82,11 +86,13 @@ public class Display {
 
         GLFW.glfwMakeContextCurrent(window);
 
-        GLFW.glfwSwapInterval(0);
+        GLFW.glfwSwapInterval(1);
 
         GLFW.glfwShowWindow(window);
 
         GL.createCapabilities();
+
+        GL11.glViewport(0, 0, width, height);
 
         GL11.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 

@@ -1,8 +1,6 @@
 package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
-import com.hector.engine.resource.resources.AbstractResource;
-import com.hector.engine.resource.resources.TextResource;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;

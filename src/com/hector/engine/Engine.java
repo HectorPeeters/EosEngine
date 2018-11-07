@@ -13,7 +13,7 @@ import com.hector.engine.maths.Vector2f;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.scripting.ScriptSystem;
-import com.hector.engine.scripting.components.ScriptComponent;
+import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
@@ -31,11 +31,8 @@ public class Engine {
     public Engine() {
         init();
 
-//        for (int y = 0; y < 20; y++)
-//            for (int x = 0; x < 20; x++)
-//                EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f((x - 10f) / 10f, (y - 10f) / 10f), new Vector2f(.1f, .1f), 0).addComponent(new SpriteComponent(1))));
-
-        EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0)).addComponent(new ScriptComponent("lua/test.lua")).addComponent(new SpriteComponent(1))));
+        for (int i = 0; i < 1; i++)
+            EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(0.1f, 0.1f)).addComponent(new GroovyScriptComponent("groovy/test.groovy")).addComponent(new SpriteComponent(1))));
 
         while (running) {
             while (timer.shouldUpdateFPS())

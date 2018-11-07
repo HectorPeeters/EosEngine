@@ -1,23 +1,21 @@
 package com.hector.engine.scripting.components;
 
-import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
-public class ScriptComponent extends AbstractEntityComponent {
+public class LuaScriptComponent extends AbstractScriptComponent {
 
     private Globals globals;
 
     private String path;
 
-    public ScriptComponent(String path) {
+    public LuaScriptComponent(String path) {
         this.path = path;
     }
 
@@ -44,6 +42,7 @@ public class ScriptComponent extends AbstractEntityComponent {
             init.call();
     }
 
+    @Override
     public void updateScript(float delta) {
         LuaValue update = globals.get("update");
 
