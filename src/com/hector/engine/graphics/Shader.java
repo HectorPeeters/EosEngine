@@ -182,6 +182,11 @@ public class Shader {
         return attributes.containsKey(name);
     }
 
+    public void setInt(String name, int value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniform1i(location, value);
+    }
 
     public void setFloat(String name, float value) {
         int location = getUniformLocation(name);
@@ -242,6 +247,10 @@ public class Shader {
             return "GEOMETRY_SHADER";
         else
             return "SHADER OF UNKNOWN TYPE";
+    }
+
+    public void bindAttributeLocation(String name, int location) {
+        GL20.glBindAttribLocation(programId, location, name);
     }
 
     protected static class Attrib {

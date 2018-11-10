@@ -32,7 +32,9 @@ public class Engine {
         init();
 
         for (int i = 0; i < 1; i++)
-            EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(0.1f, 0.1f)).addComponent(new GroovyScriptComponent("groovy/test.groovy")).addComponent(new SpriteComponent(1))));
+            EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(0.6f, 1f))
+                    .addComponent(new GroovyScriptComponent("groovy/test.groovy"))
+                    .addComponent(new SpriteComponent("textures/engineer.png"))));
 
         while (running) {
             while (timer.shouldUpdateFPS())

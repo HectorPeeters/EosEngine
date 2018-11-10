@@ -3,9 +3,12 @@ package com.hector.engine.resource;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.resources.AbstractResource;
 import com.hector.engine.resource.resources.TextResource;
+import com.hector.engine.resource.resources.TextureResource;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class ResourceManager {
@@ -13,7 +16,7 @@ public final class ResourceManager {
     private static AbstractResourceLoader resourceLoader;
 
     private static Map<String, AbstractResource> loadedResources;
-    private static Map<String[], Class<? extends AbstractResource>> availableResourceTypes;
+    private static Map<Class<? extends AbstractResource>, List<String>> availableResourceTypes;
 
     //TODO: FIX
     public static <T extends AbstractResource> T getResource(String path) {
@@ -48,10 +51,10 @@ public final class ResourceManager {
 
     //TODO: optimize?
     private static Class<? extends AbstractResource> getResourceClass(String path) {
-        for (String[] fileTypes : availableResourceTypes.keySet())
-            for (String s : fileTypes)
+        for (Map.Entry<Class<? extends AbstractResource>, List<String>> entry : availableResourceTypes.entrySet())
+            for (String s : entry.getValue())
                 if (path.endsWith(s))
-                    return availableResourceTypes.get(fileTypes);
+                    return entry.getKey();
 
         return null;
     }
@@ -66,7 +69,18 @@ public final class ResourceManager {
         loadedResources = new HashMap<>();
         availableResourceTypes = new HashMap<>();
 
-        availableResourceTypes.put(new String[]{".vert", ".frag", ".txt", ".xml", ".log", ".lua", ".groovy"}, TextResource.class);
+        availableResourceTypes.put(TextResource.class, new ArrayList<String>() {{
+            add(".vert");
+            add(".frag");
+            add(".txt");
+            add(".xml");
+            add(".lua");
+            add(".groovy");
+        }});
+
+        availableResourceTypes.put(TextureResource.class, new ArrayList<String>(){{
+            add(".png");
+        }});
 
         Logger.info("Resource", "Initialized resource system with " + resourceLoader.getClass().getSimpleName());
     }

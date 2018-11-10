@@ -1,8 +1,9 @@
 #version 330 core
 
-in vec2 position;
+layout (location = 0) in vec2 position;
+layout (location = 1) in vec2 texCoord;
 
-out vec3 outPosition;
+out vec2 outTexCoord;
 
 uniform mat3 transformationMatrix;
 uniform mat3 orthographicMatrix;
@@ -12,5 +13,5 @@ void main() {
 
     gl_Position = vec4(transformedPos, 1.0);
 
-    outPosition = vec3(position, 0);
+    outTexCoord = texCoord;
 }

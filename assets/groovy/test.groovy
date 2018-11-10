@@ -8,6 +8,7 @@ class Test extends GroovyScript {
     @Override
     void init() {
         parent.name = "Test Entity"
+        parent.rotation = (float)(Math.random() * 360)
     }
 
     float timer
@@ -20,7 +21,7 @@ class Test extends GroovyScript {
             targetPos = new Vector2f((float) (Math.random() * 5f - 2.5f), (float) (Math.random() * 4f - 2f))
 
         float scale = (float)(Math.sin(timer / 500f) / 3f)
-        parent.scale = new Vector2f(scale, scale)
+//        parent.scale = new Vector2f(scale, scale)
 
         Vector2f diff = targetPos.sub(parent.getPosition())
 
@@ -30,6 +31,8 @@ class Test extends GroovyScript {
         }
 
         parent.position = parent.position.add(diff.mul(0.005f))
+
+        parent.rotation += delta * 0.01f
     }
 
     @Override

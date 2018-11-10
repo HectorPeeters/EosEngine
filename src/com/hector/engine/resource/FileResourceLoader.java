@@ -3,10 +3,7 @@ package com.hector.engine.resource;
 import com.hector.engine.logging.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileResourceLoader extends AbstractResourceLoader {
 
@@ -38,6 +35,17 @@ public class FileResourceLoader extends AbstractResourceLoader {
             Logger.err("Resource", "Failed to load text file " + path);
         }
 
+        return null;
+    }
+
+    @Override
+    public InputStream getInputStream(String path) {
+        try {
+            return new FileInputStream(new File(ASSET_DIR + path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Logger.err("Resource", "Failed to get input stream from " + path);
+        }
         return null;
     }
 

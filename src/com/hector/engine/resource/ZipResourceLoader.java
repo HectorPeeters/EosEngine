@@ -5,6 +5,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -43,6 +44,26 @@ public class ZipResourceLoader extends AbstractResourceLoader {
         } catch (IOException e) {
             e.printStackTrace();
             Logger.err("Resource", "Could not retrieve input stream for zip resource " + entry.getName());
+        }
+
+        return null;
+    }
+
+    @Override
+    public InputStream getInputStream(String path) {
+        setupZipFile();
+
+        ZipEntry entry = zipFile.getEntry(path);
+        if (entry == null) {
+            Logger.err("Resource", "Zip entry " + path + " not found");
+            return null;
+        }
+
+        try {
+            return zipFile.getInputStream(entry);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logger.err("Resource", "Failed to load input stream from zip file " + path);
         }
 
         return null;
