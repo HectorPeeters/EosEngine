@@ -6,7 +6,7 @@ A fully custom game engine written in Java.
 
 - [x] Add system functionality
 - [x] Add update timer
-- [ ] Add basic opengl
+- [x] Add basic opengl
 - [x] Add process manager
 - [ ] Add audio support
 - [ ] Optimize EventSystem
