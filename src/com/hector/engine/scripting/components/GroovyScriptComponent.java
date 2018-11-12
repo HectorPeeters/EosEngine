@@ -5,7 +5,12 @@ import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import groovy.lang.GroovyClassLoader;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GroovyScriptComponent extends AbstractScriptComponent {
+
+    private static Map<String, Class> scriptCache = new HashMap<>();
 
     private static GroovyClassLoader gcl = new GroovyClassLoader(new CustomGroovyClassLoader());
 
@@ -19,9 +24,17 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
 
     @Override
     public void init() {
-        TextResource resource = ResourceManager.getResource(path);
+        Class clazz;
 
-        Class clazz = gcl.parseClass(resource.getResource());
+        if (scriptCache.containsKey(path)) {
+            clazz = scriptCache.get(path);
+        } else {
+            TextResource resource = ResourceManager.getResource(path);
+
+            clazz = gcl.parseClass(resource.getResource());
+
+            scriptCache.put(path, clazz);
+        }
 
         try {
             script = (GroovyScript) clazz.newInstance();
@@ -33,6 +46,7 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
 
         script.parent = parent;
         script.init();
+
     }
 
     @Override

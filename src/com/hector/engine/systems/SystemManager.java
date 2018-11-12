@@ -63,8 +63,12 @@ public class SystemManager {
 
     public void initSystems() {
         for (AbstractSystem system : systems) {
+            long initStartTime = System.currentTimeMillis();
+
             system.initModule();
             EventSystem.subscribe(system);
+
+            Logger.debug("System", "Initialized " + system.name + " system in " + (System.currentTimeMillis() - initStartTime) + "ms");
         }
 
         Logger.info("System", "Initialized " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));

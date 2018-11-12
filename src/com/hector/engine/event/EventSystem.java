@@ -35,6 +35,8 @@ public class EventSystem extends AbstractSystem {
 
     @Override
     public void update(float delta) {
+        int maxMessages = 50;
+
         while (!messageQueue.isEmpty()) {
             Object message = messageQueue.poll();
 
@@ -44,6 +46,10 @@ public class EventSystem extends AbstractSystem {
             Logger.debug("Event", "EVENT: " + message.getClass().getSimpleName());
 
             publishImmediate(message);
+
+            maxMessages--;
+            if (maxMessages <= 0)
+                break;
         }
 
     }

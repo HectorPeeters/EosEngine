@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/GameEngine_jar</output-path>
     <root id="archive" name="GameEngine.jar">
       <element id="module-output" name="EosEngine" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/luaj-jse-3.0.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl/lwjgl.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-glfw/lwjgl-glfw.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-opengl/lwjgl-opengl.jar" path-in-jar="/" />
@@ -53,6 +52,7 @@
       <element id="extracted-dir" path="/usr/share/groovy/lib/junit4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-stb/lwjgl-stb.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/pngdecoder-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jbox2d-library-2.2.1.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

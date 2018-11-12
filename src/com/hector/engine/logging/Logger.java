@@ -1,7 +1,6 @@
 package com.hector.engine.logging;
 
 import com.hector.engine.Engine;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -10,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Logger {
+
+    private static final String ROLLBAR_ACCES_TOKEN = "4effe922b8cc48b7833494c6b20bc333";
 
     private static int logLevelFilter = 0;
 
@@ -97,6 +98,10 @@ public final class Logger {
 
     public static void err(String channelTag, Object message) {
         log(channelTag, LogType.ERROR, message);
+    }
+
+    public static void fatal(String channelTag, Exception e, Object message) {
+        err(channelTag, message);
     }
 
     private static void log(String channelTag, LogType logType, Object message) {

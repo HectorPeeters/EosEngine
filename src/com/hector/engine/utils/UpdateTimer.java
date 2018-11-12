@@ -61,7 +61,7 @@ public class UpdateTimer {
     }
 
     public double getDelta() {
-        return ms;
+        return 1.0 / ms;
     }
 
     public int getUpdates() {

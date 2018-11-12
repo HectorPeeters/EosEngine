@@ -23,7 +23,4 @@ public abstract class GroovyScript {
         throw new NotImplementedException();
     }
 
-    public void drawDebug() {
-    }
-
 }

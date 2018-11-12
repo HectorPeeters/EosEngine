@@ -10,6 +10,8 @@ import com.hector.engine.graphics.components.SpriteComponent;
 import com.hector.engine.input.InputSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Vector2f;
+import com.hector.engine.physics.PhysicsSystem;
+import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.scripting.ScriptSystem;
@@ -17,6 +19,9 @@ import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Engine {
 
@@ -31,10 +36,16 @@ public class Engine {
     public Engine() {
         init();
 
-        for (int i = 0; i < 1; i++)
-            EventSystem.publish(new AddEntityEvent(new Entity(new Vector2f(0, 0), new Vector2f(0.6f, 1f))
+        List<Entity> entities = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++)
+            entities.add(new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
                     .addComponent(new GroovyScriptComponent("groovy/test.groovy"))
-                    .addComponent(new SpriteComponent("textures/engineer.png"))));
+//                    .addComponent(new RigidBodyComponent(10))
+                    .addComponent(new SpriteComponent("textures/brick2.png"))
+            );
+
+        EventSystem.publish(new AddEntityEvent(entities));
 
         while (running) {
             while (timer.shouldUpdateFPS())
@@ -50,6 +61,7 @@ public class Engine {
     }
 
     private void init() {
+        long startTime = System.currentTimeMillis();
         NativesLoader.loadNatives();
 
         ResourceManager.init();
@@ -61,8 +73,8 @@ public class Engine {
         manager.addSystem(InputSystem.class);
         manager.addSystem(EntitySystem.class);
         manager.addSystem(ScriptSystem.class);
+        manager.addSystem(PhysicsSystem.class);
         manager.initSystems();
-
 
         Logger.init();
         Logger.info("Engine", "Starting engine");
@@ -73,6 +85,8 @@ public class Engine {
         engineConfig.load();
 
         timer = new UpdateTimer(engineConfig.getInt("target_fps"));
+
+        Logger.info("Engine", "Engine initialization took " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     private void update(float delta) {

@@ -23,7 +23,6 @@ public final class ResourceManager {
         if (loadedResources.containsKey(path))
             return (T) loadedResources.get(path);
 
-
         Class<? extends AbstractResource> resourceClass = getResourceClass(path);
         if (resourceClass == null) {
             Logger.warn("Resource", "File " + path + " is not supported");

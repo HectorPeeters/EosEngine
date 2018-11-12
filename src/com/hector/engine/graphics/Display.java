@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
@@ -24,10 +25,10 @@ public class Display {
     private int width, height;
 
     public boolean create(int width, int height) {
+        long startTime = System.currentTimeMillis();
+
         this.width = width;
         this.height = height;
-
-        GLFWErrorCallback.createPrint(System.err).set();
 
         if (!GLFW.glfwInit()) {
             Logger.err("Graphics", "Failed to init GLFW");
@@ -37,6 +38,7 @@ public class Display {
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 16);
 
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
 
@@ -94,7 +96,8 @@ public class Display {
 
         GL11.glViewport(0, 0, width, height);
 
-        GL11.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+        GL11.glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
+
 
         return true;
     }

@@ -21,22 +21,22 @@ public class GraphicsSystem extends AbstractSystem {
 
     private float[] vertices = new float[] {
             -0.5f, 0.5f,
-            0.5f, 0.5f,
             0.5f, -0.5f,
+            0.5f, 0.5f,
 
             -0.5f, 0.5f,
-            0.5f, -0.5f,
             -0.5f, -0.5f,
+            0.5f, -0.5f,
     };
 
     private float[] texCoords = new float[] {
             1, 0,
-            0, 0,
             0, 1,
+            0, 0,
 
             1, 0,
-            0, 1,
             1, 1,
+            0, 1,
     };
 
     private Display display;
@@ -60,9 +60,11 @@ public class GraphicsSystem extends AbstractSystem {
         float aspectRatio = displayWidth / (float) displayHeight;
         display.create(displayWidth, displayHeight);
 
+        GL11.glEnable(GL20.GL_MULTISAMPLE);
+
         shader = new Shader("basic");
 
-        Matrix3f orthographic = new Matrix3f().initOrtho(-1, 1, 1, -1, -1, 1);
+        Matrix3f orthographic = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
         shader.bind().setMatrix3f("orthographicMatrix", orthographic);
 
         int vaoId = GL30.glGenVertexArrays();
@@ -81,12 +83,15 @@ public class GraphicsSystem extends AbstractSystem {
         GL30.glEnableVertexAttribArray(1);
 
         shader.setInt("sampler", 0);
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
     }
 
     private boolean pressed = false;
 
     @Handler
-    private void keyPress(KeyEvent event) {
+    private void onKeyEvent(KeyEvent event) {
         if (event.keycode == GLFW.GLFW_KEY_SPACE)
             pressed = event.pressed;
     }

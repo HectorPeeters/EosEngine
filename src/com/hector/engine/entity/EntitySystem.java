@@ -21,10 +21,12 @@ public class EntitySystem extends AbstractSystem {
 
     @Handler
     private void onEntityAddEvent(AddEntityEvent event) {
-        entities.add(event.entity);
+        for(Entity e : event.entity) {
+            entities.add(e);
 
-        for (AbstractEntityComponent component : event.entity.getComponents())
-            EventSystem.publish(new AddEntityComponentEvent(event.entity, component));
+            for (AbstractEntityComponent component : e.getComponents())
+                EventSystem.publish(new AddEntityComponentEvent(e, component));
+        }
     }
 
     @Handler

@@ -35,8 +35,4 @@ class Test extends GroovyScript {
         parent.rotation += delta * 0.01f
     }
 
-    @Override
-    void drawDebug() {
-
-    }
 }
