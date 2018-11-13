@@ -76,7 +76,7 @@ public class GraphicsSystem extends AbstractSystem {
         shader.unbind();
 
         screenShader = new Shader("fbo");
-        screenShader.setInt("screenTexture", 1);
+        screenShader.setInt("sampler", 1);
 
         quadModel = new Model(vertices, texCoords);
 

@@ -26,7 +26,7 @@ public class FrameBuffer {
         bind();
 
         attachTexture();
-        attachRenderBuffer();
+//        attachDepthBuffer();
 
         if (GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER) != GL30.GL_FRAMEBUFFER_COMPLETE)
             Logger.err("Graphics", "Failed to create framebuffer");
@@ -52,11 +52,10 @@ public class FrameBuffer {
         System.out.println(GL11.glGetError());
     }
 
-    private void attachRenderBuffer() {
+    private void attachDepthBuffer() {
         renderBufferId = GL30.glGenRenderbuffers();
 
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, renderBufferId);
-        GL30.GL_DEPTH
         GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL30.GL_DEPTH24_STENCIL8, width, height);
 //        GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, 0);
 

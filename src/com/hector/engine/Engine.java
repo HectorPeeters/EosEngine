@@ -38,17 +38,11 @@ public class Engine {
 
         List<Entity> entities = new ArrayList<>();
 
-        Entity e = new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
-                .addComponent(new GroovyScriptComponent("groovy/test.groovy"))
-                .addComponent(new RigidBodyComponent(10))
-                .addComponent(new SpriteComponent("textures/brick2.png"));
-        entities.add(e);
-
         for (int i = 0; i < 10; i++)
             entities.add(new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
                     .addComponent(new GroovyScriptComponent("groovy/test.groovy"))
                     .addComponent(new RigidBodyComponent(10))
-                    .addComponent(new SpriteComponent("textures/brick2.png"))
+                    .addComponent(new SpriteComponent("textures/engineer.png"))
             );
 
         EventSystem.publish(new AddEntityEvent(entities));
