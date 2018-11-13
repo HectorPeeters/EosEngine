@@ -6,7 +6,7 @@ import com.hector.engine.systems.AbstractSystem;
 
 public class InputSystem extends AbstractSystem {
 
-    private boolean[] keys;
+    private static boolean[] keys;
 
     public InputSystem() {
         super("input", 900);
@@ -25,5 +25,9 @@ public class InputSystem extends AbstractSystem {
     @Override
     protected void destroy() {
 
+    }
+
+    public static boolean isKeyDown(int keyCode) {
+        return keys[keyCode];
     }
 }

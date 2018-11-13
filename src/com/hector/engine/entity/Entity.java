@@ -48,11 +48,14 @@ public class Entity {
         this.components = new ArrayList<>();
     }
 
+    public void init() {
+        for(AbstractEntityComponent component : components)
+            component.init();
+    }
+
     public Entity addComponent(AbstractEntityComponent component) {
         components.add(component);
         component.setParent(this);
-
-        component.init();
 
         return this;
     }
@@ -109,4 +112,5 @@ public class Entity {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
 }

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+start=`date +%s.%N`
+
 echo Building archive of $(find assets/ -type f | wc -l) assets
 echo
 
@@ -11,3 +13,7 @@ echo Asset building complete!
 ls -sh Assets.zip
 
 mv Assets.zip ../out/artifacts/GameEngine_jar/
+
+end=`date +%s.%N`
+
+echo Time: $((end-start)) seconds

@@ -24,6 +24,8 @@ public class EntitySystem extends AbstractSystem {
         for(Entity e : event.entity) {
             entities.add(e);
 
+            e.init();
+
             for (AbstractEntityComponent component : e.getComponents())
                 EventSystem.publish(new AddEntityComponentEvent(e, component));
         }

@@ -38,7 +38,7 @@ public class Display {
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
-        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 16);
+//        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
 
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
 
@@ -121,8 +121,6 @@ public class Display {
         GLFW.glfwDestroyWindow(window);
 
         GLFW.glfwTerminate();
-
-        GLFW.glfwSetErrorCallback(null).free();
 
         Logger.info("Graphics", "Terminated GLFW");
     }
