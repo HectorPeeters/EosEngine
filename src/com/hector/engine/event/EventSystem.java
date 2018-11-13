@@ -16,7 +16,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventSystem extends AbstractSystem {
 
-    private static BlockingQueue<Object> messageQueue;
+    private static int MAX_EVENTS_PER_FRAME = 100;
+
+    private static BlockingQueue<Object> eventQueue;
     private static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;
 
     private static int maxQueueSize;
@@ -29,16 +31,16 @@ public class EventSystem extends AbstractSystem {
     public void init() {
         maxQueueSize = config.getInt("max_queue_size");
 //        int threadAmount = config.getInt("thread_amount");
-        messageQueue = new ArrayBlockingQueue<>(maxQueueSize);
+        eventQueue = new ArrayBlockingQueue<>(1000);
         subscriptions = new ConcurrentHashMap<>();
     }
 
     @Override
     public void update(float delta) {
-        int maxMessages = 50;
+        int messagesThisFrame = 0;
 
-        while (!messageQueue.isEmpty()) {
-            Object message = messageQueue.poll();
+        while (!eventQueue.isEmpty()) {
+            Object message = eventQueue.poll();
 
             if (message == null)
                 continue;
@@ -47,8 +49,8 @@ public class EventSystem extends AbstractSystem {
 
             publishImmediate(message);
 
-            maxMessages--;
-            if (maxMessages <= 0)
+            messagesThisFrame++;
+            if (messagesThisFrame >= MAX_EVENTS_PER_FRAME)
                 break;
         }
 
@@ -82,10 +84,10 @@ public class EventSystem extends AbstractSystem {
 
     public static void publish(Object message) {
         try {
-            if (messageQueue.size() == maxQueueSize)
+            if (eventQueue.size() == maxQueueSize)
                 Logger.warn("Event", "Max queue size of " + maxQueueSize + " reached");
 
-            messageQueue.put(message);
+            eventQueue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();
             Logger.err("Event", "Failed to add object to message queue");

@@ -48,8 +48,6 @@ public class GraphicsSystem extends AbstractSystem {
 
     private FrameBuffer frameBuffer;
 
-    private int quadVAOId;
-
     private Model quadModel;
 
     private List<SpriteComponent> spriteComponents = new ArrayList<>();
@@ -57,8 +55,6 @@ public class GraphicsSystem extends AbstractSystem {
     public GraphicsSystem() {
         super("graphics", 1500);
     }
-
-    //TODO: fix rotation sheering!!!
 
     @Override
     protected void init() {
@@ -192,6 +188,8 @@ public class GraphicsSystem extends AbstractSystem {
     protected void destroy() {
         shader.destroy();
         screenShader.destroy();
+
+        frameBuffer.destory();
 
         quadModel.destroy();
 

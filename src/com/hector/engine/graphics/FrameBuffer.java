@@ -71,7 +71,7 @@ public class FrameBuffer {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
-    public void delete() {
+    public void destory() {
         GL30.glDeleteFramebuffers(id);
     }
 
