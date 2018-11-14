@@ -16,3 +16,4 @@ A fully custom game engine written in Java.
 - [ ] Add file watch
 - [ ] Then add auto reload
 - [ ] Resource dependency
+- [ ] FIX RESOURCE SYSTEM

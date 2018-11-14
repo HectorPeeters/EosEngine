@@ -2,6 +2,7 @@ package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.resources.AbstractResource;
+import com.hector.engine.resource.resources.AnimationResource;
 import com.hector.engine.resource.resources.TextResource;
 import com.hector.engine.resource.resources.TextureResource;
 
@@ -58,7 +59,7 @@ public final class ResourceManager {
         return null;
     }
 
-    public static boolean doesFileExist(String path) {
+    public static boolean doesResourceExist(String path) {
         return resourceLoader.doesFileExist(path);
     }
 
@@ -79,6 +80,10 @@ public final class ResourceManager {
 
         availableResourceTypes.put(TextureResource.class, new ArrayList<String>(){{
             add(".png");
+        }});
+
+        availableResourceTypes.put(AnimationResource.class, new ArrayList<String>(){{
+            add(".anim");
         }});
 
         Logger.info("Resource", "Initialized resource system with " + resourceLoader.getClass().getSimpleName());

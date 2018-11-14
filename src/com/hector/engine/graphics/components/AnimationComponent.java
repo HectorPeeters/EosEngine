@@ -1,19 +1,13 @@
 package com.hector.engine.graphics.components;
 
 import com.hector.engine.entity.AbstractEntityComponent;
-import com.hector.engine.graphics.Texture;
+import com.hector.engine.graphics.Animation;
 import com.hector.engine.resource.ResourceManager;
-import com.hector.engine.resource.resources.TextureResource;
+import com.hector.engine.resource.resources.AnimationResource;
 
 public class AnimationComponent extends AbstractEntityComponent {
 
-    private String texturePath;
-
-    public Texture texture;
-
-    private int framesWide;
-    private int framesHigh;
-    private float fps;
+    private Animation animation;
 
     private float currentFrameTime;
     private int currentFrame = 0;
@@ -23,20 +17,19 @@ public class AnimationComponent extends AbstractEntityComponent {
 
     private boolean flipped = false;
 
-    public AnimationComponent(String texture, int framesWide, int framesHigh) {
-        this.texturePath = texture;
-        this.framesWide = framesWide;
-        this.framesHigh = framesHigh;
-        this.fps = 4;
+    private String animationPath;
+
+    public AnimationComponent(String animation) {
+        this.animationPath = animation;
     }
 
     @Override
     public void init() {
-        TextureResource resource = ResourceManager.getResource(texturePath);
+        AnimationResource resource = ResourceManager.getResource(animationPath);
         if (resource == null)
             return;
 
-        this.texture = resource.getResource();
+        this.animation = resource.getResource();
     }
 
     public void advanceAnimation(float delta) {
@@ -45,19 +38,19 @@ public class AnimationComponent extends AbstractEntityComponent {
 
         currentFrameTime += delta;
 
-        if (currentFrameTime >= 1f / fps) {
+        if (currentFrameTime >= 1f / animation.getFps()) {
             currentFrame++;
 
-            if (currentFrame >= framesHigh * framesWide) {
+            if (currentFrame >= animation.getTotalFrames()) {
                 if (playOnce) {
                     isPlaying = false;
-                    currentFrame = framesHigh * framesWide - 1;
+                    currentFrame = animation.getTotalFrames() - 1;
                 } else {
                     currentFrame = 0;
                 }
             }
 
-            currentFrameTime -= 1f / fps;
+            currentFrameTime -= 1f / animation.getFps();
         }
     }
 
@@ -71,6 +64,10 @@ public class AnimationComponent extends AbstractEntityComponent {
         isPlaying = false;
     }
 
+    public void setFrame(int frame) {
+        this.currentFrame = frame;
+    }
+
     public void setFlipped(boolean flipped) {
         this.flipped = flipped;
     }
@@ -80,15 +77,15 @@ public class AnimationComponent extends AbstractEntityComponent {
     }
 
     public int getTextureId() {
-        return texture.getId();
+        return animation.getTexture().getId();
     }
 
     public int getFramesWide() {
-        return framesWide;
+        return animation.getFramesWide();
     }
 
     public int getFramesHigh() {
-        return framesHigh;
+        return animation.getFramesHigh();
     }
 
     public int getFrameIndex() {

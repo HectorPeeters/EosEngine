@@ -39,11 +39,12 @@ class Controller extends GroovyScript {
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_A))
             parent.getPosition().x -= speed * delta
 
-        if (Math.abs(prevX - parent.position.x) >= 0.001f) {
+        if (Math.abs(prevX - parent.position.x) >= 0.001f && grounded) {
             animation.setFlipped(prevX - parent.position.x > 0)
             animation.play(false)
         } else {
             animation.stop()
+            animation.setFrame(0)
         }
 
         boolean inAir = Math.abs(rb.velocity.y) > 0.01f

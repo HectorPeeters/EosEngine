@@ -154,7 +154,7 @@ public class GraphicsSystem extends AbstractSystem {
 
         for (AnimationComponent component : animationComponents) {
             GL20.glActiveTexture(GL20.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.texture.getId());
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.getTextureId());
 
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             animationShader.setMatrix3f("transformationMatrix", transformationMatrix);

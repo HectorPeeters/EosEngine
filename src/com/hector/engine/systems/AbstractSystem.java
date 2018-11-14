@@ -17,7 +17,7 @@ public abstract class AbstractSystem {
     public void initModule() {
         String configFile = "config/" + name.toLowerCase() + ".xml";
 
-        if (ResourceManager.doesFileExist(configFile)) {
+        if (ResourceManager.doesResourceExist(configFile)) {
             this.config = new XMLConfigFile(configFile);
             this.config.load();
         }

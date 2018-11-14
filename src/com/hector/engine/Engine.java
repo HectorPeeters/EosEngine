@@ -41,7 +41,7 @@ public class Engine {
         Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.5f, 0.5f))
                 .addComponent(new GroovyScriptComponent("groovy/controller.groovy"))
                 .addComponent(new RigidBodyComponent(10))
-                .addComponent(new AnimationComponent("textures/engineer/engineer-run.png", 8, 1));
+                .addComponent(new AnimationComponent("textures/engineer/engineer-run.png.anim"));
         entities.add(entity);
 
 //        for (int i = 0; i < 10; i++)
