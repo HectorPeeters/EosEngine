@@ -3,6 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
+import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.SpriteComponent;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.logging.Logger;
@@ -12,7 +13,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ public class GraphicsSystem extends AbstractSystem {
     //TODO: use index buffer if performance problems occur
 
     private float[] vertices = new float[]{
-            -0.5f,  0.5f,
+            -0.5f, 0.5f,
             -0.5f, -0.5f,
-             0.5f, -0.5f,
+            0.5f, -0.5f,
 
-             0.5f, -0.5f,
-             0.5f,  0.5f,
-            -0.5f,  0.5f,
+            0.5f, -0.5f,
+            0.5f, 0.5f,
+            -0.5f, 0.5f,
     };
 
     private float[] texCoords = new float[]{
@@ -45,12 +45,14 @@ public class GraphicsSystem extends AbstractSystem {
 
     private Shader shader;
     private Shader fboShader;
+    private Shader animationShader;
 
     private FrameBuffer frameBuffer;
 
     private Model quadModel;
 
     private List<SpriteComponent> spriteComponents = new ArrayList<>();
+    private List<AnimationComponent> animationComponents = new ArrayList<>();
 
     public GraphicsSystem() {
         super("graphics", 1500);
@@ -66,13 +68,20 @@ public class GraphicsSystem extends AbstractSystem {
         display.create(displayWidth, displayHeight);
 
         shader = new Shader("basic");
+        shader.bind();
         shader.setInt("sampler", 0);
         Matrix3f orthographic = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
-        shader.bind().setMatrix3f("orthographicMatrix", orthographic);
+        shader.setMatrix3f("orthographicMatrix", orthographic);
         shader.unbind();
 
         fboShader = new Shader("fbo");
         fboShader.setInt("sampler", 1);
+
+        animationShader = new Shader("animation");
+        animationShader.bind();
+        animationShader.setInt("sampler", 0);
+        animationShader.setMatrix3f("orthographicMatrix", orthographic);
+        animationShader.unbind();
 
         quadModel = new Model(vertices, texCoords);
 
@@ -94,6 +103,12 @@ public class GraphicsSystem extends AbstractSystem {
     }
 
     @Override
+    public void update(float delta) {
+        for (AnimationComponent animation : animationComponents)
+            animation.advanceAnimation(delta);
+    }
+
+    @Override
     public void render() {
         if (pressed)
             return;
@@ -109,7 +124,8 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        drawScene();
+//        drawSprites();
+        drawAnimations();
 
 //        frameBuffer.unbind();
 
@@ -130,7 +146,33 @@ public class GraphicsSystem extends AbstractSystem {
 //        fboShader.unbind();
     }
 
-    private void drawScene() {
+    private void drawAnimations() {
+        quadModel.bind();
+        quadModel.enableVertexAttribArrays();
+
+        animationShader.bind();
+
+        for (AnimationComponent component : animationComponents) {
+            GL20.glActiveTexture(GL20.GL_TEXTURE0);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.texture.getId());
+
+            Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
+            animationShader.setMatrix3f("transformationMatrix", transformationMatrix);
+
+            animationShader.setInt("framesWide", component.getFramesWide());
+            animationShader.setInt("framesHigh", component.getFramesHigh());
+            animationShader.setInt("frameIndex", component.getFrameIndex());
+
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadModel.getVertexCount());
+        }
+
+        animationShader.unbind();
+
+        quadModel.disableVertexAttribArrays();
+        quadModel.unbind();
+    }
+
+    private void drawSprites() {
         quadModel.bind();
         quadModel.enableVertexAttribArrays();
 
@@ -163,18 +205,18 @@ public class GraphicsSystem extends AbstractSystem {
 
     @Handler
     private void onSpriteComponentAdded(AddEntityComponentEvent event) {
-        if (!(event.component instanceof SpriteComponent))
-            return;
-
-        spriteComponents.add((SpriteComponent) event.component);
+        if (event.component instanceof SpriteComponent)
+            spriteComponents.add((SpriteComponent) event.component);
+        else if (event.component instanceof AnimationComponent)
+            animationComponents.add((AnimationComponent) event.component);
     }
 
     @Handler
     private void onSpriteComponentRemoved(RemoveEntityComponentEvent event) {
-        if (!(event.component instanceof SpriteComponent))
-            return;
-
-        spriteComponents.remove(event.component);
+        if (event.component instanceof SpriteComponent)
+            spriteComponents.remove(event.component);
+        else if (event.component instanceof AnimationComponent)
+            animationComponents.remove(event.component);
     }
 
     @Override

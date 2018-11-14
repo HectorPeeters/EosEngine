@@ -26,6 +26,6 @@ public class SpriteComponent extends AbstractEntityComponent {
         if (resource == null)
             return;
 
-        textureId = resource.getResource();
+        textureId = resource.getResource().getId();
     }
 }

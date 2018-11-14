@@ -6,12 +6,11 @@ import com.hector.engine.entity.events.AddEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
-import com.hector.engine.graphics.components.SpriteComponent;
+import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.input.InputSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Vector2f;
 import com.hector.engine.physics.PhysicsSystem;
-import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.scripting.ScriptSystem;
@@ -40,7 +39,7 @@ public class Engine {
 
         Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.5f, 0.5f))
                 .addComponent(new GroovyScriptComponent("groovy/controller.groovy"))
-                .addComponent(new SpriteComponent("textures/engineer.png"));
+                .addComponent(new AnimationComponent("textures/engineer-run.png", 8, 1));
         entities.add(entity);
 
 //        for (int i = 0; i < 10; i++)

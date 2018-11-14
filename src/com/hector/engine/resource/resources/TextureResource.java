@@ -1,5 +1,6 @@
 package com.hector.engine.resource.resources;
 
+import com.hector.engine.graphics.Texture;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.AbstractResourceLoader;
 import de.matthiasmann.twl.utils.PNGDecoder;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-public class TextureResource extends AbstractResource<Integer> {
+public class TextureResource extends AbstractResource<Texture> {
 
     public TextureResource(String path) {
         super(path);
@@ -42,7 +43,7 @@ public class TextureResource extends AbstractResource<Integer> {
 
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 
-            resource = id;
+            resource = new Texture(id, decoder.getWidth(), decoder.getHeight());
 
             return true;
 
