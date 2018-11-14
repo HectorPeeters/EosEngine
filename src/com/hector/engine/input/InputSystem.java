@@ -6,20 +6,27 @@ import com.hector.engine.systems.AbstractSystem;
 
 public class InputSystem extends AbstractSystem {
 
-    private static boolean[] keys;
+    private static final int KEY_COUNT = 1024;
+
+    private static boolean[] keysDown;
 
     public InputSystem() {
         super("input", 900);
     }
 
+    @Override
+    protected void init() {
+        keysDown = new boolean[KEY_COUNT];
+    }
+
     @Handler
     private void onKeyEvent(KeyEvent event) {
-        keys[event.keycode] = event.pressed;
+        keysDown[event.keycode] = event.pressed;
     }
 
     @Override
-    protected void init() {
-        keys = new boolean[1024];
+    public void postUpdate(float delta) {
+
     }
 
     @Override
@@ -28,6 +35,6 @@ public class InputSystem extends AbstractSystem {
     }
 
     public static boolean isKeyDown(int keyCode) {
-        return keys[keyCode];
+        return keysDown[keyCode];
     }
 }

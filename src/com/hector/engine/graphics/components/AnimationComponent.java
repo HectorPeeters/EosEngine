@@ -18,8 +18,10 @@ public class AnimationComponent extends AbstractEntityComponent {
     private float currentFrameTime;
     private int currentFrame = 0;
 
-    private boolean playOnce = true;
-    private boolean isPlaying = true;
+    private boolean playOnce = false;
+    private boolean isPlaying = false;
+
+    private boolean flipped = false;
 
     public AnimationComponent(String texture, int framesWide, int framesHigh) {
         this.texturePath = texture;
@@ -57,6 +59,24 @@ public class AnimationComponent extends AbstractEntityComponent {
 
             currentFrameTime -= 1f / fps;
         }
+    }
+
+    public void play(boolean once) {
+        isPlaying = true;
+
+        playOnce = once;
+    }
+
+    public void stop() {
+        isPlaying = false;
+    }
+
+    public void setFlipped(boolean flipped) {
+        this.flipped = flipped;
+    }
+
+    public boolean isFlipped() {
+        return flipped;
     }
 
     public int getTextureId() {

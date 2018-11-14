@@ -162,6 +162,7 @@ public class GraphicsSystem extends AbstractSystem {
             animationShader.setInt("framesWide", component.getFramesWide());
             animationShader.setInt("framesHigh", component.getFramesHigh());
             animationShader.setInt("frameIndex", component.getFrameIndex());
+            animationShader.setInt("flipped", component.isFlipped() ? 1 : 0);
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadModel.getVertexCount());
         }

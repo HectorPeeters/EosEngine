@@ -9,6 +9,7 @@ uniform sampler2D sampler;
 uniform int framesWide;
 uniform int framesHigh;
 uniform int frameIndex;
+uniform int flipped;
 
 void main() {
     float widthPerFrame = 1f / framesWide;
@@ -17,7 +18,13 @@ void main() {
     int xIndex = frameIndex % framesWide;
     int yIndex = frameIndex / framesWide;
 
-    float x = (xIndex + outTexCoord.x) * widthPerFrame;
+    float xCoord = outTexCoord.x;
+
+    if (flipped == 1) {
+        xCoord = 1 - outTexCoord.x;
+    }
+
+    float x = (xIndex + xCoord) * widthPerFrame;
     float y = (yIndex + outTexCoord.y) * heigthPerFrame;
 
     outColor = texture(sampler, vec2(x, y));
