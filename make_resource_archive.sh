@@ -16,4 +16,5 @@ mv Assets.zip ../out/artifacts/GameEngine_jar/
 
 end=`date +%s.%N`
 
+echo
 echo Time: $((end-start)) seconds

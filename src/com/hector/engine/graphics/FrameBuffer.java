@@ -71,8 +71,9 @@ public class FrameBuffer {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
-    public void destory() {
+    public void destroy() {
         GL30.glDeleteFramebuffers(id);
+        Logger.info("Graphics", "Destroyed framebuffer");
     }
 
     public int getTextureId() {

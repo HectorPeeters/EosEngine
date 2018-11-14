@@ -40,8 +40,12 @@ public class Shader {
 
         linkProgram();
 
+        postLoad();
+
         Logger.info("Graphics", "Compiled shader program: " + name);
     }
+
+    protected void postLoad() {}
 
     private int createProgram() {
         int program = GL20.glCreateProgram();
