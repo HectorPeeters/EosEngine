@@ -18,6 +18,9 @@ public class AnimationComponent extends AbstractEntityComponent {
     private float currentFrameTime;
     private int currentFrame = 0;
 
+    private boolean playOnce = true;
+    private boolean isPlaying = true;
+
     public AnimationComponent(String texture, int framesWide, int framesHigh) {
         this.texturePath = texture;
         this.framesWide = framesWide;
@@ -35,10 +38,23 @@ public class AnimationComponent extends AbstractEntityComponent {
     }
 
     public void advanceAnimation(float delta) {
+        if (!isPlaying)
+            return;
+
         currentFrameTime += delta;
 
         if (currentFrameTime >= 1f / fps) {
-            currentFrame = (currentFrame + 1) % (framesWide * framesHigh);
+            currentFrame++;
+
+            if (currentFrame >= framesHigh * framesWide) {
+                if (playOnce) {
+                    isPlaying = false;
+                    currentFrame = framesHigh * framesWide - 1;
+                } else {
+                    currentFrame = 0;
+                }
+            }
+
             currentFrameTime -= 1f / fps;
         }
     }
