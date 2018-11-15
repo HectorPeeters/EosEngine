@@ -54,6 +54,15 @@ public class AnimationComponent extends AbstractEntityComponent {
         }
     }
 
+    public void setAnimation(Animation animation) {
+        if (this.animation == animation)
+            return;
+
+        this.animation = animation;
+        this.currentFrame = 0;
+        this.currentFrameTime = 0;
+    }
+
     public void play(boolean once) {
         isPlaying = true;
 

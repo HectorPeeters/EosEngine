@@ -5,12 +5,15 @@ import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import groovy.lang.GroovyClassLoader;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GroovyScriptComponent extends AbstractScriptComponent {
 
     private static Map<String, Class> scriptCache = new HashMap<>();
+
+    private static Map<String, Object> variables = new HashMap<>();
 
     private static GroovyClassLoader gcl = new GroovyClassLoader(new CustomGroovyClassLoader());
 
@@ -47,6 +50,36 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
         script.parent = parent;
         script.init();
 
+        for(Map.Entry<String, Object> entry : variables.entrySet()) {
+            for(Field f : script.getClass().getDeclaredFields()) {
+                if (f.getName().equals(entry.getKey())) {
+                    try {
+                        f.setAccessible(true);
+                        f.set(script, entry.getValue());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    public void set(String name, Object object) {
+        if (script == null) {
+            variables.put(name, object);
+            return;
+        }
+
+        for(Field f : script.getClass().getDeclaredFields()) {
+            if (f.getName().equals(name)) {
+                try {
+                    f.setAccessible(true);
+                    f.set(script, object);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

@@ -38,10 +38,19 @@ public class Engine {
 
         List<Entity> entities = new ArrayList<>();
 
+
+        GroovyScriptComponent controller = new GroovyScriptComponent("groovy/controller.groovy");
+
         Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.5f, 0.5f))
-                .addComponent(new GroovyScriptComponent("groovy/controller.groovy"))
+                .addComponent(controller)
                 .addComponent(new RigidBodyComponent(10))
                 .addComponent(new AnimationComponent("textures/engineer/engineer-run.png.anim"));
+
+        controller.set("runAnimation", ResourceManager.getResource("textures/engineer/engineer-run.png.anim").getResource());
+        controller.set("idleAnimation", ResourceManager.getResource("textures/engineer/engineer-idle.png.anim").getResource());
+        controller.set("jumpAnimation", ResourceManager.getResource("textures/engineer/engineer-jump.png.anim").getResource());
+
+
         entities.add(entity);
 
 //        for (int i = 0; i < 10; i++)
