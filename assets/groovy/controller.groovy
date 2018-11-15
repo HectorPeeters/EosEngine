@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW
 
 class Controller extends GroovyScript {
 
-    private static final float speed = 1
+    private static final float speed = 0.4f
 
     private AnimationComponent animation
     public RigidBodyComponent rb
@@ -23,7 +23,7 @@ class Controller extends GroovyScript {
     void init() {
         animation = parent.getComponent(AnimationComponent.class)
         rb = parent.getComponent(RigidBodyComponent.class)
-        rb.acceleration = new Vector2f(0, -2f)
+        rb.acceleration = new Vector2f(0, -1f)
 
     }
 
@@ -31,13 +31,13 @@ class Controller extends GroovyScript {
 
     @Override
     void update(float delta) {
-        if (parent.getPosition().y <= -0.6f) {
+        if (parent.getPosition().y <= -0.5f) {
             rb.velocity.y = 0
-            parent.getPosition().y = -0.6f
+            parent.getPosition().y = -0.5f
         }
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W) && grounded)
-            rb.velocity.y = 2
+            rb.velocity.y = 1f
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_D))
             parent.getPosition().x += speed * delta
@@ -45,26 +45,29 @@ class Controller extends GroovyScript {
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_A))
             parent.getPosition().x -= speed * delta
 
-        animation.setFlipped(prevX - parent.position.x > 0)
+        boolean running = Math.abs(prevX - parent.position.x) >= 0.001f
+
+        if (running)
+            animation.setFlipped(prevX - parent.position.x > 0)
 
         animation.play(false)
 
         boolean inAir = Math.abs(rb.velocity.y) > 0.01f
+        grounded = parent.getPosition().y <= -0.5f
 
         if (inAir) {
             boolean up = rb.velocity.y > 0.01f
             animation.setAnimation(jumpAnimation)
             animation.stop()
             animation.setFrame(up ? 0 : 1)
+
         } else {
-            if (Math.abs(prevX - parent.position.x) >= 0.001f && grounded) {
+            if (running && grounded) {
                 animation.setAnimation(runAnimation)
             } else {
                 animation.setAnimation(idleAnimation)
             }
         }
-
-        grounded = parent.getPosition().y <= -0.6f
 
         prevX = parent.position.x
     }

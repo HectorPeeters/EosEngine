@@ -15,6 +15,7 @@ import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.scripting.ScriptSystem;
+import com.hector.engine.scripting.components.GroovyScript;
 import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
@@ -38,10 +39,25 @@ public class Engine {
 
         List<Entity> entities = new ArrayList<>();
 
+        GroovyScriptComponent laserController = new GroovyScriptComponent("groovy/laser.groovy");
+
+        Entity laserEntity = new Entity(new Vector2f(-1, 0), new Vector2f(0.3f, 1.2f))
+                .addComponent(new AnimationComponent("textures/laser/laser-turn-on.png.anim"))
+                .addComponent(laserController);
+
+        laserController.set("onAnimation",  ResourceManager.getResource("textures/laser/laser-turn-on.png.anim").getResource());
+        laserController.set("offAnimation",  ResourceManager.getResource("textures/laser/laser-turn-off.png.anim").getResource());
+
+        entities.add(laserEntity);
+
+        Entity ventEntity = new Entity(new Vector2f(1, 0), new Vector2f(0.3f, 0.3f))
+                .addComponent(new AnimationComponent("textures/vent/vent.png.anim"));
+        entities.add(ventEntity);
+
 
         GroovyScriptComponent controller = new GroovyScriptComponent("groovy/controller.groovy");
 
-        Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.5f, 0.5f))
+        Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
                 .addComponent(controller)
                 .addComponent(new RigidBodyComponent(10))
                 .addComponent(new AnimationComponent("textures/engineer/engineer-run.png.anim"));

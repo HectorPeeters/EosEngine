@@ -13,7 +13,7 @@ public class AnimationComponent extends AbstractEntityComponent {
     private int currentFrame = 0;
 
     private boolean playOnce = false;
-    private boolean isPlaying = false;
+    private boolean isPlaying = true;
 
     private boolean flipped = false;
 
@@ -69,8 +69,22 @@ public class AnimationComponent extends AbstractEntityComponent {
         playOnce = once;
     }
 
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlayOnce(boolean playOnce) {
+        this.playOnce = playOnce;
+    }
+
+    public void pauze() {
+        isPlaying = false;
+    }
+
     public void stop() {
         isPlaying = false;
+        currentFrameTime = 0;
+        currentFrame = 0;
     }
 
     public void setFrame(int frame) {
