@@ -147,6 +147,7 @@ public class GraphicsSystem extends AbstractSystem {
 
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             animationShader.setMatrix3f("transformationMatrix", transformationMatrix);
+            animationShader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
 
             animationShader.setInt("framesWide", component.getFramesWide());
             animationShader.setInt("framesHigh", component.getFramesHigh());

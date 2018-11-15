@@ -1,4 +1,5 @@
 import com.hector.engine.graphics.Animation
+import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
 import com.hector.engine.maths.Vector2f
@@ -68,6 +69,8 @@ class Controller extends GroovyScript {
                 animation.setAnimation(idleAnimation)
             }
         }
+
+        Camera.main.getPosition().x = parent.position.x
 
         prevX = parent.position.x
     }
