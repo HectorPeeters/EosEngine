@@ -16,7 +16,6 @@
     <orderEntry type="library" name="glfw" level="project" />
     <orderEntry type="library" name="opengl" level="project" />
     <orderEntry type="library" name="groovy-2.4.15" level="application" />
-    <orderEntry type="library" name="stb" level="project" />
     <orderEntry type="library" name="org.l33tlabs.twl:pngdecoder:1.0" level="project" />
   </component>
 </module>

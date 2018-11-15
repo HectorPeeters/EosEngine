@@ -94,14 +94,6 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glCullFace(GL11.GL_BACK);
     }
 
-    private boolean pressed = false;
-
-    @Handler
-    private void onKeyEvent(KeyEvent event) {
-        if (event.keycode == GLFW.GLFW_KEY_SPACE)
-            pressed = event.pressed;
-    }
-
     @Override
     public void update(float delta) {
         for (AnimationComponent animation : animationComponents)
@@ -110,9 +102,6 @@ public class GraphicsSystem extends AbstractSystem {
 
     @Override
     public void render() {
-        if (pressed)
-            return;
-
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
