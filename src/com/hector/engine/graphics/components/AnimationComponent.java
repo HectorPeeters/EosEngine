@@ -17,6 +17,7 @@ public class AnimationComponent extends AbstractEntityComponent {
 
     private boolean flipped = false;
 
+
     private String animationPath;
 
     public AnimationComponent(String animation) {
