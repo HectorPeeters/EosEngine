@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config>
+    <Entry name="thread_amount" value="1"/>
+    <Entry name="max_queue_size" value="10000"/>
+</Config>

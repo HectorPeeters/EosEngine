@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Logging filter_level="0">
+    <Log channel="Engine" debugger="1" file="1"/>
+    <Log channel="System" debugger="1" file="1"/>
+    <Log channel="Event" debugger="1" file="0"/>
+    <Log channel="Process" debugger="1" file="1"/>
+    <Log channel="Lua" debugger="1" file="1"/>
+    <Log channel="Profiling" debugger="0" file="0"/>
+    <Log channel="Logger" debugger="1" file="0"/>
+    <Log channel="Graphics" debugger="1" file="1"/>
+    <Log channel="Resource" debugger="1" file="1"/>
+</Logging>
