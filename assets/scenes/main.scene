@@ -1,0 +1,8 @@
+name test
+entities [
+    test_entity [
+        position 0 0
+        rotation 0
+        scale 1 1
+    ]
+]

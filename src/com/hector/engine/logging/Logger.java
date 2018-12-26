@@ -71,7 +71,6 @@ public final class Logger {
             logChannels.put(tag, logChannel);
 
             if (file) {
-                //TODO: put "logs/" in config file
                 try {
                     fileWriters.put(tag, new BufferedWriter(new FileWriter(new File("logs/" + tag.toLowerCase() + ".log"))));
                 } catch (IOException e) {

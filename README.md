@@ -8,12 +8,32 @@ A fully custom game engine written in Java.
 - [x] Add update timer
 - [x] Add basic opengl
 - [x] Add process manager
+- [x] Add decent logging system
 - [ ] Add audio support
 - [ ] Optimize EventSystem
-- [x] Add decent logging system
 - [ ] Add physics
-- [ ] Add better serialization and file IO system
 - [ ] Add file watch
 - [ ] Then add auto reload
-- [ ] Resource dependency
 - [ ] FIX RESOURCE SYSTEM
+- [ ] Add better serialization and file IO system
+- [ ] Resource dependency
+- [ ] Add better config system
+- [ ] Gson for scene loading
+
+## Resources
+
+There are different kind of asset files: textures, animations, audio effects, shaders, scripts, ...
+To load an asset you would probably use
+
+```java
+ResourceSystem.<AssetType>getResource("path").
+```
+
+By using this technique the engine stays very modular so we can easily add new asset types if needed.
+
+### Resource Types
+
+- Animations: depends on a texture and an animation file
+- Textures:   only image data
+- Shaders:    only text
+- Scripts:    only text

@@ -8,5 +8,6 @@ out vec2 outTexCoord;
 void main() {
     gl_Position = vec4(position * 2, 0.0, 1.0);
 
-    outTexCoord = texCoord;
+    //TODO: maybe fix 1-texCoord.y?
+    outTexCoord = vec2(texCoord.x, 1 - texCoord.y);
 }

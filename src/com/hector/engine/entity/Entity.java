@@ -10,11 +10,9 @@ public class Entity {
 
     private static int ID_COUNTER = 0;
 
-    private final int id;
     public String name;
 
     private List<AbstractEntityComponent> components;
-
 
     //region Transform
     private Vector2f position = new Vector2f(0, 0);
@@ -42,8 +40,7 @@ public class Entity {
     }
 
     public Entity() {
-        this.id = ID_COUNTER++;
-        this.name = "Entity " + id;
+        this.name = "Entity " + ID_COUNTER++;
 
         this.components = new ArrayList<>();
     }
@@ -87,6 +84,14 @@ public class Entity {
 
     public Matrix3f getTransformationMatrix() {
         return new Matrix3f().initTransformation(position, scale, rotation);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Vector2f getPosition() {

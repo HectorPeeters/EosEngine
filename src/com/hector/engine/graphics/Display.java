@@ -7,11 +7,9 @@ import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
@@ -72,23 +70,23 @@ public class Display {
 
             GLFW.glfwGetWindowSize(window, pWidth, pHeight);
 
-            GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+            GLFWVidMode videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 
-            if (vidmode == null) {
-                Logger.err("Graphics", "Failed to get vidmode");
+            if (videoMode == null) {
+                Logger.err("Graphics", "Failed to get video mode");
                 return false;
             }
 
             GLFW.glfwSetWindowPos(
                     window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
+                    (videoMode.width() - pWidth.get(0)) / 2,
+                    (videoMode.height() - pHeight.get(0)) / 2
             );
         }
 
         GLFW.glfwMakeContextCurrent(window);
 
-        GLFW.glfwSwapInterval(1);
+        GLFW.glfwSwapInterval(0);
 
         GLFW.glfwShowWindow(window);
 

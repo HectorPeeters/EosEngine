@@ -76,6 +76,7 @@ public final class ResourceManager {
             add(".xml");
             add(".lua");
             add(".groovy");
+            add(".scene");
         }});
 
         availableResourceTypes.put(TextureResource.class, new ArrayList<String>(){{

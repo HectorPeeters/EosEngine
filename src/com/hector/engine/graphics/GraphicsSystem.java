@@ -5,14 +5,14 @@ import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.SpriteComponent;
-import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
+import com.hector.engine.maths.Vector4f;
 import com.hector.engine.systems.AbstractSystem;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class GraphicsSystem extends AbstractSystem {
 
     private FrameBuffer frameBuffer;
 
-    private Model quadModel;
+    private Mesh quadMesh;
 
     private List<SpriteComponent> spriteComponents = new ArrayList<>();
     private List<AnimationComponent> animationComponents = new ArrayList<>();
@@ -83,7 +83,7 @@ public class GraphicsSystem extends AbstractSystem {
         animationShader.setMatrix3f("orthographicMatrix", orthographic);
         animationShader.unbind();
 
-        quadModel = new Model(vertices, texCoords);
+        quadMesh = new Mesh(vertices, texCoords);
 
         if (isFrameBufferSupported())
             frameBuffer = new FrameBuffer(displayWidth, displayHeight);
@@ -108,36 +108,36 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
         //First pass
-//        frameBuffer.bind();
+        frameBuffer.bind();
 
         GL11.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-//        drawSprites();
+        drawSprites();
         drawAnimations();
 
-//        frameBuffer.unbind();
+        frameBuffer.unbind();
 
         //Second pass
-//        fboShader.bind();
-//
-//        quadModel.bind();
-//        quadModel.enableVertexAttribArrays();
-//
-//        GL30.glBindVertexArray(quadModel.getVaoId());
-//        GL20.glBindTexture(GL20.GL_TEXTURE_2D, frameBuffer.getTextureId());
-//        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadModel.getVertexCount());
-//        GL30.glBindVertexArray(0);
-//
-//        quadModel.disableVertexAttribArrays();
-//        quadModel.unbind();
-//
-//        fboShader.unbind();
+        fboShader.bind();
+
+        quadMesh.bind();
+        quadMesh.enableVertexAttribArrays();
+
+        GL30.glBindVertexArray(quadMesh.getVaoId());
+        GL20.glBindTexture(GL20.GL_TEXTURE_2D, frameBuffer.getTextureId());
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
+        GL30.glBindVertexArray(0);
+
+        quadMesh.disableVertexAttribArrays();
+        quadMesh.unbind();
+
+        fboShader.unbind();
     }
 
     private void drawAnimations() {
-        quadModel.bind();
-        quadModel.enableVertexAttribArrays();
+        quadMesh.bind();
+        quadMesh.enableVertexAttribArrays();
 
         animationShader.bind();
 
@@ -149,23 +149,26 @@ public class GraphicsSystem extends AbstractSystem {
             animationShader.setMatrix3f("transformationMatrix", transformationMatrix);
             animationShader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
 
-            animationShader.setInt("framesWide", component.getFramesWide());
-            animationShader.setInt("framesHigh", component.getFramesHigh());
-            animationShader.setInt("frameIndex", component.getFrameIndex());
-            animationShader.setInt("flipped", component.isFlipped() ? 1 : 0);
+            animationShader.setVector4f("animationData", new Vector4f(component.getFramesWide(),
+                    component.getFramesHigh(), component.getFrameIndex(), component.isFlipped() ? 1 : 0));
 
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadModel.getVertexCount());
+//            animationShader.setInt("framesWide", component.getFramesWide());
+//            animationShader.setInt("framesHigh", component.getFramesHigh());
+//            animationShader.setInt("frameIndex", component.getFrameIndex());
+//            animationShader.setInt("flipped", component.isFlipped() ? 1 : 0);
+
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }
 
         animationShader.unbind();
 
-        quadModel.disableVertexAttribArrays();
-        quadModel.unbind();
+        quadMesh.disableVertexAttribArrays();
+        quadMesh.unbind();
     }
 
     private void drawSprites() {
-        quadModel.bind();
-        quadModel.enableVertexAttribArrays();
+        quadMesh.bind();
+        quadMesh.enableVertexAttribArrays();
 
         shader.bind();
 
@@ -176,13 +179,13 @@ public class GraphicsSystem extends AbstractSystem {
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             shader.setMatrix3f("transformationMatrix", transformationMatrix);
 
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadModel.getVertexCount());
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }
 
         shader.unbind();
 
-        quadModel.disableVertexAttribArrays();
-        quadModel.unbind();
+        quadMesh.disableVertexAttribArrays();
+        quadMesh.unbind();
     }
 
     private boolean isFrameBufferSupported() {
@@ -217,7 +220,7 @@ public class GraphicsSystem extends AbstractSystem {
 
         frameBuffer.destroy();
 
-        quadModel.destroy();
+        quadMesh.destroy();
 
         display.destroy();
     }

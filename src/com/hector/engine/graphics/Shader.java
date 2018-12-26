@@ -3,6 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector2f;
+import com.hector.engine.maths.Vector4f;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import org.lwjgl.BufferUtils;
@@ -202,6 +203,12 @@ public class Shader {
         int location = getUniformLocation(name);
 
         GL20.glUniform2f(location, value.x, value.y);
+    }
+
+    public void setVector4f(String name, Vector4f value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniform4f(location, value.x, value.y, value.z, value.w);
     }
 
     public void setMatrix3f(String name, Matrix3f value) {

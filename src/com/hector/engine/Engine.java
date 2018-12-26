@@ -14,8 +14,8 @@ import com.hector.engine.physics.PhysicsSystem;
 import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
+import com.hector.engine.resource.resources.AnimationResource;
 import com.hector.engine.scripting.ScriptSystem;
-import com.hector.engine.scripting.components.GroovyScript;
 import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
@@ -45,8 +45,8 @@ public class Engine {
                 .addComponent(new AnimationComponent("textures/laser/laser-turn-on.png.anim"))
                 .addComponent(laserController);
 
-        laserController.set("onAnimation",  ResourceManager.getResource("textures/laser/laser-turn-on.png.anim").getResource());
-        laserController.set("offAnimation",  ResourceManager.getResource("textures/laser/laser-turn-off.png.anim").getResource());
+        laserController.set("onAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource());
+        laserController.set("offAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource());
 
         entities.add(laserEntity);
 
@@ -57,24 +57,17 @@ public class Engine {
 
         GroovyScriptComponent controller = new GroovyScriptComponent("groovy/controller.groovy");
 
-        Entity entity = new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
+        Entity playerEntity = new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
                 .addComponent(controller)
                 .addComponent(new RigidBodyComponent(10))
                 .addComponent(new AnimationComponent("textures/engineer/engineer-run.png.anim"));
 
-        controller.set("runAnimation", ResourceManager.getResource("textures/engineer/engineer-run.png.anim").getResource());
-        controller.set("idleAnimation", ResourceManager.getResource("textures/engineer/engineer-idle.png.anim").getResource());
-        controller.set("jumpAnimation", ResourceManager.getResource("textures/engineer/engineer-jump.png.anim").getResource());
+        controller.set("runAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-run.png.anim").getResource());
+        controller.set("idleAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-idle.png.anim").getResource());
+        controller.set("jumpAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-jump.png.anim").getResource());
 
 
-        entities.add(entity);
-
-//        for (int i = 0; i < 10; i++)
-//            entities.add(new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
-//                    .addComponent(new GroovyScriptComponent("groovy/test.groovy"))
-//                    .addComponent(new RigidBodyComponent(10))
-//                    .addComponent(new SpriteComponent("textures/engineer.png"))
-//            );
+        entities.add(playerEntity);
 
         EventSystem.publish(new AddEntityEvent(entities));
 

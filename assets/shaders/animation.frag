@@ -6,21 +6,19 @@ out vec4 outColor;
 
 uniform sampler2D sampler;
 
-uniform int framesWide;
-uniform int framesHigh;
-uniform int frameIndex;
-uniform int flipped;
+//framesWide, framesHigh, frameIndex, flipped
+uniform vec4 animationData;
 
 void main() {
-    float widthPerFrame = 1f / framesWide;
-    float heigthPerFrame = 1f / framesHigh;
+    float widthPerFrame = 1f / animationData.x;
+    float heigthPerFrame = 1f / animationData.y;
 
-    int xIndex = frameIndex % framesWide;
-    int yIndex = frameIndex / framesWide;
+    int xIndex = int(animationData.z) % int(animationData.x);
+    int yIndex = int(animationData.z) / int(animationData.x);
 
     float xCoord = outTexCoord.x;
 
-    if (flipped == 1) {
+    if (animationData.w == 1) {
         xCoord = 1 - outTexCoord.x;
     }
 

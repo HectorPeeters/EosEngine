@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL30;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model {
+public class Mesh {
 
     private int vaoId;
     private int vertexCount;
@@ -15,7 +15,7 @@ public class Model {
     private List<Integer> vboIds = new ArrayList<>();
     private List<Integer> attribArray = new ArrayList<>();
 
-    public Model(float[] vertices, float[] textureCoords) {
+    public Mesh(float[] vertices, float[] textureCoords) {
         this.vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoId);
 

@@ -9,7 +9,6 @@ public abstract class AbstractResource<T> {
 
     public AbstractResource(String path) {
         this.path = path;
-        this.resource = resource;
     }
 
     public abstract boolean load(AbstractResourceLoader resourceLoader);
