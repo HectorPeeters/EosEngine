@@ -45,11 +45,11 @@ public class FrameBuffer {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-
         GL32.glFramebufferTexture2D(GL30.GL_DRAW_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, textureId, 0);
 
-        System.out.println(GL11.glGetError());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
+        System.out.println("GL ERROR: " + GL11.glGetError());
     }
 
     private void attachDepthBuffer() {

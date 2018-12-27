@@ -12,7 +12,8 @@ echo
 echo Asset building complete!
 ls -sh Assets.zip
 
-mv Assets.zip ../out/artifacts/GameEngine_jar/
+cp Assets.zip ../out/artifacts/GameEngine_jar/
+mv Assets.zip ../
 
 end=`date +%s.%N`
 

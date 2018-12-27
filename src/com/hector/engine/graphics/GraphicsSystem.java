@@ -97,7 +97,7 @@ public class GraphicsSystem extends AbstractSystem {
     @Override
     public void update(float delta) {
         for (AnimationComponent animation : animationComponents)
-            animation.advanceAnimation(delta);
+            animation.update(delta);
     }
 
     @Override
@@ -146,6 +146,7 @@ public class GraphicsSystem extends AbstractSystem {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.getTextureId());
 
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
+
             animationShader.setMatrix3f("transformationMatrix", transformationMatrix);
             animationShader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
 

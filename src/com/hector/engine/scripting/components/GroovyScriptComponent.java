@@ -50,8 +50,8 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
         script.parent = parent;
         script.init();
 
-        for(Map.Entry<String, Object> entry : variables.entrySet()) {
-            for(Field f : script.getClass().getDeclaredFields()) {
+        for (Map.Entry<String, Object> entry : variables.entrySet()) {
+            for (Field f : script.getClass().getDeclaredFields()) {
                 if (f.getName().equals(entry.getKey())) {
                     try {
                         f.setAccessible(true);
@@ -70,7 +70,7 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
             return;
         }
 
-        for(Field f : script.getClass().getDeclaredFields()) {
+        for (Field f : script.getClass().getDeclaredFields()) {
             if (f.getName().equals(name)) {
                 try {
                     f.setAccessible(true);

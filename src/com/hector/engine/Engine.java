@@ -15,6 +15,7 @@ import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.AnimationResource;
+import com.hector.engine.scene.SceneSystem;
 import com.hector.engine.scripting.ScriptSystem;
 import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
@@ -37,39 +38,24 @@ public class Engine {
     public Engine() {
         init();
 
-        List<Entity> entities = new ArrayList<>();
+//        List<Entity> entities = new ArrayList<>();
+//
+//        GroovyScriptComponent laserController = new GroovyScriptComponent("groovy/laser.groovy");
+//
+//        Entity laserEntity = new Entity(new Vector2f(-1, 0), new Vector2f(0.3f, 1.2f))
+//                .addComponent(new AnimationComponent("textures/laser/laser-turn-on.png.anim"))
+//                .addComponent(laserController);
+//
+//        laserController.set("onAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource());
+//        laserController.set("offAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource());
+//
+//        entities.add(laserEntity);
+//
+//        Entity ventEntity = new Entity(new Vector2f(1, 0), new Vector2f(0.3f, 0.3f))
+//                .addComponent(new AnimationComponent("textures/vent/vent.png.anim"));
+//        entities.add(ventEntity);
 
-        GroovyScriptComponent laserController = new GroovyScriptComponent("groovy/laser.groovy");
-
-        Entity laserEntity = new Entity(new Vector2f(-1, 0), new Vector2f(0.3f, 1.2f))
-                .addComponent(new AnimationComponent("textures/laser/laser-turn-on.png.anim"))
-                .addComponent(laserController);
-
-        laserController.set("onAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource());
-        laserController.set("offAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource());
-
-        entities.add(laserEntity);
-
-        Entity ventEntity = new Entity(new Vector2f(1, 0), new Vector2f(0.3f, 0.3f))
-                .addComponent(new AnimationComponent("textures/vent/vent.png.anim"));
-        entities.add(ventEntity);
-
-
-        GroovyScriptComponent controller = new GroovyScriptComponent("groovy/controller.groovy");
-
-        Entity playerEntity = new Entity(new Vector2f(0, 0), new Vector2f(0.3f, 0.3f))
-                .addComponent(controller)
-                .addComponent(new RigidBodyComponent(10))
-                .addComponent(new AnimationComponent("textures/engineer/engineer-run.png.anim"));
-
-        controller.set("runAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-run.png.anim").getResource());
-        controller.set("idleAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-idle.png.anim").getResource());
-        controller.set("jumpAnimation", ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-jump.png.anim").getResource());
-
-
-        entities.add(playerEntity);
-
-        EventSystem.publish(new AddEntityEvent(entities));
+//        EventSystem.publish(new AddEntityEvent(entities));
 
         while (running) {
             while (timer.shouldUpdateFPS())
@@ -98,10 +84,11 @@ public class Engine {
         manager.addSystem(EntitySystem.class);
         manager.addSystem(ScriptSystem.class);
         manager.addSystem(PhysicsSystem.class);
+        manager.addSystem(SceneSystem.class);
         manager.initSystems();
 
         Logger.init();
-        Logger.info("Engine", "Starting engine");
+        Logger.info("Engine", "Started engine");
 
         EventSystem.subscribe(this);
 

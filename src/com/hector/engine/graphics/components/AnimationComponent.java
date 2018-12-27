@@ -9,7 +9,7 @@ public class AnimationComponent extends AbstractEntityComponent {
 
     private Animation animation;
 
-    private float currentFrameTime;
+    private float currentFrameTime = 0;
     private int currentFrame = 0;
 
     private boolean playOnce = false;
@@ -17,23 +17,23 @@ public class AnimationComponent extends AbstractEntityComponent {
 
     private boolean flipped = false;
 
+    private String path;
 
-    private String animationPath;
-
-    public AnimationComponent(String animation) {
-        this.animationPath = animation;
+    public AnimationComponent(String path) {
+        this.path = path;
     }
 
     @Override
     public void init() {
-        AnimationResource resource = ResourceManager.getResource(animationPath);
+        AnimationResource resource = ResourceManager.getResource(path);
         if (resource == null)
             return;
 
+        this.isPlaying = true;
         this.animation = resource.getResource();
     }
 
-    public void advanceAnimation(float delta) {
+    public void update(float delta) {
         if (!isPlaying)
             return;
 

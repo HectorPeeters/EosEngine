@@ -6,6 +6,8 @@ import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
+import com.hector.engine.scene.Scene;
+import com.hector.engine.scene.events.SceneLoadedEvent;
 import com.hector.engine.systems.AbstractSystem;
 
 import java.util.ArrayList;
@@ -17,6 +19,22 @@ public class EntitySystem extends AbstractSystem {
 
     public EntitySystem() {
         super("entity", 2000);
+    }
+
+    @Handler
+    private void onSceneLoadedEvent(SceneLoadedEvent event) {
+        entities.clear();
+
+        //TODO: fix this code duplication
+        for (Entity e : event.scene.getEntities()) {
+            entities.add(e);
+            e.init();
+
+            //TODO: fix obscure setParent()
+            for (AbstractEntityComponent component : e.getComponents()) {
+                EventSystem.publish(new AddEntityComponentEvent(e, component));
+            }
+        }
     }
 
     @Handler

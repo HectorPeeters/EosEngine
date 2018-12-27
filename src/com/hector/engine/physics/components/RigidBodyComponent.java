@@ -10,7 +10,13 @@ public class RigidBodyComponent extends AbstractEntityComponent {
 
     private float mass;
 
-    private boolean isStatic;
+    private boolean isStatic = false;
+
+    public RigidBodyComponent() {
+        this.mass = 1;
+        this.velocity = new Vector2f(0, 0);
+        this.acceleration = new Vector2f(0, 0);
+    }
 
     public RigidBodyComponent(float mass) {
         this.mass = mass;

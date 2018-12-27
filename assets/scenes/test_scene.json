@@ -1,0 +1,43 @@
+{
+  "name": "Test Scene",
+  "entities": [
+    {
+      "name": "Vent",
+      "position": {
+        "x": 1,
+        "y": 0
+      },
+      "scale": {
+        "x": 0.3,
+        "y": 0.3
+      },
+      "components": [
+        {
+          "type": "Animation",
+          "path": "textures/vent/vent.png.anim"
+        }
+      ]
+    },
+    {
+      "name": "Player",
+      "scale": {
+        "x": 0.3,
+        "y": 0.3
+      },
+      "components": [
+        {
+          "type": "Animation",
+          "path": "textures/engineer/engineer-run.png.anim"
+        },
+        {
+          "type": "Rigidbody",
+          "mass": 10
+        },
+        {
+          "type": "Script",
+          "path": "groovy/controller.groovy"
+        }
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ public class Entity {
 
     public String name;
 
-    private List<AbstractEntityComponent> components;
+    private List<AbstractEntityComponent> components = new ArrayList<>();
 
     //region Transform
     private Vector2f position = new Vector2f(0, 0);
@@ -46,8 +46,13 @@ public class Entity {
     }
 
     public void init() {
-        for(AbstractEntityComponent component : components)
+        for (AbstractEntityComponent component : components) {
+            if (component == null)
+                continue;
+
+            component.setParent(this);
             component.init();
+        }
     }
 
     public Entity addComponent(AbstractEntityComponent component) {

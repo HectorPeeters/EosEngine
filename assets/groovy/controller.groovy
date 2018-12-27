@@ -4,6 +4,8 @@ import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
 import com.hector.engine.maths.Vector2f
 import com.hector.engine.physics.components.RigidBodyComponent
+import com.hector.engine.resource.ResourceManager
+import com.hector.engine.resource.resources.AnimationResource
 import com.hector.engine.scripting.components.GroovyScript
 import org.lwjgl.glfw.GLFW
 
@@ -26,6 +28,9 @@ class Controller extends GroovyScript {
         rb = parent.getComponent(RigidBodyComponent.class)
         rb.acceleration = new Vector2f(0, -1f)
 
+        runAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-run.png.anim").getResource()
+        idleAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-idle.png.anim").getResource()
+        jumpAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-jump.png.anim").getResource()
     }
 
     private float prevX = 0
@@ -51,8 +56,6 @@ class Controller extends GroovyScript {
         if (running)
             animation.setFlipped(prevX - parent.position.x > 0)
 
-        animation.play(false)
-
         boolean inAir = Math.abs(rb.velocity.y) > 0.01f
         grounded = parent.getPosition().y <= -0.5f
 
@@ -68,6 +71,7 @@ class Controller extends GroovyScript {
             } else {
                 animation.setAnimation(idleAnimation)
             }
+            animation.play(false)
         }
 
         Camera.main.getPosition().x = parent.position.x
