@@ -34,6 +34,9 @@ public class GroovyScriptComponent extends AbstractScriptComponent {
         } else {
             TextResource resource = ResourceManager.getResource(path);
 
+            if (resource == null)
+                return;
+
             clazz = gcl.parseClass(resource.getResource());
 
             scriptCache.put(path, clazz);

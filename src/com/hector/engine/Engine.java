@@ -1,29 +1,19 @@
 package com.hector.engine;
 
-import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.EntitySystem;
-import com.hector.engine.entity.events.AddEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.GraphicsSystem;
-import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.input.InputSystem;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.physics.PhysicsSystem;
-import com.hector.engine.physics.components.RigidBodyComponent;
 import com.hector.engine.process.ProcessSystem;
 import com.hector.engine.resource.ResourceManager;
-import com.hector.engine.resource.resources.AnimationResource;
 import com.hector.engine.scene.SceneSystem;
 import com.hector.engine.scripting.ScriptSystem;
-import com.hector.engine.scripting.components.GroovyScriptComponent;
 import com.hector.engine.systems.SystemManager;
 import com.hector.engine.utils.UpdateTimer;
 import com.hector.engine.xml.XMLConfigFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Engine {
 
@@ -113,6 +103,10 @@ public class Engine {
         switch (event.state) {
             case STOP:
                 running = false;
+                break;
+            case PAUSE:
+                break;
+            case UNPAUSE:
                 break;
 
             default:

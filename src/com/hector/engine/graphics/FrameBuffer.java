@@ -15,7 +15,7 @@ public class FrameBuffer {
     private int textureId;
     private int renderBufferId;
 
-    public FrameBuffer(int width, int height) {
+    FrameBuffer(int width, int height) {
         this.width = width;
         this.height = height;
 
@@ -63,11 +63,11 @@ public class FrameBuffer {
                 renderBufferId);
     }
 
-    public void bind() {
+    void bind() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, id);
     }
 
-    public void unbind() {
+    void unbind() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
@@ -76,7 +76,7 @@ public class FrameBuffer {
         Logger.info("Graphics", "Destroyed framebuffer");
     }
 
-    public int getTextureId() {
+    int getTextureId() {
         return textureId;
     }
 }

@@ -18,7 +18,7 @@ A fully custom game engine written in Java.
 - [ ] Add better serialization and file IO system
 - [ ] Resource dependency
 - [ ] Add better config system
-- [ ] Gson for scene loading
+- [x] Gson for scene loading
 
 ## Resources
 
