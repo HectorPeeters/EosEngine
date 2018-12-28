@@ -2,6 +2,27 @@
   "name": "Test Scene",
   "entities": [
     {
+      "name": "Laser",
+      "position": {
+        "x": -1,
+        "y": 0
+      },
+      "scale": {
+        "x": 0.3,
+        "y": 1.2
+      },
+      "components": [
+        {
+          "type": "Animation",
+          "path": "textures/laser/laser-turn-on.png.anim"
+        },
+        {
+          "type": "Script",
+          "path": "groovy/laser.groovy"
+        }
+      ]
+    },
+    {
       "name": "Vent",
       "position": {
         "x": 1,

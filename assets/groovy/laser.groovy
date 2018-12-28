@@ -1,5 +1,7 @@
 import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.components.AnimationComponent
+import com.hector.engine.resource.ResourceManager
+import com.hector.engine.resource.resources.AnimationResource
 import com.hector.engine.scripting.components.GroovyScript
 
 class Laser extends GroovyScript {
@@ -13,6 +15,9 @@ class Laser extends GroovyScript {
     void init() {
         animation = parent.getComponent(AnimationComponent.class)
         animation.setPlayOnce(true)
+
+        onAnimation = ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource()
+        offAnimation = ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource()
     }
 
     boolean turningOn = true

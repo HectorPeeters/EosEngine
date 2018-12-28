@@ -28,25 +28,6 @@ public class Engine {
     public Engine() {
         init();
 
-//        List<Entity> entities = new ArrayList<>();
-//
-//        GroovyScriptComponent laserController = new GroovyScriptComponent("groovy/laser.groovy");
-//
-//        Entity laserEntity = new Entity(new Vector2f(-1, 0), new Vector2f(0.3f, 1.2f))
-//                .addComponent(new AnimationComponent("textures/laser/laser-turn-on.png.anim"))
-//                .addComponent(laserController);
-//
-//        laserController.set("onAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource());
-//        laserController.set("offAnimation", ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource());
-//
-//        entities.add(laserEntity);
-//
-//        Entity ventEntity = new Entity(new Vector2f(1, 0), new Vector2f(0.3f, 0.3f))
-//                .addComponent(new AnimationComponent("textures/vent/vent.png.anim"));
-//        entities.add(ventEntity);
-
-//        EventSystem.publish(new AddEntityEvent(entities));
-
         while (running) {
             while (timer.shouldUpdateFPS())
                 update((float) timer.getDelta());

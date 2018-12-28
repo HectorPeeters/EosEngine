@@ -9,6 +9,7 @@ A fully custom game engine written in Java.
 - [x] Add basic opengl
 - [x] Add process manager
 - [x] Add decent logging system
+- [x] Gson for scene loading
 - [ ] Add audio support
 - [ ] Optimize EventSystem
 - [ ] Add physics
@@ -18,7 +19,6 @@ A fully custom game engine written in Java.
 - [ ] Add better serialization and file IO system
 - [ ] Resource dependency
 - [ ] Add better config system
-- [x] Gson for scene loading
 
 ## Resources
 
