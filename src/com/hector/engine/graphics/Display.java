@@ -86,7 +86,7 @@ public class Display {
 
         GLFW.glfwMakeContextCurrent(window);
 
-        GLFW.glfwSwapInterval(0);
+        GLFW.glfwSwapInterval(1);
 
         GLFW.glfwShowWindow(window);
 

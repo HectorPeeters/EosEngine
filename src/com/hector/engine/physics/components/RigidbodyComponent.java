@@ -3,7 +3,7 @@ package com.hector.engine.physics.components;
 import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.maths.Vector2f;
 
-public class RigidBodyComponent extends AbstractEntityComponent {
+public class RigidbodyComponent extends AbstractEntityComponent {
 
     private Vector2f velocity;
     private Vector2f acceleration;
@@ -12,13 +12,13 @@ public class RigidBodyComponent extends AbstractEntityComponent {
 
     private boolean isStatic = false;
 
-    public RigidBodyComponent() {
+    public RigidbodyComponent() {
         this.mass = 1;
         this.velocity = new Vector2f(0, 0);
         this.acceleration = new Vector2f(0, 0);
     }
 
-    public RigidBodyComponent(float mass) {
+    public RigidbodyComponent(float mass) {
         this.mass = mass;
         this.velocity = new Vector2f(0, 0);
         this.acceleration = new Vector2f(0, 0);

@@ -17,7 +17,7 @@
           "path": "textures/laser/laser-turn-on.png.anim"
         },
         {
-          "type": "Script",
+          "type": "GroovyScript",
           "path": "groovy/laser.groovy"
         }
       ]
@@ -55,7 +55,7 @@
           "mass": 10
         },
         {
-          "type": "Script",
+          "type": "GroovyScript",
           "path": "groovy/controller.groovy"
         }
       ]

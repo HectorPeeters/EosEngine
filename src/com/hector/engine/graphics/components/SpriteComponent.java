@@ -28,4 +28,5 @@ public class SpriteComponent extends AbstractEntityComponent {
 
         textureId = resource.getResource().getId();
     }
+
 }

@@ -1,18 +1,18 @@
 import com.hector.engine.maths.Vector2f
-import com.hector.engine.physics.components.RigidBodyComponent
+import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.scripting.components.GroovyScript
 
 class Test extends GroovyScript {
 
     private Vector2f targetPos
 
-    private RigidBodyComponent rb
+    private RigidbodyComponent rb
 
     @Override
     void init() {
         parent.name = "Test Entity"
         parent.rotation = (float) (Math.random() * 360)
-        rb = parent.getComponent(RigidBodyComponent.class)
+        rb = parent.getComponent(RigidbodyComponent.class)
     }
 
     float timer

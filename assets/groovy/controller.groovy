@@ -3,7 +3,7 @@ import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
 import com.hector.engine.maths.Vector2f
-import com.hector.engine.physics.components.RigidBodyComponent
+import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource
 import com.hector.engine.scripting.components.GroovyScript
@@ -14,9 +14,11 @@ class Controller extends GroovyScript {
     private static final float speed = 0.4f
 
     private AnimationComponent animation
-    public RigidBodyComponent rb
+    public RigidbodyComponent rb
 
     private boolean grounded = false
+    private boolean inAir = false
+    private boolean running = false
 
     private Animation runAnimation
     private Animation idleAnimation
@@ -25,7 +27,7 @@ class Controller extends GroovyScript {
     @Override
     void init() {
         animation = parent.getComponent(AnimationComponent.class)
-        rb = parent.getComponent(RigidBodyComponent.class)
+        rb = parent.getComponent(RigidbodyComponent.class)
         rb.acceleration = new Vector2f(0, -1f)
 
         runAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-run.png.anim").getResource()
@@ -37,13 +39,23 @@ class Controller extends GroovyScript {
 
     @Override
     void update(float delta) {
+        updateMovement(delta)
+
+        updateAnimations()
+
+        Camera.main.getPosition().x = parent.position.x
+
+        prevX = parent.position.x
+    }
+
+    private void updateMovement(float delta) {
         if (parent.getPosition().y <= -0.5f) {
             rb.velocity.y = 0
             parent.getPosition().y = -0.5f
         }
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W) && grounded)
-            rb.velocity.y = 1f
+            rb.velocity.y = 1.5f
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_D))
             parent.getPosition().x += speed * delta
@@ -51,13 +63,14 @@ class Controller extends GroovyScript {
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_A))
             parent.getPosition().x -= speed * delta
 
-        boolean running = Math.abs(prevX - parent.position.x) >= 0.001f
+        running = Math.abs(prevX - parent.position.x) >= 0.001f
+        inAir = Math.abs(rb.velocity.y) > 0.01f
+        grounded = parent.getPosition().y <= -0.5f
+    }
 
+    private void updateAnimations() {
         if (running)
             animation.setFlipped(prevX - parent.position.x > 0)
-
-        boolean inAir = Math.abs(rb.velocity.y) > 0.01f
-        grounded = parent.getPosition().y <= -0.5f
 
         if (inAir) {
             boolean up = rb.velocity.y > 0.01f
@@ -74,9 +87,6 @@ class Controller extends GroovyScript {
             animation.play(false)
         }
 
-        Camera.main.getPosition().x = parent.position.x
-
-        prevX = parent.position.x
     }
 
 }

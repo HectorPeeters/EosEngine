@@ -7,13 +7,13 @@ import java.util.List;
 
 public class AddEntityEvent {
 
-    public final List<Entity> entity;
+    public final List<Entity> entities;
 
     public AddEntityEvent(Entity entity) {
-        this.entity = Collections.singletonList(entity);
+        this.entities = Collections.singletonList(entity);
     }
 
     public AddEntityEvent(List<Entity> entities) {
-        this.entity = entities;
+        this.entities = entities;
     }
 }

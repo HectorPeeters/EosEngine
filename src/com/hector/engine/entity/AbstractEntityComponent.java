@@ -8,7 +8,8 @@ public abstract class AbstractEntityComponent {
         return parent;
     }
 
-    public void init() {}
+    public void init() {
+    }
 
     void setParent(Entity parent) {
         this.parent = parent;

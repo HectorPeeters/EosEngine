@@ -6,7 +6,6 @@ import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
-import com.hector.engine.scene.Scene;
 import com.hector.engine.scene.events.SceneLoadedEvent;
 import com.hector.engine.systems.AbstractSystem;
 
@@ -18,36 +17,31 @@ public class EntitySystem extends AbstractSystem {
     private List<Entity> entities = new ArrayList<>();
 
     public EntitySystem() {
-        super("entity", 2000);
+        super("entities", 2000);
     }
 
     @Handler
     private void onSceneLoadedEvent(SceneLoadedEvent event) {
         entities.clear();
 
-        //TODO: fix this code duplication
-        for (Entity e : event.scene.getEntities()) {
-            entities.add(e);
-            e.init();
-
-            //TODO: fix obscure setParent()
-            for (AbstractEntityComponent component : e.getComponents()) {
-                EventSystem.publish(new AddEntityComponentEvent(e, component));
-            }
-        }
+        addEntities(event.scene.getEntities());
     }
 
     @Handler
     private void onEntityAddEvent(AddEntityEvent event) {
-        for(Entity e : event.entity) {
-            entities.add(e);
+        addEntities(event.entities);
+    }
 
-            e.init();
+    private void addEntities(List<Entity> entities) {
+        for (Entity e : entities) {
+            this.entities.add(e);
 
-            //TODO: batch this in one event
+            //TODO: Batch this in one event
             for (AbstractEntityComponent component : e.getComponents())
                 EventSystem.publish(new AddEntityComponentEvent(e, component));
         }
+
+        entities.forEach(Entity::init);
     }
 
     @Handler
