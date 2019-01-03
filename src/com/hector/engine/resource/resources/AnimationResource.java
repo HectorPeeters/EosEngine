@@ -30,14 +30,22 @@ public class AnimationResource extends AbstractResource<Animation> {
             for (String s : assetFile.split("\n")) {
                 String[] data = s.split("=");
 
-                if (data[0].equals("framesWide")) {
-                    framesWide = Integer.parseInt(data[1]);
-                } else if (data[0].equals("framesHigh")) {
-                    framesHigh = Integer.parseInt(data[1]);
-                } else if (data[0].equals("fps")) {
-                    fps = Float.parseFloat(data[1]);
-                } else {
-                    Logger.warn("Resource", "Corrupt line in " + path);
+                switch (data[0]) {
+                    case "framesWide":
+                        framesWide = Integer.parseInt(data[1]);
+                        break;
+
+                    case "framesHigh":
+                        framesHigh = Integer.parseInt(data[1]);
+                        break;
+
+                    case "fps":
+                        fps = Float.parseFloat(data[1]);
+                        break;
+
+                    default:
+                        Logger.warn("Resource", "Corrupt line in " + path);
+                        break;
                 }
             }
 

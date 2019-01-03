@@ -35,7 +35,7 @@
       "components": [
         {
           "type": "Animation",
-          "path": "textures/vent/vent.png.anim"
+          "path": "textures/console/console-active.png.anim"
         }
       ]
     },

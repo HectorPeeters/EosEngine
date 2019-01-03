@@ -24,7 +24,7 @@ class Test extends GroovyScript {
         if (targetPos == null)
             targetPos = new Vector2f((float) (Math.random() * 5f - 2.5f), (float) (Math.random() * 4f - 2f))
 
-        float scale = (float) (Math.sin(timer / 500f) / 3f)
+//        float scale = (float) (Math.sin(timer / 500f) / 3f)
 //        parent.scale = new Vector2f(scale, scale)
 
         Vector2f diff = targetPos.sub(parent.getPosition())

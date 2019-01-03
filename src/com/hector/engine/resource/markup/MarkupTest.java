@@ -31,16 +31,16 @@ public class MarkupTest {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(path)));
 
-            String file = "";
+            StringBuilder file = new StringBuilder();
             String line;
 
             while ((line = br.readLine()) != null) {
-                file += line + "\n";
+                file.append(line).append("\n");
             }
 
             br.close();
 
-            return file;
+            return file.toString();
 
         } catch (IOException e) {
             e.printStackTrace();

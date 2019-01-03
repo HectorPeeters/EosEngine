@@ -53,7 +53,7 @@ public class LogViewerWindow extends JFrame {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            final Pattern pattern = Pattern.compile("\\[(.*?)\\]");
+            final Pattern pattern = Pattern.compile("\\[(.*?)]");
 
             while ((line = br.readLine()) != null) {
                 String time = line.split(": ")[0];

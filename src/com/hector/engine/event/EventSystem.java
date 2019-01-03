@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventSystem extends AbstractSystem {
 
-    private static int MAX_EVENTS_PER_FRAME = 100;
+    private static final int MAX_EVENTS_PER_FRAME = 100;
 
     private static BlockingQueue<Object> eventQueue;
     private static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;

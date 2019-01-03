@@ -12,7 +12,7 @@ public class Entity {
 
     public String name;
 
-    private List<AbstractEntityComponent> components = new ArrayList<>();
+    private List<AbstractEntityComponent> components;
 
     //region Transform
     private Vector2f position = new Vector2f(0, 0);

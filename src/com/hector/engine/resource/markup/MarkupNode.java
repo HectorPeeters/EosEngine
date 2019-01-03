@@ -2,8 +2,6 @@ package com.hector.engine.resource.markup;
 
 import com.hector.engine.maths.Vector2f;
 
-import java.util.Map;
-
 public class MarkupNode {
 
     public String name;

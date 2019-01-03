@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL32;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Shader {
 
@@ -171,12 +172,12 @@ public class Shader {
         return getAttribute(name).location;
     }
 
-    public String[] getUniformNames() {
-        return uniforms.entrySet().toArray(new String[0]);
+    public Set<Map.Entry<String, Integer>> getUniformNames() {
+        return uniforms.entrySet();
     }
 
-    public String[] getAttributeNames() {
-        return attributes.entrySet().toArray(new String[0]);
+    public Set<Map.Entry<String, Attrib>> getAttributeNames() {
+        return attributes.entrySet();
     }
 
     public boolean hasUniform(String name) {
