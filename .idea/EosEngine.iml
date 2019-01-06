@@ -14,5 +14,6 @@
     <orderEntry type="library" name="org.l33tlabs.twl:pngdecoder:1.0" level="project" />
     <orderEntry type="library" name="org.reflections:reflections:0.9.10" level="project" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
+    <orderEntry type="library" name="openal" level="project" />
   </component>
 </module>

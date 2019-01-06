@@ -27,6 +27,9 @@ public class SystemManager {
     private void addSystemToArray(AbstractSystem system) {
         int priority = system.getInitPriority();
 
+        if (systems.contains(system))
+            return;
+
         for (int i = 0; i < systems.size(); i++) {
             if (systems.get(i).getInitPriority() < priority) continue;
 

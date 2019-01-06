@@ -9,6 +9,7 @@ import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector4f;
 import com.hector.engine.systems.AbstractSystem;
+import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -92,6 +93,8 @@ public class GraphicsSystem extends AbstractSystem {
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
+
+        System.out.println("LWJGL VERSION: " + Version.getVersion());
     }
 
     @Override

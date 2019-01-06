@@ -1,5 +1,6 @@
 package com.hector.engine;
 
+import com.hector.engine.audio.AudioSystem;
 import com.hector.engine.entity.EntitySystem;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
@@ -55,6 +56,7 @@ public class Engine {
         manager.addSystem(EntitySystem.class);
         manager.addSystem(ScriptSystem.class);
         manager.addSystem(PhysicsSystem.class);
+//        manager.addSystem(AudioSystem.class);
         manager.addSystem(SceneSystem.class);
         manager.initSystems();
 
