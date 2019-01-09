@@ -26,8 +26,8 @@ public class ComponentDeserializer implements JsonDeserializer<AbstractEntityCom
         //TODO: optimize this in some way because it takes more than 2 seconds
 //        Set<Class<? extends AbstractEntityComponent>> componentClassList = new Reflections().getSubTypesOf(AbstractEntityComponent.class);
 //
-//        for (Class<? extends AbstractEntityComponent> component : componentClassList) {
-//            componentClasses.put(component.getSimpleName(), component);
+//        for (Class<? extends AbstractEntityComponent> components : componentClassList) {
+//            componentClasses.put(components.getSimpleName(), components);
 //        }
 
         componentClasses.put(AnimationComponent.class.getSimpleName(), AnimationComponent.class);

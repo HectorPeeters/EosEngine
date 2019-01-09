@@ -9,6 +9,7 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.scene.events.SceneLoadedEvent;
 import com.hector.engine.systems.AbstractSystem;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +34,18 @@ public class EntitySystem extends AbstractSystem {
     }
 
     private void addEntities(List<Entity> entities) {
+        List<AbstractEntityComponent> components = new ArrayList<>();
+
         for (Entity e : entities) {
             this.entities.add(e);
 
-            //TODO: Batch this in one event
             for (AbstractEntityComponent component : e.getComponents())
-                EventSystem.publish(new AddEntityComponentEvent(e, component));
+                components.add(component);
         }
 
         entities.forEach(Entity::init);
+
+        EventSystem.publish(new AddEntityComponentEvent(components));
     }
 
     @Handler
@@ -49,7 +53,7 @@ public class EntitySystem extends AbstractSystem {
         entities.remove(event.entity);
 
         for (AbstractEntityComponent component : event.entity.getComponents())
-            EventSystem.publish(new RemoveEntityComponentEvent(event.entity, component));
+            EventSystem.publish(new RemoveEntityComponentEvent(component));
     }
 
     @Override

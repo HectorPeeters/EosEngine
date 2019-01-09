@@ -1,5 +1,6 @@
 package com.hector.engine.physics;
 
+import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
@@ -37,18 +38,18 @@ public class PhysicsSystem extends AbstractSystem {
 
     @Handler
     private void onRigidBodyComponentAdd(AddEntityComponentEvent event) {
-        if (!(event.component instanceof RigidbodyComponent))
-            return;
-
-        rigidBodyComponents.add((RigidbodyComponent) event.component);
+        for (AbstractEntityComponent comp : event.components) {
+            if (comp instanceof RigidbodyComponent)
+                rigidBodyComponents.add((RigidbodyComponent) comp);
+        }
     }
 
     @Handler
     private void onRigidBodyComponentRemoved(RemoveEntityComponentEvent event) {
-        if (!(event.component instanceof RigidbodyComponent))
-            return;
-
-        rigidBodyComponents.remove(event.component);
+        for (AbstractEntityComponent comp : event.components) {
+            if (comp instanceof RigidbodyComponent)
+                rigidBodyComponents.remove(comp);
+        }
     }
 
     @Override

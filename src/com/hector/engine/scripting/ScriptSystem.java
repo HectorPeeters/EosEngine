@@ -1,5 +1,6 @@
 package com.hector.engine.scripting;
 
+import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
@@ -25,18 +26,19 @@ public class ScriptSystem extends AbstractSystem {
 
     @Handler
     private void onScriptComponentAdded(AddEntityComponentEvent event) {
-        if (!(event.component instanceof AbstractScriptComponent))
-            return;
 
-        scriptComponents.add((AbstractScriptComponent) event.component);
+        for (AbstractEntityComponent comp : event.components) {
+            if (comp instanceof AbstractScriptComponent)
+                scriptComponents.add((AbstractScriptComponent) comp);
+        }
     }
 
     @Handler
     private void onScriptComponentRemoved(RemoveEntityComponentEvent event) {
-        if (!(event.component instanceof AbstractScriptComponent))
-            return;
-
-        scriptComponents.remove(event.component);
+        for (AbstractEntityComponent comp : event.components) {
+            if (comp instanceof AbstractScriptComponent)
+                scriptComponents.remove(comp);
+        }
     }
 
     @Override

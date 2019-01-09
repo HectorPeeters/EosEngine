@@ -15,9 +15,9 @@ class World extends GroovyScript {
         int height = width
         int[] tileData = new int[width * height]
 
-        int amount = 485
+        int amount = 8
 
-        String[] textures = new String[amount];
+        String[] textures = new String[amount]
 
         for (int i = 0; i < amount; i++) {
             textures[i] = "textures/tiles/tile_" + i.toString().padLeft(4, '0') + ".png"
@@ -35,7 +35,7 @@ class World extends GroovyScript {
 
 class TileMap {
 
-    private static final float TILE_SIZE = 0.1f
+    private static final float TILE_SIZE = 0.3f
 
     private Entity[] entities
     private String[] textures
