@@ -59,6 +59,15 @@
           "path": "groovy/controller.groovy"
         }
       ]
+    },
+    {
+      "name": "World",
+      "components": [
+        {
+          "type": "GroovyScript",
+          "path": "groovy/world.groovy"
+        }
+      ]
     }
   ]
 }

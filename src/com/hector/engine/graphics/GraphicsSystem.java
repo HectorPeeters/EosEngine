@@ -4,7 +4,7 @@ import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.components.AnimationComponent;
-import com.hector.engine.graphics.components.SpriteComponent;
+import com.hector.engine.graphics.components.TextureComponent;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector4f;
@@ -52,7 +52,9 @@ public class GraphicsSystem extends AbstractSystem {
 
     private Mesh quadMesh;
 
-    private List<SpriteComponent> spriteComponents = new ArrayList<>();
+    //TODO: make this more generic. AnimationComponent can extend TextureComponent -> one render function with
+    // instanceof check
+    private List<TextureComponent> textureComponents = new ArrayList<>();
     private List<AnimationComponent> animationComponents = new ArrayList<>();
 
     public GraphicsSystem() {
@@ -176,12 +178,15 @@ public class GraphicsSystem extends AbstractSystem {
 
         shader.bind();
 
-        for (SpriteComponent component : spriteComponents) {
+        for (TextureComponent component : textureComponents) {
             GL20.glActiveTexture(GL20.GL_TEXTURE0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.textureId);
 
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             shader.setMatrix3f("transformationMatrix", transformationMatrix);
+            shader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
+
+//            System.out.println(component.getParent().getName() + ": " + );
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }
@@ -203,16 +208,16 @@ public class GraphicsSystem extends AbstractSystem {
 
     @Handler
     private void onSpriteComponentAdded(AddEntityComponentEvent event) {
-        if (event.component instanceof SpriteComponent)
-            spriteComponents.add((SpriteComponent) event.component);
+        if (event.component instanceof TextureComponent)
+            textureComponents.add((TextureComponent) event.component);
         else if (event.component instanceof AnimationComponent)
             animationComponents.add((AnimationComponent) event.component);
     }
 
     @Handler
     private void onSpriteComponentRemoved(RemoveEntityComponentEvent event) {
-        if (event.component instanceof SpriteComponent)
-            spriteComponents.remove(event.component);
+        if (event.component instanceof TextureComponent)
+            textureComponents.remove(event.component);
         else if (event.component instanceof AnimationComponent)
             animationComponents.remove(event.component);
     }
