@@ -11,7 +11,7 @@ class World extends GroovyScript {
 
     @Override
     void init() {
-        int width = 30
+        int width = 100
         int height = width
         int[] tileData = new int[width * height]
 

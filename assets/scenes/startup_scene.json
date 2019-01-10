@@ -1,0 +1,14 @@
+{
+  "name": "Startup Scene",
+  "entities": [
+    {
+      "name": "Controller",
+      "components": [
+        {
+          "type": "GroovyScript",
+          "path": "groovy/intro_controller.groovy"
+        }
+      ]
+    }
+  ]
+}

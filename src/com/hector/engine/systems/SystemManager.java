@@ -1,7 +1,9 @@
 package com.hector.engine.systems;
 
 import com.hector.engine.event.EventSystem;
+import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
+import com.hector.engine.systems.events.ResetSystemsEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,10 @@ import java.util.List;
 public class SystemManager {
 
     public List<AbstractSystem> systems = new ArrayList<>();
+
+    public void subscribe() {
+        EventSystem.subscribe(this);
+    }
 
     public void addSystem(Class<? extends AbstractSystem> systemClass) {
         AbstractSystem system;
@@ -77,9 +83,23 @@ public class SystemManager {
         Logger.info("System", "Initialized " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
     }
 
+    @Handler
+    private void onResetSystemsReceived(ResetSystemsEvent event) {
+        resetSystems();
+    }
+
+    public void resetSystems() {
+        for (int i = systems.size() - 1; i >= 0; i--)
+            systems.get(i).reset();
+
+        Logger.info("System", "Reset " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
+
+        systems.clear();
+    }
+
     public void destroySystems() {
         for (int i = systems.size() - 1; i >= 0; i--)
-            systems.get(i).destroyModule();
+            systems.get(i).destroy();
 
         Logger.info("System", "Destroyed " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
 

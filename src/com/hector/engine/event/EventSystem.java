@@ -62,6 +62,11 @@ public class EventSystem extends AbstractSystem {
     }
 
     @Override
+    protected void reset() {
+
+    }
+
+    @Override
     public void destroy() {
 
     }

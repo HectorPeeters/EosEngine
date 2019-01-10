@@ -23,6 +23,11 @@ public class ProcessSystem extends AbstractSystem {
     }
 
     @Override
+    protected void reset() {
+        processList.clear();
+    }
+
+    @Override
     public void update(float delta) {
         updateProcesses(delta);
     }

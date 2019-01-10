@@ -229,6 +229,12 @@ public class GraphicsSystem extends AbstractSystem {
     }
 
     @Override
+    protected void reset() {
+        textureComponents.clear();
+        animationComponents.clear();
+    }
+
+    @Override
     protected void destroy() {
         shader.destroy();
         fboShader.destroy();

@@ -47,6 +47,11 @@ public class ScriptSystem extends AbstractSystem {
     }
 
     @Override
+    protected void reset() {
+        scriptComponents.clear();
+    }
+
+    @Override
     protected void destroy() {
 
     }

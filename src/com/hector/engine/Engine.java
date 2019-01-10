@@ -58,6 +58,8 @@ public class Engine {
 //        manager.addSystem(AudioSystem.class);
         manager.addSystem(SceneSystem.class);
         manager.initSystems();
+        //TODO: fix this strange thing
+        manager.subscribe();
 
         Logger.init();
         Logger.info("Engine", "Started engine");

@@ -53,6 +53,11 @@ public class PhysicsSystem extends AbstractSystem {
     }
 
     @Override
+    protected void reset() {
+        rigidBodyComponents.clear();
+    }
+
+    @Override
     protected void destroy() {
         rigidBodyComponents.clear();
     }

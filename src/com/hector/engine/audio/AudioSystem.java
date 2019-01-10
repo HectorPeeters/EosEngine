@@ -23,6 +23,10 @@ public class AudioSystem extends AbstractSystem {
 
         ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
         ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
+    }
+
+    @Override
+    protected void reset() {
 
     }
 
