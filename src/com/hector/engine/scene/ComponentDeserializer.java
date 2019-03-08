@@ -1,6 +1,8 @@
 package com.hector.engine.scene;
 
 import com.google.gson.*;
+import com.hector.engine.audio.components.AudioListenerComponent;
+import com.hector.engine.audio.components.AudioSourceComponent;
 import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
@@ -34,6 +36,8 @@ public class ComponentDeserializer implements JsonDeserializer<AbstractEntityCom
         componentClasses.put(TextureComponent.class.getSimpleName(), TextureComponent.class);
         componentClasses.put(RigidbodyComponent.class.getSimpleName(), RigidbodyComponent.class);
         componentClasses.put(GroovyScriptComponent.class.getSimpleName(), GroovyScriptComponent.class);
+        componentClasses.put(AudioSourceComponent.class.getSimpleName(), AudioSourceComponent.class);
+        componentClasses.put(AudioListenerComponent.class.getSimpleName(), AudioListenerComponent.class);
 
         Logger.debug("Scene", "Registered " + componentClasses.size() + " components");
     }

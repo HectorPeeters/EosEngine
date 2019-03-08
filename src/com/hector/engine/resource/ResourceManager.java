@@ -1,10 +1,7 @@
 package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
-import com.hector.engine.resource.resources.AbstractResource;
-import com.hector.engine.resource.resources.AnimationResource;
-import com.hector.engine.resource.resources.TextResource;
-import com.hector.engine.resource.resources.TextureResource;
+import com.hector.engine.resource.resources.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -85,6 +82,10 @@ public final class ResourceManager {
 
         availableResourceTypes.put(AnimationResource.class, new ArrayList<String>(){{
             add(".anim");
+        }});
+
+        availableResourceTypes.put(AudioResource.class, new ArrayList<String>() {{
+            add(".wav");
         }});
 
         Logger.info("Resource", "Initialized resource system with " + resourceLoader.getClass().getSimpleName());

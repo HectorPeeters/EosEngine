@@ -11,11 +11,11 @@ class World extends GroovyScript {
 
     @Override
     void init() {
-        int width = 10
+        int width = 20
         int height = width
         int[] tileData = new int[width * height]
 
-        int amount = 8
+        int amount = 485
 
         String[] textures = new String[amount]
 
@@ -58,6 +58,7 @@ class TileMap {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Vector2f position = new Vector2f((float) (x * TILE_SIZE), (float) (y * TILE_SIZE))
+
                 Entity e = new Entity(position, new Vector2f(TILE_SIZE, TILE_SIZE), 0f)
                 e.addComponent(new TextureComponent(textures[tileData[x + y * width]]))
                 entityList.add(e)

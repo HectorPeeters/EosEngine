@@ -1,4 +1,6 @@
 package com.hector.engine.audio.components;
 
-public class AudioListenerComponent {
+import com.hector.engine.entity.AbstractEntityComponent;
+
+public class AudioListenerComponent extends AbstractEntityComponent {
 }

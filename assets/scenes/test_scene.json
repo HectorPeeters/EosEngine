@@ -25,7 +25,7 @@
     {
       "name": "Vent",
       "position": {
-        "x": 1,
+        "x": -1.5,
         "y": 0
       },
       "scale": {
@@ -36,6 +36,13 @@
         {
           "type": "Animation",
           "path": "textures/console/console-active.png.anim"
+        },
+        {
+          "type": "AudioSource",
+          "path":  "audio/africa-toto.wav",
+          "pitch": 1,
+          "gain": 1,
+          "looping": true
         }
       ]
     },
@@ -57,6 +64,9 @@
         {
           "type": "GroovyScript",
           "path": "groovy/controller.groovy"
+        },
+        {
+          "type": "AudioListener"
         }
       ]
     },
