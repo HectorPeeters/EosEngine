@@ -9,7 +9,7 @@ class IntroController extends GroovyScript {
 
     @Override
     void update(float delta) {
-        enterScene("test_scene.json")
+//        enterScene("test_scene.json")
     }
 
 }

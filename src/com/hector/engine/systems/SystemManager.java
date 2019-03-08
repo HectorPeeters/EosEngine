@@ -5,12 +5,12 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.systems.events.ResetSystemsEvent;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SystemManager {
 
-    public List<AbstractSystem> systems = new ArrayList<>();
+    public List<AbstractSystem> systems = new CopyOnWriteArrayList<>();
 
     public void subscribe() {
         EventSystem.subscribe(this);

@@ -10,9 +10,7 @@ import java.util.Map;
 
 public final class Logger {
 
-    private static final String ROLLBAR_ACCES_TOKEN = "4effe922b8cc48b7833494c6b20bc333";
-
-    private static int logLevelFilter = 0;
+    private static LogType logLevelFilter = LogType.DEBUG;
 
     private Logger() {
     }
@@ -104,7 +102,7 @@ public final class Logger {
     }
 
     private static void log(String channelTag, LogType logType, Object message) {
-        if (logType.logLevel < logLevelFilter)
+        if (logType.logLevel < logLevelFilter.logLevel)
             return;
 
         String fullMessage = "[" + logType.name().charAt(0) + "] [" + channelTag + "] " + message;

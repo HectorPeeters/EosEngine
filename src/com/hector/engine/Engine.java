@@ -58,7 +58,7 @@ public class Engine {
 //        manager.addSystem(AudioSystem.class);
         manager.addSystem(SceneSystem.class);
         manager.initSystems();
-        //TODO: fix this strange thing
+        //TODO: fix this strange thing1
         manager.subscribe();
 
         Logger.init();

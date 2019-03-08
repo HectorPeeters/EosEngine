@@ -98,7 +98,7 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
 
-        System.out.println("LWJGL VERSION: " + Version.getVersion());
+        Logger.info("Graphics", "LWJGL Version: " + Version.getVersion());
     }
 
     @Override
@@ -160,10 +160,10 @@ public class GraphicsSystem extends AbstractSystem {
             animationShader.setVector4f("animationData", new Vector4f(component.getFramesWide(),
                     component.getFramesHigh(), component.getFrameIndex(), component.isFlipped() ? 1 : 0));
 
-//            animationShader.setInt("framesWide", components.getFramesWide());
-//            animationShader.setInt("framesHigh", components.getFramesHigh());
-//            animationShader.setInt("frameIndex", components.getFrameIndex());
-//            animationShader.setInt("flipped", components.isFlipped() ? 1 : 0);
+            animationShader.setInt("framesWide", component.getFramesWide());
+            animationShader.setInt("framesHigh", component.getFramesHigh());
+            animationShader.setInt("frameIndex", component.getFrameIndex());
+            animationShader.setInt("flipped", component.isFlipped() ? 1 : 0);
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }
@@ -187,8 +187,6 @@ public class GraphicsSystem extends AbstractSystem {
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
             shader.setMatrix3f("transformationMatrix", transformationMatrix);
             shader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
-
-//            System.out.println(components.getParent().getName() + ": " + );
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }

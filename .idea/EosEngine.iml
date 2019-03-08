@@ -15,5 +15,6 @@
     <orderEntry type="library" name="org.reflections:reflections:0.9.10" level="project" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="openal" level="project" />
+    <orderEntry type="library" name="groovy-2.4.15" level="application" />
   </component>
 </module>

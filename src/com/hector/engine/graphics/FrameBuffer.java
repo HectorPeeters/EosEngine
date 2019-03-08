@@ -49,7 +49,7 @@ public class FrameBuffer {
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
-        System.out.println("GL ERROR: " + GL11.glGetError());
+//        System.out.println("GL ERROR: " + GL11.glGetError());
     }
 
     private void attachDepthBuffer() {

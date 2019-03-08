@@ -4,14 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import com.hector.engine.scene.events.SceneLoadedEvent;
-import com.hector.engine.scene.events.SceneRequestEvent;
 import com.hector.engine.systems.AbstractSystem;
-import com.hector.engine.systems.events.ResetSystemsEvent;
 
 public class SceneSystem extends AbstractSystem {
 
@@ -56,14 +53,6 @@ public class SceneSystem extends AbstractSystem {
         Logger.info("Scene", "Loaded scene: " + scene.getName());
 
         return scene;
-    }
-
-    //TODO: fix minor code duplication
-    @Handler
-    private void onSceneRequestReceived(SceneRequestEvent event) {
-        Scene scene = loadScene("scenes/" + event.sceneName);
-        EventSystem.publish(new ResetSystemsEvent());
-        EventSystem.publish(new SceneLoadedEvent(scene));
     }
 
     @Override

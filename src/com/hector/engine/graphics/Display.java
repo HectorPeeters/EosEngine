@@ -23,8 +23,6 @@ public class Display {
     private int width, height;
 
     public boolean create(int width, int height) {
-        long startTime = System.currentTimeMillis();
-
         this.width = width;
         this.height = height;
 
@@ -35,7 +33,7 @@ public class Display {
 
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
 //        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
 
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
@@ -86,7 +84,7 @@ public class Display {
 
         GLFW.glfwMakeContextCurrent(window);
 
-        GLFW.glfwSwapInterval(0);
+        GLFW.glfwSwapInterval(1);
 
         GLFW.glfwShowWindow(window);
 
@@ -95,7 +93,6 @@ public class Display {
         GL11.glViewport(0, 0, width, height);
 
         GL11.glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
-
 
         return true;
     }
