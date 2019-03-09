@@ -54,10 +54,7 @@ public class GraphicsSystem extends AbstractSystem {
 
     private Mesh quadMesh;
 
-    //TODO: make this more generic. AnimationComponent can extend TextureComponent -> one render function with
-    // instanceof check
-    private List<TextureComponent> textureComponents = new ArrayList<>();
-    private List<AnimationComponent> animationComponents = new ArrayList<>();
+    private List<AbstractEntityComponent> textureComponents = new ArrayList<>();
 
     public GraphicsSystem() {
         super("graphics", 1500);
@@ -103,8 +100,10 @@ public class GraphicsSystem extends AbstractSystem {
 
     @Override
     public void update(float delta) {
-        for (AnimationComponent animation : animationComponents)
-            animation.update(delta);
+        for (AbstractEntityComponent comp : textureComponents) {
+            if (comp instanceof AnimationComponent)
+                ((AnimationComponent) comp).update(delta);
+        }
     }
 
     @Override
@@ -121,7 +120,6 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         drawSprites();
-        drawAnimations();
 
         frameBuffer.unbind();
 
@@ -142,56 +140,35 @@ public class GraphicsSystem extends AbstractSystem {
         fboShader.unbind();
     }
 
-    private void drawAnimations() {
+    private void drawSprites() {
         quadMesh.bind();
         quadMesh.enableVertexAttribArrays();
 
         animationShader.bind();
 
-        for (AnimationComponent component : animationComponents) {
+        for (AbstractEntityComponent component : textureComponents) {
             GL20.glActiveTexture(GL20.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.getTextureId());
 
             Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
 
             animationShader.setMatrix3f("transformationMatrix", transformationMatrix);
             animationShader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
 
-            animationShader.setVector4f("animationData", new Vector4f(component.getFramesWide(),
-                    component.getFramesHigh(), component.getFrameIndex(), component.isFlipped() ? 1 : 0));
+            if (component instanceof AnimationComponent) {
+                AnimationComponent comp = (AnimationComponent) component;
 
-            animationShader.setInt("framesWide", component.getFramesWide());
-            animationShader.setInt("framesHigh", component.getFramesHigh());
-            animationShader.setInt("frameIndex", component.getFrameIndex());
-            animationShader.setInt("flipped", component.isFlipped() ? 1 : 0);
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, comp.getTextureId());
+                animationShader.setVector4f("animationData", new Vector4f(comp.getFramesWide(),
+                        comp.getFramesHigh(), comp.getFrameIndex(), comp.isFlipped() ? 1 : 0));
+            } else if (component instanceof TextureComponent){
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((TextureComponent) component).textureId);
+                animationShader.setVector4f("animationData", new Vector4f(1, 1, 0, 0));
+            }
 
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
         }
 
         animationShader.unbind();
-
-        quadMesh.disableVertexAttribArrays();
-        quadMesh.unbind();
-    }
-
-    private void drawSprites() {
-        quadMesh.bind();
-        quadMesh.enableVertexAttribArrays();
-
-        shader.bind();
-
-        for (TextureComponent component : textureComponents) {
-            GL20.glActiveTexture(GL20.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, component.textureId);
-
-            Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
-            shader.setMatrix3f("transformationMatrix", transformationMatrix);
-            shader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
-
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quadMesh.getVertexCount());
-        }
-
-        shader.unbind();
 
         quadMesh.disableVertexAttribArrays();
         quadMesh.unbind();
@@ -209,33 +186,29 @@ public class GraphicsSystem extends AbstractSystem {
     @Handler
     private void onSpriteComponentAdded(AddEntityComponentEvent event) {
         for (AbstractEntityComponent comp : event.components) {
-            if (comp instanceof TextureComponent)
-                textureComponents.add((TextureComponent) comp);
-            else if (comp instanceof AnimationComponent)
-                animationComponents.add((AnimationComponent) comp);
+            if (comp instanceof TextureComponent || comp instanceof AnimationComponent)
+                textureComponents.add(comp);
         }
     }
 
     @Handler
     private void onSpriteComponentRemoved(RemoveEntityComponentEvent event) {
         for (AbstractEntityComponent comp : event.components) {
-            if (comp instanceof TextureComponent)
+            if (comp instanceof TextureComponent || comp instanceof AnimationComponent)
                 textureComponents.remove(comp);
-            else if (comp instanceof AnimationComponent)
-                animationComponents.remove(comp);
         }
     }
 
     @Override
     protected void reset() {
         textureComponents.clear();
-        animationComponents.clear();
     }
 
     @Override
     protected void destroy() {
         shader.destroy();
         fboShader.destroy();
+        animationShader.destroy();
 
         frameBuffer.destroy();
 

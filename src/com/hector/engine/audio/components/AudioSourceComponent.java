@@ -8,5 +8,6 @@ public class AudioSourceComponent extends AbstractEntityComponent {
     public float pitch = 1;
     public float gain = 1;
     public boolean looping = false;
+    public boolean global = false;
 
 }

@@ -3,6 +3,7 @@ package com.hector.engine.audio;
 import com.hector.engine.audio.components.AudioListenerComponent;
 import com.hector.engine.audio.components.AudioSourceComponent;
 import com.hector.engine.entity.AbstractEntityComponent;
+import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
@@ -13,15 +14,17 @@ import com.hector.engine.resource.resources.AudioResource;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.openal.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AudioSystem extends AbstractSystem {
 
     private long device;
     private long context;
 
-    private AudioListenerComponent audioListenerComponent;
-    private Map<AudioSourceComponent, Integer> sourceComponents = new HashMap<>();
+    private AudioListenerInstance audioListener;
+
+    private List<AudioSourceInstance> sourceComponents = new ArrayList<>();
 
     private List<Integer> audioBuffers = new ArrayList<>();
     private List<Integer> audioSources = new ArrayList<>();
@@ -90,53 +93,63 @@ public class AudioSystem extends AbstractSystem {
         if (error != AL10.AL_NO_ERROR)
             Logger.err("Audio", "OpenAL error: " + error);
 
-        for (AudioSourceComponent comp : sourceComponents.keySet()) {
-            int sourceId = sourceComponents.get(comp);
-
-            if (sourceId == -1) {
-                AudioResource resource = ResourceManager.<AudioResource>getResource(comp.path);
+        for (AudioSourceInstance inst : sourceComponents) {
+            if (inst.id == -1) {
+                AudioResource resource = ResourceManager.getResource(inst.sourceComponent.path);
                 int buffer = generateBuffer(resource.getResource());
 
-                sourceId = generateSource(comp.getParent().getPosition(), new Vector2f(0, 0), comp.pitch, comp.gain, comp.looping);
+                inst.id = generateSource(inst.entity.getPosition(), new Vector2f(0, 0), inst.sourceComponent.pitch, inst.sourceComponent.gain, inst.sourceComponent.looping);
 
-                sourceComponents.put(comp, sourceId);
 
-                AL10.alSourcei(sourceId, AL10.AL_BUFFER, buffer);
-                AL10.alSourcePlay(sourceId);
+                AL10.alSourcei(inst.id, AL10.AL_BUFFER, buffer);
+                AL10.alSourcePlay(inst.id);
             }
 
-            if (comp.getParent().hasComponent(RigidbodyComponent.class)) {
-                //TODO: Maybe cache this component
-                RigidbodyComponent rb = comp.getParent().getComponent(RigidbodyComponent.class);
-
-                AL10.alSource3f(sourceId, AL10.AL_POSITION, rb.getPosition().x, rb.getPosition().y, 0);
-                AL10.alSource3f(sourceId, AL10.AL_VELOCITY, rb.getVelocity().x, rb.getVelocity().y, 0);
-            }
+            AL10.alSource3f(inst.id, AL10.AL_POSITION, inst.entity.getPosition().x, inst.entity.getPosition().y, 0);
+            if (inst.rb != null)
+                AL10.alSource3f(inst.id, AL10.AL_VELOCITY, inst.rb.getVelocity().x, inst.rb.getVelocity().y, 0);
         }
 
-        Vector2f listenerPosition = audioListenerComponent.getParent().getPosition();
-        AL10.alListener3f(AL10.AL_POSITION, listenerPosition.x, listenerPosition.y, 0);
+        AL10.alListener3f(AL10.AL_POSITION, audioListener.entity.getPosition().x, audioListener.entity.getPosition().y, 0);
 
-        if (audioListenerComponent.getParent().hasComponent(RigidbodyComponent.class)) {
-            Vector2f listenerVelocity = ((RigidbodyComponent)audioListenerComponent.getParent().getComponent(RigidbodyComponent.class)).getVelocity();
-            AL10.alListener3f(AL10.AL_VELOCITY, listenerVelocity.x, listenerVelocity.y, 0);
-        }
+        if (audioListener.rb != null)
+            AL10.alListener3f(AL10.AL_VELOCITY, audioListener.rb.getVelocity().x, audioListener.rb.getVelocity().y, 0);
 
-        AL10.alListenerf(AL10.AL_GAIN, audioListenerComponent.gain);
+        AL10.alListenerf(AL10.AL_GAIN, audioListener.listenerComponent.gain);
     }
 
     @Handler
     private void handleAddComponentEvent(AddEntityComponentEvent event) {
         for (AbstractEntityComponent component : event.components) {
             if (component instanceof AudioListenerComponent) {
-                if (audioListenerComponent != null)
+                if (audioListener != null)
                     Logger.warn("Audio", "Audio listener already set");
 
                 Logger.debug("Audio", "Set audio listener for scene");
-                audioListenerComponent = (AudioListenerComponent) component;
+
+                audioListener = new AudioListenerInstance();
+                audioListener.entity = component.getParent();
+
+                if (component.getParent().hasComponent(RigidbodyComponent.class)) {
+                    audioListener.rb = component.getParent().getComponent(RigidbodyComponent.class);
+                }
+
+                audioListener.listenerComponent = (AudioListenerComponent) component;
             } else if (component instanceof AudioSourceComponent) {
+
                 AudioSourceComponent sourceComponent = (AudioSourceComponent) component;
-                sourceComponents.put(sourceComponent, -1);
+
+                AudioSourceInstance inst = new AudioSourceInstance();
+                inst.entity = sourceComponent.getParent();
+
+                if (sourceComponent.getParent().hasComponent(RigidbodyComponent.class)) {
+                    inst.rb = sourceComponent.getParent().getComponent(RigidbodyComponent.class);
+                }
+
+                inst.sourceComponent = sourceComponent;
+                inst.id = -1;
+
+                sourceComponents.add(inst);
             }
         }
     }
@@ -156,5 +169,18 @@ public class AudioSystem extends AbstractSystem {
 
         for (int source : audioSources)
             AL10.alDeleteSources(source);
+    }
+
+    private static class AudioSourceInstance {
+        int id;
+        Entity entity;
+        RigidbodyComponent rb;
+        AudioSourceComponent sourceComponent;
+    }
+
+    private static class AudioListenerInstance {
+        Entity entity;
+        RigidbodyComponent rb;
+        AudioListenerComponent listenerComponent;
     }
 }
