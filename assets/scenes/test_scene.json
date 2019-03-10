@@ -42,8 +42,7 @@
           "path":  "audio/africa-toto.wav",
           "pitch": 1,
           "gain": 1,
-          "looping": true,
-          "global": true
+          "looping": true
         }
       ]
     },

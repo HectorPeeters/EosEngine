@@ -105,9 +105,14 @@ public class AudioSystem extends AbstractSystem {
                 AL10.alSourcePlay(inst.id);
             }
 
-            AL10.alSource3f(inst.id, AL10.AL_POSITION, inst.entity.getPosition().x, inst.entity.getPosition().y, 0);
-            if (inst.rb != null)
-                AL10.alSource3f(inst.id, AL10.AL_VELOCITY, inst.rb.getVelocity().x, inst.rb.getVelocity().y, 0);
+            if (inst.sourceComponent.global) {
+                AL10.alSource3f(inst.id, AL10.AL_POSITION, audioListener.entity.getPosition().x, audioListener.entity.getPosition().y, 0);
+                AL10.alSource3f(inst.id, AL10.AL_VELOCITY, 0, 0, 0);
+            } else {
+                AL10.alSource3f(inst.id, AL10.AL_POSITION, inst.entity.getPosition().x, inst.entity.getPosition().y, 0);
+                if (inst.rb != null)
+                    AL10.alSource3f(inst.id, AL10.AL_VELOCITY, inst.rb.getVelocity().x, inst.rb.getVelocity().y, 0);
+            }
         }
 
         AL10.alListener3f(AL10.AL_POSITION, audioListener.entity.getPosition().x, audioListener.entity.getPosition().y, 0);

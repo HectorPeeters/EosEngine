@@ -25,7 +25,7 @@ public class ComponentDeserializer implements JsonDeserializer<AbstractEntityCom
         componentClasses = new HashMap<>();
 
         //TODO: use reflections but fast
-        //TODO: optimize this in some way because it takes more than 2 seconds
+        //      optimize this in some way because it takes more than 2 seconds
 //        Set<Class<? extends AbstractEntityComponent>> componentClassList = new Reflections().getSubTypesOf(AbstractEntityComponent.class);
 //
 //        for (Class<? extends AbstractEntityComponent> components : componentClassList) {
