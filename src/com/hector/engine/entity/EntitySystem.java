@@ -62,11 +62,6 @@ public class EntitySystem extends AbstractSystem {
     }
 
     @Override
-    protected void reset() {
-        entities.clear();
-    }
-
-    @Override
     protected void destroy() {
 
     }

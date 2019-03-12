@@ -1,6 +1,6 @@
 package com.hector.engine.resource.resources;
 
-import com.hector.engine.audio.WaveData;
+import com.hector.engine.audio.AudioBuffer;
 import com.hector.engine.resource.AbstractResourceLoader;
 
 import javax.sound.sampled.AudioInputStream;
@@ -10,7 +10,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AudioResource extends AbstractResource<WaveData> {
+public class AudioResource extends AbstractResource<AudioBuffer> {
 
     public AudioResource(String path) {
         super(path);
@@ -31,7 +31,7 @@ public class AudioResource extends AbstractResource<WaveData> {
             return false;
         }
 
-        resource = new WaveData(audioStream);
+        resource = new AudioBuffer(audioStream);
 
         return true;
     }

@@ -46,7 +46,6 @@ public abstract class AbstractSystem {
     public void postRender() {
     }
 
-    protected abstract void reset();
     protected abstract void destroy();
 
     public String getName() {

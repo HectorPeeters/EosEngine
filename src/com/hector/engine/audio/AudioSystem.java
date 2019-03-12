@@ -3,7 +3,6 @@ package com.hector.engine.audio;
 import com.hector.engine.audio.components.AudioListenerComponent;
 import com.hector.engine.audio.components.AudioSourceComponent;
 import com.hector.engine.entity.AbstractEntityComponent;
-import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
@@ -14,20 +13,19 @@ import com.hector.engine.resource.resources.AudioResource;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.openal.*;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AudioSystem extends AbstractSystem {
 
-    private long device;
-    private long context;
+    private long alDevice;
+    private long alContext;
 
-    private AudioListenerInstance audioListener;
+    private static List<Integer> audioTracks = new ArrayList<>();
 
-    private List<AudioSourceInstance> sourceComponents = new ArrayList<>();
-
-    private List<Integer> audioBuffers = new ArrayList<>();
-    private List<Integer> audioSources = new ArrayList<>();
+    private List<AudioSourceInstance> audioSourceInstances = new ArrayList<>();
+    private AudioListenerInstance audioListenerInstance;
 
     public AudioSystem() {
         super("audio", 3700);
@@ -36,156 +34,138 @@ public class AudioSystem extends AbstractSystem {
     @Override
     protected void init() {
         String defaultDeviceName = ALC10.alcGetString(0, ALC10.ALC_DEFAULT_DEVICE_SPECIFIER);
-        device = ALC10.alcOpenDevice(defaultDeviceName);
+        alDevice = ALC10.alcOpenDevice(defaultDeviceName);
 
-        int[] attributes = {0};
-        context = ALC10.alcCreateContext(device, attributes);
-        if (!ALC10.alcMakeContextCurrent(context)) {
+        alContext = ALC10.alcCreateContext(alDevice, new int[]{0});
+        if (!ALC10.alcMakeContextCurrent(alContext)) {
             Logger.err("Audio", "Failed to make OpenAL context current");
             return;
         }
 
-        ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
+        ALCCapabilities alcCapabilities = ALC.createCapabilities(alDevice);
         ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
 
-        if (alCapabilities.OpenAL11)
-            Logger.debug("Audio", "OpenAL 11 supported");
-        else if (alCapabilities.OpenAL10)
-            Logger.debug("Audio", "OpenAL 10 supported");
-
-
-        int error = ALC10.alcGetError(device);
-        if (error != ALC10.ALC_NO_ERROR) {
-            Logger.err("Audio", "OpenAL Error: " + error);
+        int error = ALC10.alcGetError(alDevice);
+        if (error == ALC10.ALC_NO_ERROR) {
+            Logger.info("Audio", "Initialized OpenAL with device \'" + alDevice + "\' and " +
+                    (alCapabilities.OpenAL11 ? "OpenAL11 support" :
+                            (alCapabilities.OpenAL10 ? "OpenAL10 support" : "?no support?")));
+        } else {
+            Logger.err("Audio", "ALC Error " + error);
         }
-    }
-
-    private int generateBuffer(WaveData waveData) {
-        int bufferId = AL10.alGenBuffers();
-
-        AL10.alBufferData(bufferId, waveData.format, waveData.data, waveData.samplerate);
-        waveData.dispose();
-
-        audioBuffers.add(bufferId);
-
-        return bufferId;
-    }
-
-    private int generateSource(Vector2f position, Vector2f velocity, float pitch, float gain, boolean looping) {
-        int id = AL10.alGenSources();
-
-        AL10.alSourcef(id, AL10.AL_PITCH, pitch);
-        AL10.alSourcef(id, AL10.AL_GAIN, gain);
-        AL10.alSource3f(id, AL10.AL_POSITION, position.x, position.y, 0);
-        AL10.alSource3f(id, AL10.AL_VELOCITY, velocity.x, velocity.y, 0);
-        AL10.alSourcei(id, AL10.AL_LOOPING, looping ? 1 : 0);
-
-        audioSources.add(id);
-
-        Logger.debug("Audio", "Created audio source " + id);
-
-        return id;
     }
 
     @Override
     public void postUpdate(float delta) {
+        //Update audio sources
+        for (AudioSourceInstance inst : audioSourceInstances) {
+            AL10.alSource3f(inst.sourceComponent.id, AL10.AL_POSITION, inst.sourceComponent.getParent().getPosition().x, inst.sourceComponent.getParent().getPosition().y, 0);
+
+            Vector2f velocityVector = new Vector2f(0, 0);
+            if (inst.rb != null)
+                velocityVector = inst.rb.getVelocity();
+            AL10.alSource3f(inst.sourceComponent.id, AL10.AL_VELOCITY, velocityVector.x, velocityVector.y, 0);
+
+            AL10.alSourcei(inst.sourceComponent.id, AL10.AL_LOOPING, inst.sourceComponent.looping ? 1 : 0);
+        }
+
+        //Update audio listener
+
+        if (audioListenerInstance != null) {
+            Vector2f listenerPosition = audioListenerInstance.listenerComponent.getParent().getPosition();
+            AL10.alListener3f(AL10.AL_POSITION, listenerPosition.x, listenerPosition.y, 0);
+
+            if (audioListenerInstance.rb != null)
+                AL10.alListener3f(AL10.AL_VELOCITY, audioListenerInstance.rb.getVelocity().x, audioListenerInstance.rb.getVelocity().y, 0);
+
+            AL10.alListenerf(AL10.AL_GAIN, audioListenerInstance.listenerComponent.gain);
+        }
+
         int error = AL10.alGetError();
         if (error != AL10.AL_NO_ERROR)
             Logger.err("Audio", "OpenAL error: " + error);
+    }
 
-        for (AudioSourceInstance inst : sourceComponents) {
-            if (inst.id == -1) {
-                AudioResource resource = ResourceManager.getResource(inst.sourceComponent.path);
-                int buffer = generateBuffer(resource.getResource());
+    public static int generateBuffer(ByteBuffer data, int format, int sampleRate) {
+        int bufferId = AL10.alGenBuffers();
 
-                inst.id = generateSource(inst.entity.getPosition(), new Vector2f(0, 0), inst.sourceComponent.pitch, inst.sourceComponent.gain, inst.sourceComponent.looping);
+        AL10.alBufferData(bufferId, format, data, sampleRate);
 
+        audioTracks.add(bufferId);
 
-                AL10.alSourcei(inst.id, AL10.AL_BUFFER, buffer);
-                AL10.alSourcePlay(inst.id);
-            }
+        Logger.debug("Audio", "Created audio buffer with id " + bufferId);
 
-            if (inst.sourceComponent.global) {
-                AL10.alSource3f(inst.id, AL10.AL_POSITION, audioListener.entity.getPosition().x, audioListener.entity.getPosition().y, 0);
-                AL10.alSource3f(inst.id, AL10.AL_VELOCITY, 0, 0, 0);
-            } else {
-                AL10.alSource3f(inst.id, AL10.AL_POSITION, inst.entity.getPosition().x, inst.entity.getPosition().y, 0);
-                if (inst.rb != null)
-                    AL10.alSource3f(inst.id, AL10.AL_VELOCITY, inst.rb.getVelocity().x, inst.rb.getVelocity().y, 0);
-            }
-        }
-
-        AL10.alListener3f(AL10.AL_POSITION, audioListener.entity.getPosition().x, audioListener.entity.getPosition().y, 0);
-
-        if (audioListener.rb != null)
-            AL10.alListener3f(AL10.AL_VELOCITY, audioListener.rb.getVelocity().x, audioListener.rb.getVelocity().y, 0);
-
-        AL10.alListenerf(AL10.AL_GAIN, audioListener.listenerComponent.gain);
+        return bufferId;
     }
 
     @Handler
     private void handleAddComponentEvent(AddEntityComponentEvent event) {
         for (AbstractEntityComponent component : event.components) {
-            if (component instanceof AudioListenerComponent) {
-                if (audioListener != null)
-                    Logger.warn("Audio", "Audio listener already set");
-
-                Logger.debug("Audio", "Set audio listener for scene");
-
-                audioListener = new AudioListenerInstance();
-                audioListener.entity = component.getParent();
-
-                if (component.getParent().hasComponent(RigidbodyComponent.class)) {
-                    audioListener.rb = component.getParent().getComponent(RigidbodyComponent.class);
-                }
-
-                audioListener.listenerComponent = (AudioListenerComponent) component;
-            } else if (component instanceof AudioSourceComponent) {
-
-                AudioSourceComponent sourceComponent = (AudioSourceComponent) component;
-
-                AudioSourceInstance inst = new AudioSourceInstance();
-                inst.entity = sourceComponent.getParent();
-
-                if (sourceComponent.getParent().hasComponent(RigidbodyComponent.class)) {
-                    inst.rb = sourceComponent.getParent().getComponent(RigidbodyComponent.class);
-                }
-
-                inst.sourceComponent = sourceComponent;
-                inst.id = -1;
-
-                sourceComponents.add(inst);
+            if (component instanceof AudioSourceComponent) {
+                addAudioSource((AudioSourceComponent) component);
+            } else if (component instanceof AudioListenerComponent) {
+                addAudioListener((AudioListenerComponent) component);
             }
         }
     }
 
-    @Override
-    protected void reset() {
+    private void addAudioSource(AudioSourceComponent audioSourceComponent) {
+        AudioSourceInstance inst = new AudioSourceInstance();
 
+        inst.sourceComponent = audioSourceComponent;
+        inst.sourceComponent.id = AL10.alGenSources();
+
+        AudioResource resource = ResourceManager.getResource(inst.sourceComponent.path);
+        inst.sourceComponent.buffer = resource.getResource();
+
+        AL10.alSourcei(inst.sourceComponent.id, AL10.AL_BUFFER, inst.sourceComponent.buffer.getBufferId());
+
+        if (audioSourceComponent.getParent().hasComponent(RigidbodyComponent.class)) {
+            inst.rb = audioSourceComponent.getParent().getComponent(RigidbodyComponent.class);
+        }
+
+        audioSourceInstances.add(inst);
+    }
+
+    private void addAudioListener(AudioListenerComponent audioListenerComponent) {
+        AudioListenerInstance inst = new AudioListenerInstance();
+
+        inst.listenerComponent = audioListenerComponent;
+
+        if (audioListenerComponent.getParent().hasComponent(RigidbodyComponent.class)) {
+            inst.rb = audioListenerComponent.getParent().getComponent(RigidbodyComponent.class);
+        }
+
+        if (audioListenerInstance != null)
+            Logger.warn("Audio", "Audio listener has already been assigned");
+
+        audioListenerInstance = inst;
     }
 
     @Override
     protected void destroy() {
-        ALC10.alcDestroyContext(context);
-        ALC10.alcCloseDevice(device);
+        for (int track : audioTracks) {
+            AL10.alDeleteBuffers(track);
+        }
 
-        for (int buffer : audioBuffers)
-            AL10.alDeleteBuffers(buffer);
+        ALC10.alcDestroyContext(alContext);
+        ALC10.alcCloseDevice(alDevice);
 
-        for (int source : audioSources)
-            AL10.alDeleteSources(source);
+        for (AudioSourceInstance inst : audioSourceInstances) {
+            AL10.alDeleteSources(inst.sourceComponent.id);
+        }
+
+        Logger.info("Audio", "Closed OpenAL audio device");
     }
 
     private static class AudioSourceInstance {
-        int id;
-        Entity entity;
-        RigidbodyComponent rb;
-        AudioSourceComponent sourceComponent;
+        public RigidbodyComponent rb;
+        public AudioSourceComponent sourceComponent;
     }
 
     private static class AudioListenerInstance {
-        Entity entity;
-        RigidbodyComponent rb;
-        AudioListenerComponent listenerComponent;
+        public RigidbodyComponent rb;
+        public AudioListenerComponent listenerComponent;
     }
+
 }

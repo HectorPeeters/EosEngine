@@ -19,6 +19,13 @@
         {
           "type": "GroovyScript",
           "path": "groovy/laser.groovy"
+        },
+        {
+          "type": "AudioSource",
+          "path":  "audio/africa-toto.wav",
+          "pitch": 1,
+          "gain": 1,
+          "looping": true
         }
       ]
     },
@@ -36,13 +43,6 @@
         {
           "type": "Animation",
           "path": "textures/console/console-active.png.anim"
-        },
-        {
-          "type": "AudioSource",
-          "path":  "audio/africa-toto.wav",
-          "pitch": 1,
-          "gain": 1,
-          "looping": true
         }
       ]
     },
@@ -68,6 +68,13 @@
         {
           "type": "AudioListener",
           "gain": 1
+        },
+        {
+          "type": "AudioSource",
+          "path":  "audio/footstep_1.wav",
+          "pitch": 1,
+          "gain": 2,
+          "looping": false
         }
       ]
     },

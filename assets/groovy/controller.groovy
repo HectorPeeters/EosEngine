@@ -1,3 +1,5 @@
+import com.hector.engine.audio.AudioBuffer
+import com.hector.engine.audio.components.AudioSourceComponent
 import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
@@ -6,6 +8,7 @@ import com.hector.engine.maths.Vector2f
 import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource
+import com.hector.engine.resource.resources.AudioResource
 import com.hector.engine.scripting.components.GroovyScript
 import org.lwjgl.glfw.GLFW
 
@@ -15,8 +18,10 @@ class Controller extends GroovyScript {
 
     private AnimationComponent animation
     public RigidbodyComponent rb
+    private AudioSourceComponent audioSource
 
     private boolean grounded = false
+    private boolean prevInAir = false
     private boolean inAir = false
     private boolean running = false
 
@@ -24,15 +29,26 @@ class Controller extends GroovyScript {
     private Animation idleAnimation
     private Animation jumpAnimation
 
+    private AudioBuffer runSound
+    private AudioBuffer landSound
+
+    private boolean landing = false
+
     @Override
     void init() {
         animation = parent.getComponent(AnimationComponent.class)
+
         rb = parent.getComponent(RigidbodyComponent.class)
         rb.acceleration = new Vector2f(0, -1f)
 
-        runAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-run.png.anim").getResource()
-        idleAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-idle.png.anim").getResource()
-        jumpAnimation = ResourceManager.<AnimationResource>getResource("textures/engineer/engineer-jump.png.anim").getResource()
+        audioSource = parent.getComponent(AudioSourceComponent.class)
+
+        runAnimation = ResourceManager.<AnimationResource> getResource("textures/engineer/engineer-run.png.anim").getResource()
+        idleAnimation = ResourceManager.<AnimationResource> getResource("textures/engineer/engineer-idle.png.anim").getResource()
+        jumpAnimation = ResourceManager.<AnimationResource> getResource("textures/engineer/engineer-jump.png.anim").getResource()
+
+        runSound = ResourceManager.<AudioResource> getResource("audio/footstep_1.wav").getResource()
+        landSound = ResourceManager.<AudioResource> getResource("audio/jumpland.wav").getResource()
     }
 
     private float prevX = 0
@@ -43,7 +59,29 @@ class Controller extends GroovyScript {
 
         updateAnimations()
 
+//        if (prevInAir && !inAir) {
+//            landing = true
+//            audioSource.setTrack(landSound)
+//            audioSource.play()
+//        }
+
+//        if (landing) {
+//            if (!audioSource.isPlaying()) {
+//                landing = false
+//                audioSource.setTrack(runSound)
+//            }
+//        }
+
+        if (running && !inAir) {
+            audioSource.play()
+        } else {
+            audioSource.stop()
+        }
+
         Camera.main.getPosition().x = parent.position.x
+
+        prevInAir = inAir
+        prevInAir = inAir
 
         prevX = parent.position.x
     }

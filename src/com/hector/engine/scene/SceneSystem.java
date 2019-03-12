@@ -60,8 +60,4 @@ public class SceneSystem extends AbstractSystem {
         //Delete all entities
     }
 
-    @Override
-    protected void reset() {
-
-    }
 }

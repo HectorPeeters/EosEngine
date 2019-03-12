@@ -1,8 +1,13 @@
+import com.hector.engine.audio.components.AudioSourceComponent
+import com.hector.engine.event.EventSystem
+import com.hector.engine.event.Handler
 import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.components.AnimationComponent
+import com.hector.engine.input.events.KeyEvent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource
 import com.hector.engine.scripting.components.GroovyScript
+import org.lwjgl.glfw.GLFW
 
 class Laser extends GroovyScript {
 
@@ -16,8 +21,21 @@ class Laser extends GroovyScript {
         animation = parent.getComponent(AnimationComponent.class)
         animation.setPlayOnce(true)
 
-        onAnimation = ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-on.png.anim").getResource()
-        offAnimation = ResourceManager.<AnimationResource>getResource("textures/laser/laser-turn-off.png.anim").getResource()
+        onAnimation = ResourceManager.<AnimationResource> getResource("textures/laser/laser-turn-on.png.anim").getResource()
+        offAnimation = ResourceManager.<AnimationResource> getResource("textures/laser/laser-turn-off.png.anim").getResource()
+
+        EventSystem.subscribe(this)
+    }
+
+    @Handler
+    void keyPressed(KeyEvent event) {
+        if (event.keycode == GLFW.GLFW_KEY_SPACE && event.pressed) {
+            AudioSourceComponent audioSourceComponent = parent.getComponent(AudioSourceComponent.class)
+            if (!audioSourceComponent.isPlaying())
+                audioSourceComponent.play()
+            else
+                audioSourceComponent.pause()
+        }
     }
 
     boolean turningOn = true

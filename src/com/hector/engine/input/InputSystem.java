@@ -30,11 +30,6 @@ public class InputSystem extends AbstractSystem {
     }
 
     @Override
-    protected void reset() {
-
-    }
-
-    @Override
     protected void destroy() {
 
     }

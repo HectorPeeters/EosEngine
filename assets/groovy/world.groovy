@@ -15,7 +15,7 @@ class World extends GroovyScript {
         int height = width
         int[] tileData = new int[width * height]
 
-        int amount = 485
+        int amount = 2//485
 
         String[] textures = new String[amount]
 

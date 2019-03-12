@@ -83,20 +83,6 @@ public class SystemManager {
         Logger.info("System", "Initialized " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
     }
 
-    @Handler
-    private void onResetSystemsReceived(ResetSystemsEvent event) {
-        resetSystems();
-    }
-
-    public void resetSystems() {
-        for (int i = systems.size() - 1; i >= 0; i--)
-            systems.get(i).reset();
-
-        Logger.info("System", "Reset " + systems.size() + " system" + (systems.size() == 1 ? "" : "s"));
-
-        systems.clear();
-    }
-
     public void destroySystems() {
         for (int i = systems.size() - 1; i >= 0; i--)
             systems.get(i).destroy();
