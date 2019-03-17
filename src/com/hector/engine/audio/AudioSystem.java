@@ -59,7 +59,11 @@ public class AudioSystem extends AbstractSystem {
     public void postUpdate(float delta) {
         //Update audio sources
         for (AudioSourceInstance inst : audioSourceInstances) {
-            AL10.alSource3f(inst.sourceComponent.id, AL10.AL_POSITION, inst.sourceComponent.getParent().getPosition().x, inst.sourceComponent.getParent().getPosition().y, 0);
+            if (inst.sourceComponent.global) {
+                AL10.alSource3f(inst.sourceComponent.id, AL10.AL_POSITION, audioListenerInstance.listenerComponent.getParent().getPosition().x, audioListenerInstance.listenerComponent.getParent().getPosition().y, 0);
+            } else {
+                AL10.alSource3f(inst.sourceComponent.id, AL10.AL_POSITION, inst.sourceComponent.getParent().getPosition().x, inst.sourceComponent.getParent().getPosition().y, 0);
+            }
 
             Vector2f velocityVector = new Vector2f(0, 0);
             if (inst.rb != null)
