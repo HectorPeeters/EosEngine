@@ -74,7 +74,6 @@ public class AudioSystem extends AbstractSystem {
         }
 
         //Update audio listener
-
         if (audioListenerInstance != null) {
             Vector2f listenerPosition = audioListenerInstance.listenerComponent.getParent().getPosition();
             AL10.alListener3f(AL10.AL_POSITION, listenerPosition.x, listenerPosition.y, 0);
@@ -85,6 +84,7 @@ public class AudioSystem extends AbstractSystem {
             AL10.alListenerf(AL10.AL_GAIN, audioListenerInstance.listenerComponent.gain);
         }
 
+        //Error handling
         int error = AL10.alGetError();
         if (error != AL10.AL_NO_ERROR)
             Logger.err("Audio", "OpenAL error: " + error);

@@ -4,6 +4,8 @@ import com.hector.engine.EngineStateEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.graphics.events.WindowResizeEvent;
 import com.hector.engine.input.events.KeyEvent;
+import com.hector.engine.input.events.MouseButtonEvent;
+import com.hector.engine.input.events.MouseMoveEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -51,6 +53,15 @@ public class Display {
                 return;
 
             EventSystem.publish(new KeyEvent(key, action == GLFW.GLFW_PRESS));
+        });
+
+        GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> {
+            EventSystem.publish(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS));
+        });
+
+        GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
+            //Convert to normalized coordinates
+            EventSystem.publish(new MouseMoveEvent((xpos / width - 0.5f) * 2f, (ypos / height - 0.5f) * 2f));
         });
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {

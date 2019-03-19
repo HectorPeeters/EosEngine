@@ -75,6 +75,7 @@ public class EventSystem extends AbstractSystem {
         for (Tuple<Method, Object> m : subscriptionMethods) {
             try {
                 m.getX().invoke(m.getY(), message);
+//                System.out.println("EVENT: " + message.toString());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
                 Logger.err("Event", "Failed to invoke handle method");
