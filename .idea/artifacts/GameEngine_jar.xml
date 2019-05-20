@@ -24,7 +24,6 @@
       <element id="extracted-dir" path="/usr/share/groovy/lib/jansi.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/asm-tree.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/testng.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-2.4.15.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/hamcrest-core.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/antlr.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/ant.jar" path-in-jar="/" />
@@ -45,7 +44,6 @@
       <element id="extracted-dir" path="/usr/share/groovy/lib/ivy.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/ant-launcher.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-servlet.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="/usr/share/groovy/lib/gpars.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-docgenerator.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-console.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-jsr223.jar" path-in-jar="/" />
@@ -57,6 +55,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../lib/javassist-3.19.0-GA.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../lib/annotations-2.0.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-openal/lwjgl-openal.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-2.4.16.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

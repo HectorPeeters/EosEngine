@@ -6,10 +6,14 @@ import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
+import com.hector.engine.graphics.ui.Font;
+import com.hector.engine.graphics.ui.FontRenderer;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector4f;
 import com.hector.engine.physics.components.RigidbodyComponent;
+import com.hector.engine.resource.ResourceManager;
+import com.hector.engine.resource.resources.TextureResource;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
@@ -19,6 +23,7 @@ import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GraphicsSystem extends AbstractSystem {
 
@@ -55,6 +60,8 @@ public class GraphicsSystem extends AbstractSystem {
     private Mesh quadMesh;
 
     private List<AbstractEntityComponent> textureComponents = new ArrayList<>();
+
+    private FontRenderer fontRenderer;
 
     public GraphicsSystem() {
         super("graphics", 1500);
@@ -95,6 +102,10 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
 
+
+        fontRenderer = new FontRenderer(new Font(Objects.requireNonNull(ResourceManager.<TextureResource>getResource("fonts/font.png")).getResource()));
+
+
         Logger.info("Graphics", "LWJGL Version: " + Version.getVersion());
     }
 
@@ -114,14 +125,20 @@ public class GraphicsSystem extends AbstractSystem {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
         //First pass
-        frameBuffer.bind();
+        //TODO: fix framebuffer clipping top of screen
+//        frameBuffer.bind();
 
-        GL11.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        GL11.glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         drawSprites();
 
-        frameBuffer.unbind();
+        fontRenderer.draw();
+
+//        frameBuffer.unbind();
+
+        if (1 == 1)
+            return;
 
         //Second pass
         fboShader.bind();
@@ -158,10 +175,10 @@ public class GraphicsSystem extends AbstractSystem {
                 AnimationComponent comp = (AnimationComponent) component;
 
                 GL11.glBindTexture(GL11.GL_TEXTURE_2D, comp.getTextureId());
-                animationShader.setVector4f("animationData", new Vector4f(comp.getFramesWide(),
-                        comp.getFramesHigh(), comp.getFrameIndex(), comp.isFlipped() ? 1 : 0));
+                animationShader.setVector4f("animationData", new Vector4f(comp.getFramesWide(), comp.getFramesHigh(), comp.getFrameIndex(), comp.isFlipped() ? 1 : 0));
             } else if (component instanceof TextureComponent){
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((TextureComponent) component).textureId);
+                if (((TextureComponent) component).texture != null)
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ((TextureComponent) component).texture.getId());
                 animationShader.setVector4f("animationData", new Vector4f(1, 1, 0, 0));
             }
 

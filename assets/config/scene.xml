@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <Entry name="start_scene" value="test_scene.json"/>
+    <Entry name="start_scene" value="game_scene.json"/>
 </Config>

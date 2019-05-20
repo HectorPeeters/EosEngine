@@ -1,0 +1,14 @@
+{
+  "name": "Test Scene 2",
+  "entities": [
+    {
+      "name": "World",
+      "components": [
+        {
+          "type": "GroovyScript",
+          "path": "groovy/tests/world.groovy"
+        }
+      ]
+    }
+  ]
+}

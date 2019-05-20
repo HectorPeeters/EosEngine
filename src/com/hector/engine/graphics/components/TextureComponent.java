@@ -1,12 +1,13 @@
 package com.hector.engine.graphics.components;
 
 import com.hector.engine.entity.AbstractEntityComponent;
+import com.hector.engine.graphics.Texture;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextureResource;
 
 public class TextureComponent extends AbstractEntityComponent {
 
-    public int textureId;
+    public Texture texture;
     public int sortingLayer = 0;
 
     private final String path;
@@ -22,11 +23,13 @@ public class TextureComponent extends AbstractEntityComponent {
 
     @Override
     public void init() {
-        TextureResource resource = ResourceManager.getResource(path);
-        if (resource == null)
-            return;
+        if (path != null) {
+            TextureResource resource = ResourceManager.getResource(path);
+            if (resource == null)
+                return;
 
-        textureId = resource.getResource().getId();
+            this.texture = resource.getResource();
+        }
     }
 
 }

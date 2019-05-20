@@ -18,7 +18,7 @@
         },
         {
           "type": "GroovyScript",
-          "path": "groovy/laser.groovy"
+          "path": "groovy/tests/laser.groovy"
         },
         {
           "type": "AudioSource",
@@ -63,7 +63,7 @@
         },
         {
           "type": "GroovyScript",
-          "path": "groovy/controller.groovy"
+          "path": "groovy/tests/controller.groovy"
         },
         {
           "type": "AudioListener",
@@ -75,15 +75,6 @@
           "pitch": 1,
           "gain": 2,
           "looping": false
-        }
-      ]
-    },
-    {
-      "name": "World",
-      "components": [
-        {
-          "type": "GroovyScript",
-          "path": "groovy/world.groovy"
         }
       ]
     }

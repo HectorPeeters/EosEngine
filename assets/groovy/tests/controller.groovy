@@ -92,7 +92,7 @@ class Controller extends GroovyScript {
             parent.getPosition().y = -0.5f
         }
 
-        if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W) && grounded)
+        if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W))
             rb.velocity.y = 1.5f
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_D))
