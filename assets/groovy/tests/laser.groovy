@@ -5,7 +5,7 @@ import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.events.KeyEvent
 import com.hector.engine.resource.ResourceManager
-import com.hector.engine.resource.resources.AnimationResource
+
 import com.hector.engine.scripting.components.GroovyScript
 import org.lwjgl.glfw.GLFW
 

@@ -8,14 +8,11 @@ import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.physics.components.RigidbodyComponent;
-import com.hector.engine.scripting.components.GroovyScript;
 import com.hector.engine.scripting.components.GroovyScriptComponent;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class ComponentDeserializer implements JsonDeserializer<AbstractEntityComponent> {
 

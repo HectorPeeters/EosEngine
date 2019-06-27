@@ -33,4 +33,5 @@ public class Animation {
     public int getTotalFrames() {
         return framesHigh * framesWide;
     }
+
 }

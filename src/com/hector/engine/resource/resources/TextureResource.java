@@ -3,7 +3,6 @@ package com.hector.engine.resource.resources;
 import com.hector.engine.graphics.Texture;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.AbstractResourceLoader;
-import com.hector.engine.resource.resources.AbstractResource;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;

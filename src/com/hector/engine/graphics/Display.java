@@ -65,7 +65,7 @@ public class Display {
         });
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
-            EventSystem.publish(new WindowResizeEvent(width, height, w, h));
+            EventSystem.publish(new WindowResizeEvent(w, h));
 
             this.width = w;
             this.height = h;

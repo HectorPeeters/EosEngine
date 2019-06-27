@@ -5,7 +5,7 @@ import com.hector.engine.maths.Vector2f;
 
 public class Camera {
 
-    public static Camera main = new Camera(new Vector2f(0, 0), 5);
+    public static Camera main = new Camera(new Vector2f(0, 0), 2);
 
     private Vector2f position;
     private float size;
@@ -44,4 +44,5 @@ public class Camera {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
 }

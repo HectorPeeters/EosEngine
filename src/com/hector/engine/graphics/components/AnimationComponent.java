@@ -115,4 +115,5 @@ public class AnimationComponent extends AbstractEntityComponent {
     public int getFrameIndex() {
         return currentFrame;
     }
+
 }

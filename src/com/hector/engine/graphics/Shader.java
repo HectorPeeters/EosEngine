@@ -24,8 +24,8 @@ public class Shader {
 
     private int programId;
 
-    private int vertexShader;
-    private int fragmentShader;
+    private int vertexId;
+    private int fragmentId;
 
     private Map<String, Integer> uniforms = new HashMap<>();
     private Map<String, Attrib> attributes = new HashMap<>();
@@ -37,8 +37,8 @@ public class Shader {
 
         programId = createProgram();
 
-        vertexShader = compileShader(vertexPath, GL20.GL_VERTEX_SHADER);
-        fragmentShader = compileShader(fragmentPath, GL20.GL_FRAGMENT_SHADER);
+        vertexId = compileShader(vertexPath, GL20.GL_VERTEX_SHADER);
+        fragmentId = compileShader(fragmentPath, GL20.GL_FRAGMENT_SHADER);
 
         linkProgram();
 
@@ -47,7 +47,8 @@ public class Shader {
         Logger.info("Graphics", "Compiled shader program: " + name);
     }
 
-    protected void postLoad() {}
+    protected void postLoad() {
+    }
 
     private int createProgram() {
         int program = GL20.glCreateProgram();
@@ -108,8 +109,8 @@ public class Shader {
     }
 
     private void attachShaders() {
-        GL20.glAttachShader(programId, vertexShader);
-        GL20.glAttachShader(programId, fragmentShader);
+        GL20.glAttachShader(programId, vertexId);
+        GL20.glAttachShader(programId, fragmentId);
     }
 
     private void fetchUniforms() {
@@ -231,16 +232,16 @@ public class Shader {
 
     public void destroy() {
         if (programId != 0) {
-            if (vertexShader != 0) {
-                GL20.glDetachShader(programId, vertexShader);
-                GL20.glDeleteShader(vertexShader);
-                vertexShader = 0;
+            if (vertexId != 0) {
+                GL20.glDetachShader(programId, vertexId);
+                GL20.glDeleteShader(vertexId);
+                vertexId = 0;
             }
 
-            if (fragmentShader != 0) {
-                GL20.glDetachShader(programId, fragmentShader);
-                GL20.glDeleteShader(fragmentShader);
-                fragmentShader = 0;
+            if (fragmentId != 0) {
+                GL20.glDetachShader(programId, fragmentId);
+                GL20.glDeleteShader(fragmentId);
+                fragmentId = 0;
             }
 
             GL20.glDeleteProgram(programId);

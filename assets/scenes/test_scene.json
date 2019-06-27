@@ -17,10 +17,6 @@
           "path": "textures/laser/laser-turn-on.png.anim"
         },
         {
-          "type": "GroovyScript",
-          "path": "groovy/tests/laser.groovy"
-        },
-        {
           "type": "AudioSource",
           "path":  "audio/africa-toto.wav",
           "pitch": 1,
@@ -54,16 +50,16 @@
       },
       "components": [
         {
+          "type": "GroovyScript",
+          "path": "groovy/tests/controller.groovy"
+        },
+        {
           "type": "Animation",
           "path": "textures/engineer/engineer-run.png.anim"
         },
         {
           "type": "Rigidbody",
           "mass": 10
-        },
-        {
-          "type": "GroovyScript",
-          "path": "groovy/tests/controller.groovy"
         },
         {
           "type": "AudioListener",

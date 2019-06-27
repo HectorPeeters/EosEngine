@@ -1,14 +1,6 @@
 {
   "name": "Game Scene",
   "entities": [
-    {
-      "name": "World",
-      "components": [
-        {
-          "type": "GroovyScript",
-          "path": "groovy/game/world.groovy"
-        }
-      ]
-    }
+
   ]
 }

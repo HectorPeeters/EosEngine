@@ -8,6 +8,7 @@ import com.hector.engine.maths.Vector2f
 import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource
+
 import com.hector.engine.resource.resources.AudioResource
 import com.hector.engine.scripting.components.GroovyScript
 import org.lwjgl.glfw.GLFW
@@ -25,14 +26,15 @@ class Controller extends GroovyScript {
     private boolean inAir = false
     private boolean running = false
 
+    private float fallMultiplier = 2.2f
+    private float lowJumpMultiplier = 2f
+
     private Animation runAnimation
     private Animation idleAnimation
     private Animation jumpAnimation
 
     private AudioBuffer runSound
     private AudioBuffer landSound
-
-    private boolean landing = false
 
     @Override
     void init() {
@@ -92,7 +94,13 @@ class Controller extends GroovyScript {
             parent.getPosition().y = -0.5f
         }
 
-        if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W))
+        if (rb.velocity.y < 0) {
+            rb.velocity.y += (-1) * (fallMultiplier - 1) * delta
+        } else if (rb.velocity.y > 0 && !InputSystem.isKeyDown(GLFW.GLFW_KEY_W)) {
+            rb.velocity.y += (-1) * (lowJumpMultiplier - 1) * delta
+        }
+
+        if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W) && grounded)
             rb.velocity.y = 1.5f
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_D))
