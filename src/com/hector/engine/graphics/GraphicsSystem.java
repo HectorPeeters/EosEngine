@@ -19,7 +19,8 @@ public class GraphicsSystem extends AbstractSystem {
         display = new Display();
         int width = config.getInt("width");
         int height = config.getInt("height");
-        display.create(width, height);
+        int samples = config.getInt("samples");
+        display.create(width, height, samples);
 
         layerStack = new LayerStack();
         layerStack.addLayer(new Render2DLayer(width, height));

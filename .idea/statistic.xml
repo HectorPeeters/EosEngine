@@ -8,6 +8,10 @@
         <option value="$PROJECT_DIR$/lib" />
         <option value="$PROJECT_DIR$/logs" />
         <option value="$PROJECT_DIR$/temp" />
+        <option value="$PROJECT_DIR$/assets/audio" />
+        <option value="$PROJECT_DIR$/assets/fonts" />
+        <option value="$PROJECT_DIR$/assets/textures" />
+        <option value="$PROJECT_DIR$/assets/tilemap" />
       </list>
     </option>
   </component>

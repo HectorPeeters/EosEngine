@@ -22,12 +22,7 @@ public class Display {
     private long window;
     private boolean closing = false;
 
-    private int width, height;
-
-    public boolean create(int width, int height) {
-        this.width = width;
-        this.height = height;
-
+    public boolean create(int width, int height, int samples) {
         if (!GLFW.glfwInit()) {
             Logger.err("Graphics", "Failed to init GLFW");
             return false;
@@ -36,7 +31,8 @@ public class Display {
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
-//        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
+        if (samples != 0)
+            GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, samples);
 
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
 
@@ -66,9 +62,6 @@ public class Display {
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
             EventSystem.publish(new WindowResizeEvent(w, h));
-
-            this.width = w;
-            this.height = h;
 
             GL11.glViewport(0, 0, w, h);
         });
