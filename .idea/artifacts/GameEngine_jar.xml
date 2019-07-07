@@ -52,10 +52,8 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson-2.8.5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-openal/lwjgl-openal.jar" path-in-jar="/" />
       <element id="extracted-dir" path="/usr/share/groovy/lib/groovy-2.4.16.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/imgui.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/glm.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/uno-sdk.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gln.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-nuklear.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-stb.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

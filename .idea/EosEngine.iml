@@ -14,5 +14,7 @@
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="openal" level="project" />
     <orderEntry type="library" name="groovy-2.4.16" level="application" />
+    <orderEntry type="library" name="nuklear" level="project" />
+    <orderEntry type="library" name="lwjgl-stb" level="project" />
   </component>
 </module>

@@ -2,5 +2,5 @@
 <Config>
     <Entry name="width" value="1920"/>
     <Entry name="height" value="1080"/>
-    <Entry name="samples" value="2"/>
+    <Entry name="samples" value="0"/>
 </Config>

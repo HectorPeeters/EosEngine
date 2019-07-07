@@ -3,6 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.graphics.layers.DebugLayer;
 import com.hector.engine.graphics.layers.LayerStack;
 import com.hector.engine.graphics.layers.Render2DLayer;
+import com.hector.engine.graphics.layers.TestWindow;
 import com.hector.engine.systems.AbstractSystem;
 
 public class GraphicsSystem extends AbstractSystem {
@@ -23,8 +24,12 @@ public class GraphicsSystem extends AbstractSystem {
         display.create(width, height, samples);
 
         layerStack = new LayerStack();
-        layerStack.addLayer(new Render2DLayer(width, height));
-        layerStack.addOverlayLayer(new DebugLayer());
+        Render2DLayer render2DLayer = new Render2DLayer(width, height);
+        DebugLayer debugLayer = new DebugLayer(display.getId());
+        debugLayer.addWindow(new TestWindow());
+
+        layerStack.addLayer(render2DLayer);
+        layerStack.addOverlayLayer(debugLayer);
         layerStack.init();
     }
 

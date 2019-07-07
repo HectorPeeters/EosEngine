@@ -124,4 +124,8 @@ public class Display {
         Logger.info("Graphics", "Terminated GLFW");
     }
 
+    public long getId() {
+        return window;
+    }
+
 }
