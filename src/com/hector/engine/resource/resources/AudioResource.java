@@ -22,7 +22,7 @@ public class AudioResource extends AbstractResource<AudioBuffer> {
         if (is == null)
             return false;
 
-        InputStream bufferedInput = new BufferedInputStream(is);
+        BufferedInputStream bufferedInput = new BufferedInputStream(is);
         AudioInputStream audioStream;
         try {
             audioStream = AudioSystem.getAudioInputStream(bufferedInput);

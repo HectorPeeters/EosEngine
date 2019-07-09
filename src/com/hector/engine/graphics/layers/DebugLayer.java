@@ -1,9 +1,12 @@
 package com.hector.engine.graphics.layers;
 
-import com.hector.engine.logging.Logger;
+import com.hector.engine.event.EventSystem;
+import com.hector.engine.event.Handler;
+import com.hector.engine.input.events.KeyEvent;
+import com.hector.engine.input.events.MouseButtonEvent;
+import com.hector.engine.input.events.MouseMoveEvent;
 import org.lwjgl.nuklear.*;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTTPackContext;
@@ -71,7 +74,7 @@ public class DebugLayer extends RenderLayer {
 
     private int display_width, display_height;
 
-    private ByteBuffer defaultFont;
+    private ByteBuffer ttf;
 
     private int vbo, vao, ebo;
     private int prog;
@@ -92,21 +95,16 @@ public class DebugLayer extends RenderLayer {
 
     @Override
     public void init() {
+        EventSystem.subscribe(this);
+
         try {
-            defaultFont = loadFont("assets/fonts/Roboto-Regular.ttf", 512 * 1024);
+            this.ttf = loadFont("assets/fonts/Roboto-Regular.ttf", 512 * 1024);
         } catch (IOException e) {
-            e.printStackTrace();
-            Logger.err("Debug", "Failed to load font!");
+            throw new RuntimeException(e);
         }
 
-        ctx = setupWindow(win);
+        NkContext ctx = setupInput(win);
 
-        initNuklear();
-
-        System.out.println(GL11.glGetError());
-    }
-
-    private void initNuklear() {
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
 
@@ -120,7 +118,7 @@ public class DebugLayer extends RenderLayer {
         float descent;
 
         try (MemoryStack stack = stackPush()) {
-            stbtt_InitFont(fontInfo, defaultFont);
+            stbtt_InitFont(fontInfo, ttf);
             scale = stbtt_ScaleForPixelHeight(fontInfo, FONT_HEIGHT);
 
             IntBuffer d = stack.mallocInt(1);
@@ -132,7 +130,7 @@ public class DebugLayer extends RenderLayer {
             STBTTPackContext pc = STBTTPackContext.mallocStack(stack);
             stbtt_PackBegin(pc, bitmap, BITMAP_W, BITMAP_H, 0, 1, NULL);
             stbtt_PackSetOversampling(pc, 4, 4);
-            stbtt_PackFontRange(pc, defaultFont, 0, FONT_HEIGHT, 32, cdata);
+            stbtt_PackFontRange(pc, ttf, 0, FONT_HEIGHT, 32, cdata);
             stbtt_PackEnd(pc);
 
             // Convert R8 to RGBA8
@@ -208,7 +206,7 @@ public class DebugLayer extends RenderLayer {
 
         nk_style_set_font(ctx, default_font);
 
-        //DONE
+        glfwShowWindow(win);
     }
 
     @Override
@@ -219,6 +217,8 @@ public class DebugLayer extends RenderLayer {
     @Override
     public void render() {
         newFrame();
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         for (DebugWindow debugWindow : debugWindows) {
             debugWindow.draw(ctx, 10, 10);
@@ -358,167 +358,6 @@ public class DebugLayer extends RenderLayer {
         glDisable(GL_SCISSOR_TEST);
     }
 
-
-    private void newFrame() {
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer w = stack.mallocInt(1);
-            IntBuffer h = stack.mallocInt(1);
-
-            glfwGetWindowSize(win, w, h);
-            width = w.get(0);
-            height = h.get(0);
-
-            glfwGetFramebufferSize(win, w, h);
-            display_width = w.get(0);
-            display_height = h.get(0);
-        }
-
-        nk_input_begin(ctx);
-        glfwPollEvents();
-
-        NkMouse mouse = ctx.input().mouse();
-        if (mouse.grab()) {
-            glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-        } else if (mouse.grabbed()) {
-            float prevX = mouse.prev().x();
-            float prevY = mouse.prev().y();
-            glfwSetCursorPos(win, prevX, prevY);
-            mouse.pos().x(prevX);
-            mouse.pos().y(prevY);
-        } else if (mouse.ungrab()) {
-            glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
-
-        nk_input_end(ctx);
-    }
-
-    private NkContext setupWindow(long win) {
-        glfwSetScrollCallback(win, (window, xoffset, yoffset) -> {
-            try (MemoryStack stack = stackPush()) {
-                NkVec2 scroll = NkVec2.mallocStack(stack)
-                        .x((float) xoffset)
-                        .y((float) yoffset);
-                nk_input_scroll(ctx, scroll);
-            }
-        });
-        glfwSetCharCallback(win, (window, codepoint) -> nk_input_unicode(ctx, codepoint));
-        glfwSetKeyCallback(win, (window, key, scancode, action, mods) -> {
-            boolean press = action == GLFW_PRESS;
-            switch (key) {
-                case GLFW_KEY_ESCAPE:
-                    glfwSetWindowShouldClose(window, true);
-                    break;
-                case GLFW_KEY_DELETE:
-                    nk_input_key(ctx, NK_KEY_DEL, press);
-                    break;
-                case GLFW_KEY_ENTER:
-                    nk_input_key(ctx, NK_KEY_ENTER, press);
-                    break;
-                case GLFW_KEY_TAB:
-                    nk_input_key(ctx, NK_KEY_TAB, press);
-                    break;
-                case GLFW_KEY_BACKSPACE:
-                    nk_input_key(ctx, NK_KEY_BACKSPACE, press);
-                    break;
-                case GLFW_KEY_UP:
-                    nk_input_key(ctx, NK_KEY_UP, press);
-                    break;
-                case GLFW_KEY_DOWN:
-                    nk_input_key(ctx, NK_KEY_DOWN, press);
-                    break;
-                case GLFW_KEY_HOME:
-                    nk_input_key(ctx, NK_KEY_TEXT_START, press);
-                    nk_input_key(ctx, NK_KEY_SCROLL_START, press);
-                    break;
-                case GLFW_KEY_END:
-                    nk_input_key(ctx, NK_KEY_TEXT_END, press);
-                    nk_input_key(ctx, NK_KEY_SCROLL_END, press);
-                    break;
-                case GLFW_KEY_PAGE_DOWN:
-                    nk_input_key(ctx, NK_KEY_SCROLL_DOWN, press);
-                    break;
-                case GLFW_KEY_PAGE_UP:
-                    nk_input_key(ctx, NK_KEY_SCROLL_UP, press);
-                    break;
-                case GLFW_KEY_LEFT_SHIFT:
-                case GLFW_KEY_RIGHT_SHIFT:
-                    nk_input_key(ctx, NK_KEY_SHIFT, press);
-                    break;
-                case GLFW_KEY_LEFT_CONTROL:
-                case GLFW_KEY_RIGHT_CONTROL:
-                    if (press) {
-                        nk_input_key(ctx, NK_KEY_COPY, glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_PASTE, glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_CUT, glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_UNDO, glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_REDO, glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_WORD_LEFT, glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_WORD_RIGHT, glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_LINE_START, glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_TEXT_LINE_END, glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS);
-                    } else {
-                        nk_input_key(ctx, NK_KEY_LEFT, glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_RIGHT, glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS);
-                        nk_input_key(ctx, NK_KEY_COPY, false);
-                        nk_input_key(ctx, NK_KEY_PASTE, false);
-                        nk_input_key(ctx, NK_KEY_CUT, false);
-                        nk_input_key(ctx, NK_KEY_SHIFT, false);
-                    }
-                    break;
-            }
-        });
-        glfwSetCursorPosCallback(win, (window, xpos, ypos) -> nk_input_motion(ctx, (int) xpos, (int) ypos));
-        glfwSetMouseButtonCallback(win, (window, button, action, mods) -> {
-            try (MemoryStack stack = stackPush()) {
-                DoubleBuffer cx = stack.mallocDouble(1);
-                DoubleBuffer cy = stack.mallocDouble(1);
-
-                glfwGetCursorPos(window, cx, cy);
-
-                int x = (int) cx.get(0);
-                int y = (int) cy.get(0);
-
-                int nkButton;
-                switch (button) {
-                    case GLFW_MOUSE_BUTTON_RIGHT:
-                        nkButton = NK_BUTTON_RIGHT;
-                        break;
-                    case GLFW_MOUSE_BUTTON_MIDDLE:
-                        nkButton = NK_BUTTON_MIDDLE;
-                        break;
-                    default:
-                        nkButton = NK_BUTTON_LEFT;
-                }
-                nk_input_button(ctx, nkButton, x, y, action == GLFW_PRESS);
-            }
-        });
-
-        nk_init(ctx, ALLOCATOR, null);
-        ctx.clip()
-                .copy((handle, text, len) -> {
-                    if (len == 0) {
-                        return;
-                    }
-
-                    try (MemoryStack stack = stackPush()) {
-                        ByteBuffer str = stack.malloc(len + 1);
-                        memCopy(text, memAddress(str), len);
-                        str.put(len, (byte) 0);
-
-                        glfwSetClipboardString(win, str);
-                    }
-                })
-                .paste((handle, edit) -> {
-                    long text = nglfwGetClipboardString(win);
-                    if (text != NULL) {
-                        nnk_textedit_paste(edit, text, nnk_strlen(text));
-                    }
-                });
-
-        setupContext();
-        return ctx;
-    }
-
     private void setupContext() {
         String NK_SHADER_VERSION = Platform.get() == Platform.MACOSX ? "#version 150\n" : "#version 300 es\n";
         String vertex_shader =
@@ -613,21 +452,318 @@ public class DebugLayer extends RenderLayer {
         glBindVertexArray(0);
     }
 
+    @Handler
+    private void onMouseMoveEvent(MouseMoveEvent event) {
+        nk_input_motion(ctx, event.xpixel, event.ypixel);
+    }
+
+    @Handler
+    private void onKeyEvent(KeyEvent event) {
+        boolean pressed = event.pressed;
+        switch (event.keycode) {
+            case GLFW_KEY_DELETE:
+                nk_input_key(ctx, NK_KEY_DEL, pressed);
+                break;
+            case GLFW_KEY_ENTER:
+                nk_input_key(ctx, NK_KEY_ENTER, pressed);
+                break;
+            case GLFW_KEY_TAB:
+                nk_input_key(ctx, NK_KEY_TAB, pressed);
+                break;
+            case GLFW_KEY_BACKSPACE:
+                nk_input_key(ctx, NK_KEY_BACKSPACE, pressed);
+                break;
+            case GLFW_KEY_UP:
+                nk_input_key(ctx, NK_KEY_UP, pressed);
+                break;
+            case GLFW_KEY_DOWN:
+                nk_input_key(ctx, NK_KEY_DOWN, pressed);
+                break;
+            case GLFW_KEY_HOME:
+                nk_input_key(ctx, NK_KEY_TEXT_START, pressed);
+                nk_input_key(ctx, NK_KEY_SCROLL_START, pressed);
+                break;
+            case GLFW_KEY_END:
+                nk_input_key(ctx, NK_KEY_TEXT_END, pressed);
+                nk_input_key(ctx, NK_KEY_SCROLL_END, pressed);
+                break;
+            case GLFW_KEY_PAGE_DOWN:
+                nk_input_key(ctx, NK_KEY_SCROLL_DOWN, pressed);
+                break;
+            case GLFW_KEY_PAGE_UP:
+                nk_input_key(ctx, NK_KEY_SCROLL_UP, pressed);
+                break;
+            case GLFW_KEY_LEFT_SHIFT:
+            case GLFW_KEY_RIGHT_SHIFT:
+                nk_input_key(ctx, NK_KEY_SHIFT, pressed);
+                break;
+            case GLFW_KEY_LEFT_CONTROL:
+            case GLFW_KEY_RIGHT_CONTROL:
+                if (pressed) {
+                    nk_input_key(ctx, NK_KEY_COPY, glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_PASTE, glfwGetKey(win, GLFW_KEY_P) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_X) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_UNDO, glfwGetKey(win, GLFW_KEY_Z) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_REDO, glfwGetKey(win, GLFW_KEY_R) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_WORD_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_WORD_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_LINE_START, glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_TEXT_LINE_END, glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS);
+                } else {
+                    nk_input_key(ctx, NK_KEY_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
+                    nk_input_key(ctx, NK_KEY_COPY, false);
+                    nk_input_key(ctx, NK_KEY_PASTE, false);
+                    nk_input_key(ctx, NK_KEY_CUT, false);
+                    nk_input_key(ctx, NK_KEY_SHIFT, false);
+                }
+                break;
+        }
+    }
+
+    @Handler
+    private void onMouseEvent(MouseButtonEvent event) {
+        try (MemoryStack stack = stackPush()) {
+            DoubleBuffer cx = stack.mallocDouble(1);
+            DoubleBuffer cy = stack.mallocDouble(1);
+
+            glfwGetCursorPos(win, cx, cy);
+
+            int x = (int) cx.get(0);
+            int y = (int) cy.get(0);
+
+            int nkButton;
+            switch (event.button) {
+                case GLFW_MOUSE_BUTTON_RIGHT:
+                    nkButton = NK_BUTTON_RIGHT;
+                    break;
+                case GLFW_MOUSE_BUTTON_MIDDLE:
+                    nkButton = NK_BUTTON_MIDDLE;
+                    break;
+                default:
+                    nkButton = NK_BUTTON_LEFT;
+            }
+            nk_input_button(ctx, nkButton, x, y, event.pressed);
+        }
+    }
+
+    private NkContext setupInput(long win) {
+        glfwSetScrollCallback(win, (window, xoffset, yoffset) -> {
+            try (MemoryStack stack = stackPush()) {
+                NkVec2 scroll = NkVec2.mallocStack(stack)
+                        .x((float) xoffset)
+                        .y((float) yoffset);
+                nk_input_scroll(ctx, scroll);
+            }
+        });
+        glfwSetCharCallback(win, (window, codepoint) -> nk_input_unicode(ctx, codepoint));
+
+        nk_init(ctx, ALLOCATOR, null);
+        ctx.clip()
+                .copy((handle, text, len) -> {
+                    if (len == 0) {
+                        return;
+                    }
+
+                    try (MemoryStack stack = stackPush()) {
+                        ByteBuffer str = stack.malloc(len + 1);
+                        memCopy(text, memAddress(str), len);
+                        str.put(len, (byte) 0);
+
+                        glfwSetClipboardString(win, str);
+                    }
+                })
+                .paste((handle, edit) -> {
+                    long text = nglfwGetClipboardString(win);
+                    if (text != NULL) {
+                        nnk_textedit_paste(edit, text, nnk_strlen(text));
+                    }
+                });
+
+        setupContext();
+        return ctx;
+    }
+
+    @Override
+    public void preUpdate(float delta) {
+        nk_input_begin(ctx);
+    }
+
+    private void newFrame() {
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+
+            glfwGetWindowSize(win, w, h);
+            width = w.get(0);
+            height = h.get(0);
+
+            glfwGetFramebufferSize(win, w, h);
+            display_width = w.get(0);
+            display_height = h.get(0);
+        }
+
+//        nk_input_begin(ctx);
+//        glfwPollEvents();
+
+        NkMouse mouse = ctx.input().mouse();
+
+        if (mouse.grab()) {
+            glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        } else if (mouse.grabbed()) {
+            float prevX = mouse.prev().x();
+            float prevY = mouse.prev().y();
+            glfwSetCursorPos(win, prevX, prevY);
+            mouse.pos().x(prevX);
+            mouse.pos().y(prevY);
+        } else if (mouse.ungrab()) {
+            glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+
+        nk_input_end(ctx);
+    }
+
+    private NkContext setupCallbacks(long win) {
+        glfwSetCharCallback(win, (window, codepoint) -> nk_input_unicode(ctx, codepoint));
+
+        nk_init(ctx, ALLOCATOR, null);
+        ctx.clip()
+                .copy((handle, text, len) -> {
+                    if (len == 0) {
+                        return;
+                    }
+
+                    try (MemoryStack stack = stackPush()) {
+                        ByteBuffer str = stack.malloc(len + 1);
+                        memCopy(text, memAddress(str), len);
+                        str.put(len, (byte) 0);
+
+                        glfwSetClipboardString(win, str);
+                    }
+                })
+                .paste((handle, edit) -> {
+                    long text = nglfwGetClipboardString(win);
+                    if (text != NULL) {
+                        nnk_textedit_paste(edit, text, nnk_strlen(text));
+                    }
+                });
+
+        setupRenderingContext();
+        return ctx;
+    }
+
+    private void setupRenderingContext() {
+        String NK_SHADER_VERSION = Platform.get() == Platform.MACOSX ? "#version 150\n" : "#version 330 core\n";
+
+        String vertex_shader =
+                NK_SHADER_VERSION +
+                        "uniform mat4 ProjMtx;\n" +
+                        "in vec2 Position;\n" +
+                        "in vec2 TexCoord;\n" +
+                        "in vec4 Color;\n" +
+                        "out vec2 Frag_UV;\n" +
+                        "out vec4 Frag_Color;\n" +
+                        "void main() {\n" +
+                        "   Frag_UV = TexCoord;\n" +
+                        "   Frag_Color = Color;\n" +
+                        "   gl_Position = ProjMtx * vec4(Position.xy, 0, 1);\n" +
+                        "}\n";
+
+        String fragment_shader =
+                NK_SHADER_VERSION +
+                        "precision mediump float;\n" +
+                        "uniform sampler2D Texture;\n" +
+                        "in vec2 Frag_UV;\n" +
+                        "in vec4 Frag_Color;\n" +
+                        "out vec4 Out_Color;\n" +
+                        "void main(){\n" +
+                        "   Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n" +
+                        "}\n";
+
+        nk_buffer_init(cmds, ALLOCATOR, BUFFER_INITIAL_SIZE);
+        prog = glCreateProgram();
+        vert_shdr = glCreateShader(GL_VERTEX_SHADER);
+        frag_shdr = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(vert_shdr, vertex_shader);
+        glShaderSource(frag_shdr, fragment_shader);
+        glCompileShader(vert_shdr);
+        glCompileShader(frag_shdr);
+        if (glGetShaderi(vert_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
+            throw new IllegalStateException();
+        }
+        if (glGetShaderi(frag_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
+            throw new IllegalStateException();
+        }
+        glAttachShader(prog, vert_shdr);
+        glAttachShader(prog, frag_shdr);
+        glLinkProgram(prog);
+        if (glGetProgrami(prog, GL_LINK_STATUS) != GL_TRUE) {
+            throw new IllegalStateException();
+        }
+
+        uniform_tex = glGetUniformLocation(prog, "Texture");
+        uniform_proj = glGetUniformLocation(prog, "ProjMtx");
+        int attrib_pos = glGetAttribLocation(prog, "Position");
+        int attrib_uv = glGetAttribLocation(prog, "TexCoord");
+        int attrib_col = glGetAttribLocation(prog, "Color");
+
+        {
+            // buffer setup
+            vbo = glGenBuffers();
+            ebo = glGenBuffers();
+            vao = glGenVertexArrays();
+
+            glBindVertexArray(vao);
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+            glEnableVertexAttribArray(attrib_pos);
+            glEnableVertexAttribArray(attrib_uv);
+            glEnableVertexAttribArray(attrib_col);
+
+            glVertexAttribPointer(attrib_pos, 2, GL_FLOAT, false, 20, 0);
+            glVertexAttribPointer(attrib_uv, 2, GL_FLOAT, false, 20, 8);
+            glVertexAttribPointer(attrib_col, 4, GL_UNSIGNED_BYTE, true, 20, 16);
+        }
+
+        {
+            // null texture setup
+            int nullTexID = glGenTextures();
+
+            null_texture.texture().id(nullTexID);
+            null_texture.uv().set(0.5f, 0.5f);
+
+            glBindTexture(GL_TEXTURE_2D, nullTexID);
+            try (MemoryStack stack = stackPush()) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, stack.ints(0xFFFFFFFF));
+            }
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        }
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+
     //TODO: replace with resource loader
     private static ByteBuffer loadFont(String resource, int bufferSize) throws IOException {
+//        ByteBufferResource bufferResource = ResourceManager.<ByteBufferResource>getResource(resource);
+//        ByteBuffer buffer = bufferResource.getResource();
+//        return buffer;
+
         ByteBuffer buffer;
 
         Path path = Paths.get(resource);
         if (Files.isReadable(path)) {
             try (SeekableByteChannel fc = Files.newByteChannel(path)) {
                 buffer = createByteBuffer((int) fc.size() + 1);
-                while (fc.read(buffer) != -1) {
-
-                }
+                while (fc.read(buffer) != -1);
             }
         } else {
             try (
-                    InputStream source = org.lwjgl.demo.util.IOUtil.class.getClassLoader().getResourceAsStream(resource);
+                    InputStream source = DebugLayer.class.getResourceAsStream(resource);
                     ReadableByteChannel rbc = Channels.newChannel(source)
             ) {
                 buffer = createByteBuffer(bufferSize);

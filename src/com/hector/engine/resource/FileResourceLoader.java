@@ -53,4 +53,9 @@ public class FileResourceLoader extends AbstractResourceLoader {
     public boolean doesFileExist(String path) {
         return new File(ASSET_DIR + path).exists();
     }
+
+    @Override
+    public long getFileSize(String path) {
+        return new File(ASSET_DIR + path).length();
+    }
 }

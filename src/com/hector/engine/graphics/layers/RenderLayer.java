@@ -4,6 +4,7 @@ public abstract class RenderLayer {
 
     public abstract void init();
 
+    public void preUpdate(float delta) {}
     public abstract void update(float delta);
     public abstract void render();
 

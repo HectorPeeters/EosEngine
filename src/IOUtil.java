@@ -1,9 +1,3 @@
-/*
- * Copyright LWJGL. All rights reserved.
- * License terms: https://www.lwjgl.org/license
- */
-package org.lwjgl.demo.util;
-
 import org.lwjgl.*;
 
 import java.io.*;
@@ -42,9 +36,7 @@ public final class IOUtil {
         if (Files.isReadable(path)) {
             try (SeekableByteChannel fc = Files.newByteChannel(path)) {
                 buffer = BufferUtils.createByteBuffer((int)fc.size() + 1);
-                while (fc.read(buffer) != -1) {
-                    ;
-                }
+                while (fc.read(buffer) != -1);
             }
         } else {
             try (

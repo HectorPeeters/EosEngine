@@ -25,6 +25,7 @@ public class GraphicsSystem extends AbstractSystem {
 
         layerStack = new LayerStack();
         Render2DLayer render2DLayer = new Render2DLayer(width, height);
+
         DebugLayer debugLayer = new DebugLayer(display.getId());
         debugLayer.addWindow(new TestWindow());
 
@@ -34,8 +35,15 @@ public class GraphicsSystem extends AbstractSystem {
     }
 
     @Override
+    public void preUpdate(float delta) {
+        layerStack.preUpdate(delta);
+    }
+
+    @Override
     public void update(float delta) {
         layerStack.update(delta);
+
+        display.pollEvents();
     }
 
     @Override
@@ -47,7 +55,7 @@ public class GraphicsSystem extends AbstractSystem {
 
     @Override
     protected void destroy() {
-        display.destroy();
+//        display.destroy();
         layerStack.destroy();
     }
 }

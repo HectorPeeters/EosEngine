@@ -79,11 +79,11 @@ class Tile {
         WATER
     }
 
-    public TileType getType() {
+    TileType getType() {
         return type
     }
 
-    public void setType(TileType type) {
+    void setType(TileType type) {
         if (action != null)
             action.onTileUpdate(type)
         this.type = type

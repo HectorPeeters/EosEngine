@@ -1,7 +1,6 @@
 package com.hector.engine.entity.events;
 
 import com.hector.engine.entity.AbstractEntityComponent;
-import com.hector.engine.entity.Entity;
 
 import java.util.Collections;
 import java.util.List;

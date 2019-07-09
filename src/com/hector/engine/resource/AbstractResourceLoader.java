@@ -11,4 +11,6 @@ public abstract class AbstractResourceLoader {
     public abstract InputStream getInputStream(String path);
 
     public abstract boolean doesFileExist(String path);
+
+    public abstract long getFileSize(String path);
 }

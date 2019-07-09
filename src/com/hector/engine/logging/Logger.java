@@ -114,7 +114,13 @@ public final class Logger {
 
         if (!fileWriters.containsKey(channelTag)) {
             try {
-                fileWriters.put(channelTag, new BufferedWriter(new FileWriter(new File("logs/" + channelTag.toLowerCase() + ".log"))));
+                File f = new File("logs/" + channelTag.toLowerCase() + ".log");
+                if (!f.exists()) {
+                    f.getParentFile().mkdirs();
+                    f.createNewFile();
+                }
+
+                fileWriters.put(channelTag, new BufferedWriter(new FileWriter(f)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

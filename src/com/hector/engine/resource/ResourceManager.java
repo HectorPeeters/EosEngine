@@ -76,6 +76,10 @@ public final class ResourceManager {
             add(".json");
         }});
 
+        availableResourceTypes.put(ByteBufferResource.class, new ArrayList<String>() {{
+            add(".ttf");
+        }});
+
         availableResourceTypes.put(TextureResource.class, new ArrayList<String>(){{
             add(".png");
         }});

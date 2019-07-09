@@ -16,10 +16,12 @@ public class ZipResourceLoader extends AbstractResourceLoader {
 
     private ZipFile zipFile;
 
+    public ZipResourceLoader() {
+        setupZipFile();
+    }
+
     @Override
     public String loadText(String path) {
-        setupZipFile();
-
         ZipEntry entry = zipFile.getEntry(path);
         if (entry == null) {
             Logger.err("Resource", "Zip entry " + path + " not found");
@@ -51,8 +53,6 @@ public class ZipResourceLoader extends AbstractResourceLoader {
 
     @Override
     public InputStream getInputStream(String path) {
-        setupZipFile();
-
         ZipEntry entry = zipFile.getEntry(path);
         if (entry == null) {
             Logger.err("Resource", "Zip entry " + path + " not found");
@@ -71,7 +71,6 @@ public class ZipResourceLoader extends AbstractResourceLoader {
 
     @Override
     public boolean doesFileExist(String path) {
-        setupZipFile();
         return zipFile.getEntry(path) != null;
     }
 
@@ -90,5 +89,10 @@ public class ZipResourceLoader extends AbstractResourceLoader {
             e.printStackTrace();
             Logger.err("Resource", "Zip file " + ZIP_FILE + " does not exist");
         }
+    }
+
+    @Override
+    public long getFileSize(String path) {
+        return zipFile.getEntry(path).getSize();
     }
 }

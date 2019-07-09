@@ -15,20 +15,26 @@ public class LayerStack {
     }
 
     public void init() {
-        for (int i = 0; i < layers.size(); i++) {
-            layers.get(i).init();
+        for (RenderLayer layer : layers) {
+            layer.init();
+        }
+    }
+
+    public void preUpdate(float delta) {
+        for (RenderLayer layer : layers) {
+            layer.preUpdate(delta);
         }
     }
 
     public void update(float delta) {
-        for (int i = 0; i < layers.size(); i++) {
-            layers.get(i).update(delta);
+        for (RenderLayer layer : layers) {
+            layer.update(delta);
         }
     }
 
     public void render() {
-        for (int i = 0; i < layers.size(); i++) {
-            layers.get(i).render();
+        for (RenderLayer layer : layers) {
+            layer.render();
         }
     }
 
@@ -39,8 +45,8 @@ public class LayerStack {
     }
 
     public void destroy() {
-        for (int i = 0; i < layers.size(); i++) {
-            layers.get(i).destroy();
+        for (RenderLayer layer : layers) {
+            layer.destroy();
         }
     }
 

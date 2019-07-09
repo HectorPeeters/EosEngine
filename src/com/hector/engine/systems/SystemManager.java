@@ -1,9 +1,7 @@
 package com.hector.engine.systems;
 
 import com.hector.engine.event.EventSystem;
-import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.systems.events.ResetSystemsEvent;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

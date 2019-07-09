@@ -1,11 +1,13 @@
 package com.hector.engine.graphics;
 
+import com.hector.engine.Engine;
 import com.hector.engine.EngineStateEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.graphics.events.WindowResizeEvent;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.input.events.MouseButtonEvent;
 import com.hector.engine.input.events.MouseMoveEvent;
+import com.hector.engine.input.events.MouseScrollEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -16,6 +18,8 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
+
+import static org.lwjgl.nuklear.Nuklear.nk_input_begin;
 
 public class Display {
 
@@ -34,6 +38,9 @@ public class Display {
         if (samples != 0)
             GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, samples);
 
+        if (Engine.DEV_BUILD)
+            GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
+
         window = GLFW.glfwCreateWindow(width, height, "Engine", MemoryUtil.NULL, MemoryUtil.NULL);
 
         if (window == MemoryUtil.NULL) {
@@ -48,17 +55,17 @@ public class Display {
             if (action == GLFW.GLFW_REPEAT)
                 return;
 
-            EventSystem.publish(new KeyEvent(key, action == GLFW.GLFW_PRESS));
+            EventSystem.publishImmediate(new KeyEvent(key, action == GLFW.GLFW_PRESS));
         });
 
-        GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> {
-            EventSystem.publish(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS));
-        });
+        GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> EventSystem.publishImmediate(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS)));
 
         GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
             //Convert to normalized coordinates
-            EventSystem.publish(new MouseMoveEvent((xpos / width - 0.5f) * 2f, (ypos / height - 0.5f) * 2f));
+            EventSystem.publishImmediate(new MouseMoveEvent((xpos / width - 0.5f) * 2f, (ypos / height - 0.5f) * 2f, (int) xpos, (int) ypos));
         });
+
+        GLFW.glfwSetScrollCallback(window, (window, xoffset, yoffset) -> EventSystem.publish(new MouseScrollEvent((float) xoffset, (float) yoffset)));
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
             EventSystem.publish(new WindowResizeEvent(w, h));
@@ -111,7 +118,9 @@ public class Display {
         }
 
         GLFW.glfwSwapBuffers(window);
+    }
 
+    public void pollEvents() {
         GLFW.glfwPollEvents();
     }
 

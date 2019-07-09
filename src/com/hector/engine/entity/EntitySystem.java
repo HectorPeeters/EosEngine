@@ -9,7 +9,6 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.scene.events.SceneLoadedEvent;
 import com.hector.engine.systems.AbstractSystem;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

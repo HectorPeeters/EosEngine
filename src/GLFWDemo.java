@@ -16,7 +16,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Objects;
 
-import static org.lwjgl.demo.util.IOUtil.ioResourceToByteBuffer;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.nuklear.Nuklear.*;
@@ -83,7 +82,7 @@ public class GLFWDemo {
 
     public GLFWDemo() {
         try {
-            this.ttf = ioResourceToByteBuffer("assets/fonts/Roboto-Regular.ttf", 512 * 1024);
+            this.ttf = IOUtil.ioResourceToByteBuffer("assets/fonts/Roboto-Regular.ttf", 512 * 1024);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

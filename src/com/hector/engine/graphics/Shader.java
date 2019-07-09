@@ -30,6 +30,21 @@ public class Shader {
     private Map<String, Integer> uniforms = new HashMap<>();
     private Map<String, Attrib> attributes = new HashMap<>();
 
+    public Shader(String name, String vertexSource, String fragmentSource) {
+        this.name = name;
+
+        programId = createProgram();
+
+        vertexId = compileShader(vertexSource, GL20.GL_VERTEX_SHADER);
+        fragmentId = compileShader(fragmentSource, GL20.GL_FRAGMENT_SHADER);
+
+        linkProgram();
+
+        postLoad();
+
+        Logger.info("Graphics", "Compiled shader program: " + name);
+    }
+
     public Shader(String name) {
         this.name = name;
         String vertexPath = "shaders/" + name + ".vert";
@@ -37,8 +52,8 @@ public class Shader {
 
         programId = createProgram();
 
-        vertexId = compileShader(vertexPath, GL20.GL_VERTEX_SHADER);
-        fragmentId = compileShader(fragmentPath, GL20.GL_FRAGMENT_SHADER);
+        vertexId = compileShader(getShaderSource(vertexPath), GL20.GL_VERTEX_SHADER);
+        fragmentId = compileShader(getShaderSource(fragmentPath), GL20.GL_FRAGMENT_SHADER);
 
         linkProgram();
 
@@ -59,9 +74,11 @@ public class Shader {
         return program;
     }
 
-    private int compileShader(String path, int type) {
-        String source = ResourceManager.<TextResource>getResource(path).getResource();
+    private String getShaderSource(String path) {
+        return ResourceManager.<TextResource>getResource(path).getResource();
+    }
 
+    private int compileShader(String source, int type) {
         int shader = GL20.glCreateShader(type);
         if (shader == 0)
             Logger.err("Graphics", "Failed to create Shader");
@@ -79,9 +96,9 @@ public class Shader {
             Logger.err("Graphics", typeString + " compile log:\n" + err + "\n");
 
         if (linkStatus == GL11.GL_FALSE)
-            Logger.err("Graphics", "Failed to compile " + typeString + ": " + path);
+            Logger.err("Graphics", "Failed to compile " + typeString + ": " + name);
 
-        Logger.debug("Graphics", "Compiled " + typeString + ": " + path);
+        Logger.debug("Graphics", "Compiled " + typeString + ": " + name);
 
         return shader;
     }

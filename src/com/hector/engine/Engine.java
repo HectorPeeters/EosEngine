@@ -18,7 +18,7 @@ import com.hector.engine.xml.XMLConfigFile;
 
 public class Engine {
 
-    public static final boolean DEV_BUILD = false;
+    public static final boolean DEV_BUILD = true;
 
     private SystemManager manager;
 

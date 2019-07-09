@@ -9,14 +9,14 @@ public class CodeList {
     public CodeList() {
         List<File> files = sourceFiles(new File("src/"));
 
-        String fullSource = "";
+        StringBuilder fullSource = new StringBuilder();
         for (File f : files) {
-            fullSource += readFile(f) + "\n";
+            fullSource.append(readFile(f)).append("\n");
         }
 
         try {
             FileWriter fw = new FileWriter(new File("allSource.txt"));
-            fw.append(fullSource);
+            fw.append(fullSource.toString());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -24,12 +24,12 @@ public class CodeList {
     }
 
     public String readFile(File f) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new FileReader(f));
             String line;
             while ((line = br.readLine()) != null) {
-                result += line + "\n";
+                result.append(line).append("\n");
             }
 
             br.close();
@@ -37,7 +37,7 @@ public class CodeList {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        return result.toString();
     }
 
     public List<File> sourceFiles(File file) {
