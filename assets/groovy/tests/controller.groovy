@@ -4,6 +4,7 @@ import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
+import com.hector.engine.maths.MathUtils
 import com.hector.engine.maths.Vector2f
 import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
@@ -25,6 +26,7 @@ class Controller extends GroovyScript {
     private boolean prevInAir = false
     private boolean inAir = false
     private boolean running = false
+//    private boolean landing = false
 
     private float fallMultiplier = 2.2f
     private float lowJumpMultiplier = 2f
@@ -66,7 +68,7 @@ class Controller extends GroovyScript {
 //            audioSource.setTrack(landSound)
 //            audioSource.play()
 //        }
-
+//
 //        if (landing) {
 //            if (!audioSource.isPlaying()) {
 //                landing = false
@@ -79,7 +81,7 @@ class Controller extends GroovyScript {
         } else {
             audioSource.stop()
         }
-
+p0
         Camera.main.getPosition().x = parent.position.x
 
         prevInAir = inAir

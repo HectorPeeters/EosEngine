@@ -24,7 +24,11 @@ public class Engine {
 
     private boolean running = true;
 
-    private UpdateTimer timer;
+    private static UpdateTimer timer;
+
+    public static float getDelta() {
+        return (float) timer.getDelta();
+    }
 
     public Engine() {
         init();

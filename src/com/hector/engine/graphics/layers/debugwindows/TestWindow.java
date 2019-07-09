@@ -1,5 +1,6 @@
-package com.hector.engine.graphics.layers;
+package com.hector.engine.graphics.layers.debugwindows;
 
+import com.hector.engine.graphics.layers.AbstractDebugWindow;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.nuklear.*;
 import org.lwjgl.system.MemoryStack;

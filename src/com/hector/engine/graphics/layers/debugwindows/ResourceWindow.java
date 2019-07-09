@@ -1,5 +1,6 @@
-package com.hector.engine.graphics.layers;
+package com.hector.engine.graphics.layers.debugwindows;
 
+import com.hector.engine.graphics.layers.AbstractDebugWindow;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.AbstractResource;
 import org.lwjgl.nuklear.NkContext;
