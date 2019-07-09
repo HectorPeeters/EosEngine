@@ -49,7 +49,10 @@ public class XMLLoader {
         }
 
         try {
-            document = builder.parse(new InputSource(new StringReader(ResourceManager.<TextResource>getResource(path).getResource())));
+            TextResource resource = ResourceManager.<TextResource>getResource(path);
+
+            document = builder.parse(new InputSource(new StringReader(resource.getResource())));
+
         } catch (SAXException | IOException e) {
             e.printStackTrace();
             System.err.println("Failed to parse xml file: " + path);

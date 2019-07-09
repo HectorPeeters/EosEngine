@@ -83,13 +83,13 @@ public class DebugLayer extends RenderLayer {
     private int uniform_tex;
     private int uniform_proj;
 
-    private List<DebugWindow> debugWindows = new ArrayList<>();
+    private List<AbstractDebugWindow> debugWindows = new ArrayList<>();
 
     public DebugLayer(long window) {
         this.win = window;
     }
 
-    public void addWindow(DebugWindow debugWindow) {
+    public void addWindow(AbstractDebugWindow debugWindow) {
         debugWindows.add(debugWindow);
     }
 
@@ -206,6 +206,9 @@ public class DebugLayer extends RenderLayer {
 
         nk_style_set_font(ctx, default_font);
 
+        for (AbstractDebugWindow window : debugWindows)
+            window.create();
+
         glfwShowWindow(win);
     }
 
@@ -218,9 +221,7 @@ public class DebugLayer extends RenderLayer {
     public void render() {
         newFrame();
 
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-        for (DebugWindow debugWindow : debugWindows) {
+        for (AbstractDebugWindow debugWindow : debugWindows) {
             debugWindow.draw(ctx, 10, 10);
         }
 
@@ -239,6 +240,9 @@ public class DebugLayer extends RenderLayer {
     }
 
     private void shutdown() {
+        for (AbstractDebugWindow window : debugWindows)
+            window.destroy();
+
         Objects.requireNonNull(ctx.clip().copy()).free();
         Objects.requireNonNull(ctx.clip().paste()).free();
         nk_free(ctx);

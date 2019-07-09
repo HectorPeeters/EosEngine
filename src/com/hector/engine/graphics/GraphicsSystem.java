@@ -1,9 +1,6 @@
 package com.hector.engine.graphics;
 
-import com.hector.engine.graphics.layers.DebugLayer;
-import com.hector.engine.graphics.layers.LayerStack;
-import com.hector.engine.graphics.layers.Render2DLayer;
-import com.hector.engine.graphics.layers.TestWindow;
+import com.hector.engine.graphics.layers.*;
 import com.hector.engine.systems.AbstractSystem;
 
 public class GraphicsSystem extends AbstractSystem {
@@ -28,6 +25,8 @@ public class GraphicsSystem extends AbstractSystem {
 
         DebugLayer debugLayer = new DebugLayer(display.getId());
         debugLayer.addWindow(new TestWindow());
+        debugLayer.addWindow(new LogWindow());
+        debugLayer.addWindow(new ResourceWindow());
 
         layerStack.addLayer(render2DLayer);
         layerStack.addOverlayLayer(debugLayer);

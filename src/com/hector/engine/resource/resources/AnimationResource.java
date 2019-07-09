@@ -15,7 +15,9 @@ public class AnimationResource extends AbstractResource<Animation> {
     @Override
     public boolean load(AbstractResourceLoader resourceLoader) {
 
-        Texture texture = ResourceManager.<TextureResource>getResource(path.replace(".anim", "")).getResource();
+        TextureResource textureResource = ResourceManager.getResource(path.replace(".anim", ""));
+
+        Texture texture = textureResource.getResource();
 
         if (texture == null)
             return false;

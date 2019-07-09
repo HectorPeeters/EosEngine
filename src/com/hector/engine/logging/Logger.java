@@ -1,6 +1,9 @@
 package com.hector.engine.logging;
 
 import com.hector.engine.Engine;
+import com.hector.engine.event.EventSystem;
+import com.hector.engine.logging.events.LogEvent;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,10 +24,14 @@ public final class Logger {
 
     private static long startTime;
 
+    private static boolean initialized = false;
+
     public static void init() {
         startTime = System.currentTimeMillis();
 
         Logger.info("Logger", "Initialized logger");
+
+        initialized = true;
     }
 
    /* private static boolean loadConfig(String configFile) {
@@ -105,12 +112,15 @@ public final class Logger {
         if (logType.logLevel < logLevelFilter.logLevel)
             return;
 
+        if (!Engine.DEV_BUILD)
+            return;
+
         String fullMessage = "[" + logType.name().charAt(0) + "] [" + channelTag + "] " + message;
 
         System.out.println(logType.colorPrefix + fullMessage + ANSI_RESET);
 
-        if (!Engine.DEV_BUILD)
-            return;
+        if (initialized)
+            EventSystem.publish(new LogEvent(fullMessage, logType.logLevel));
 
         if (!fileWriters.containsKey(channelTag)) {
             try {

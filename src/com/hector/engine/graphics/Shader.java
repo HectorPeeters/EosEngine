@@ -75,7 +75,11 @@ public class Shader {
     }
 
     private String getShaderSource(String path) {
-        return ResourceManager.<TextResource>getResource(path).getResource();
+        TextResource sourceResource = ResourceManager.<TextResource>getResource(path);
+
+        String source = sourceResource.getResource();
+
+        return source;
     }
 
     private int compileShader(String source, int type) {

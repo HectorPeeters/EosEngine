@@ -120,6 +120,7 @@ public class AudioSystem extends AbstractSystem {
         inst.sourceComponent.id = AL10.alGenSources();
 
         AudioResource resource = ResourceManager.getResource(inst.sourceComponent.path);
+
         inst.sourceComponent.buffer = resource.getResource();
 
         AL10.alSourcei(inst.sourceComponent.id, AL10.AL_BUFFER, inst.sourceComponent.buffer.getBufferId());

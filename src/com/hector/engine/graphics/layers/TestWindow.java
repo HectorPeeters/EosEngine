@@ -9,7 +9,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.nuklear.Nuklear.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
-public class TestWindow extends DebugWindow {
+public class TestWindow extends AbstractDebugWindow {
 
     private static final int EASY = 0;
     private static final int HARD = 1;
@@ -64,5 +64,15 @@ public class TestWindow extends DebugWindow {
 
             nk_end(ctx);
         }
+    }
+
+    @Override
+    public void create() {
+
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }

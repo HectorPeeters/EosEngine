@@ -4,10 +4,7 @@ import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.resources.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class ResourceManager {
 
@@ -15,6 +12,29 @@ public final class ResourceManager {
 
     private static Map<String, AbstractResource> loadedResources;
     private static Map<Class<? extends AbstractResource>, List<String>> availableResourceTypes;
+
+    public static int getLoadedResourceCount() {
+        return loadedResources.size();
+    }
+
+    public static Collection<AbstractResource> getResources() {
+        return loadedResources.values();
+    }
+
+    private static void unloadResource(AbstractResource resource) {
+        Iterator iter = loadedResources.entrySet().iterator();
+
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+
+            if (entry.getValue() == resource) {
+                iter.remove();
+                return;
+            }
+        }
+
+        Logger.err("Resource", "Tried removing resource which wasn't loaded (" + resource.getPath() + ")");
+    }
 
     //TODO: FIX
     public static <T extends AbstractResource> T getResource(String path) {
@@ -94,4 +114,5 @@ public final class ResourceManager {
 
         Logger.info("Resource", "Initialized resource system with " + resourceLoader.getClass().getSimpleName());
     }
+
 }
