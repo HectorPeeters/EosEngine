@@ -5,6 +5,8 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.input.events.MouseButtonEvent;
 import com.hector.engine.input.events.MouseMoveEvent;
+import com.hector.engine.resource.ResourceManager;
+import com.hector.engine.resource.resources.NuklearFontResource;
 import org.lwjgl.nuklear.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.stb.STBTTAlignedQuad;
@@ -97,11 +99,7 @@ public class DebugLayer extends RenderLayer {
     public void init() {
         EventSystem.subscribe(this);
 
-        try {
-            this.ttf = loadFont("assets/fonts/Roboto-Regular.ttf", 512 * 1024);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.ttf = ResourceManager.<NuklearFontResource>getResource("fonts/Roboto-Regular.ttf").getResource();
 
         NkContext ctx = setupInput(win);
 
@@ -749,49 +747,5 @@ public class DebugLayer extends RenderLayer {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
-    }
-
-    //TODO: replace with resource loader
-    private static ByteBuffer loadFont(String resource, int bufferSize) throws IOException {
-//        ByteBufferResource bufferResource = ResourceManager.<ByteBufferResource>getResource(resource);
-//        ByteBuffer buffer = bufferResource.getResource();
-//        return buffer;
-
-        ByteBuffer buffer;
-
-        Path path = Paths.get(resource);
-        if (Files.isReadable(path)) {
-            try (SeekableByteChannel fc = Files.newByteChannel(path)) {
-                buffer = createByteBuffer((int) fc.size() + 1);
-                while (fc.read(buffer) != -1);
-            }
-        } else {
-            try (
-                    InputStream source = DebugLayer.class.getResourceAsStream(resource);
-                    ReadableByteChannel rbc = Channels.newChannel(source)
-            ) {
-                buffer = createByteBuffer(bufferSize);
-
-                while (true) {
-                    int bytes = rbc.read(buffer);
-                    if (bytes == -1) {
-                        break;
-                    }
-                    if (buffer.remaining() == 0) {
-                        buffer = resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50%
-                    }
-                }
-            }
-        }
-
-        buffer.flip();
-        return buffer;
-    }
-
-    private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
-        ByteBuffer newBuffer = createByteBuffer(newCapacity);
-        buffer.flip();
-        newBuffer.put(buffer);
-        return newBuffer;
     }
 }

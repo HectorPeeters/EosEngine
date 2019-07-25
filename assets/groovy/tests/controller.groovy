@@ -81,7 +81,7 @@ class Controller extends GroovyScript {
         } else {
             audioSource.stop()
         }
-p0
+
         Camera.main.getPosition().x = parent.position.x
 
         prevInAir = inAir

@@ -7,7 +7,7 @@ import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.Camera;
 import com.hector.engine.graphics.Mesh;
-import com.hector.engine.graphics.Shader;
+import com.hector.engine.graphics.ShaderProgram;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
 import com.hector.engine.maths.Matrix3f;
@@ -41,7 +41,7 @@ public class Render2DLayer extends RenderLayer {
             0, 0,
     };
 
-    private Shader shader;
+    private ShaderProgram shader;
 
     private Mesh quadMesh;
 
@@ -55,7 +55,7 @@ public class Render2DLayer extends RenderLayer {
 
     @Override
     public void init() {
-        shader = new Shader("animation");
+        shader = new ShaderProgram("animation");
         shader.bind();
         shader.setInt("sampler", 0);
         Matrix3f ortho = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);

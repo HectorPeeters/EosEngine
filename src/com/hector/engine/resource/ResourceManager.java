@@ -96,7 +96,7 @@ public final class ResourceManager {
             add(".json");
         }});
 
-        availableResourceTypes.put(ByteBufferResource.class, new ArrayList<String>() {{
+        availableResourceTypes.put(NuklearFontResource.class, new ArrayList<String>() {{
             add(".ttf");
         }});
 

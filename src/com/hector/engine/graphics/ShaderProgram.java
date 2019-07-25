@@ -3,6 +3,7 @@ package com.hector.engine.graphics;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.maths.Matrix3f;
 import com.hector.engine.maths.Vector2f;
+import com.hector.engine.maths.Vector3f;
 import com.hector.engine.maths.Vector4f;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
@@ -16,21 +17,38 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Shader {
+public class ShaderProgram {
 
-    private static final String INCLUDE_TAG = "#include";
-
+    /**
+     * The name given to the shaderprogram by the user
+     */
     private String name;
 
+    /**
+     * The program id of the shaderprogram used for binding and unbinding
+     */
     private int programId;
 
+    /**
+     * The id of the vertex shader
+     */
     private int vertexId;
+    /**
+     * The id of the fragment shader
+     */
     private int fragmentId;
 
+    /**
+     * A map of all the uniforms in the vertex and fragment shader
+     */
     private Map<String, Integer> uniforms = new HashMap<>();
+
+    /**
+     * A map of all the attributes in the vertex and fragment shader
+     */
     private Map<String, Attrib> attributes = new HashMap<>();
 
-    public Shader(String name, String vertexSource, String fragmentSource) {
+    public ShaderProgram(String name, String vertexSource, String fragmentSource) {
         this.name = name;
 
         programId = createProgram();
@@ -40,12 +58,10 @@ public class Shader {
 
         linkProgram();
 
-        postLoad();
-
         Logger.info("Graphics", "Compiled shader program: " + name);
     }
 
-    public Shader(String name) {
+    public ShaderProgram(String name) {
         this.name = name;
         String vertexPath = "shaders/" + name + ".vert";
         String fragmentPath = "shaders/" + name + ".frag";
@@ -57,23 +73,27 @@ public class Shader {
 
         linkProgram();
 
-        postLoad();
-
         Logger.info("Graphics", "Compiled shader program: " + name);
     }
 
-    protected void postLoad() {
-    }
-
+    /**
+     * Creates the shaderprogram id and checks for failed creation
+     * @return The id of the shaderprogram
+     */
     private int createProgram() {
         int program = GL20.glCreateProgram();
 
         if (program == 0)
-            Logger.err("Graphics", "Failed to create new Shader Program");
+            Logger.err("Graphics", "Failed to create new ShaderProgram Program");
 
         return program;
     }
 
+    /**
+     * Loads the shader sourcecode from the asset bundle
+     * @param path The path of the shader source
+     * @return The contents of the source file
+     */
     private String getShaderSource(String path) {
         TextResource sourceResource = ResourceManager.<TextResource>getResource(path);
 
@@ -82,10 +102,16 @@ public class Shader {
         return source;
     }
 
+    /**
+     * Compiles a shader of a given type and checks for errors
+     * @param source The source code of the shader
+     * @param type The type of shader (VERTEX/FRAGMENT)
+     * @return The id of the created shader
+     */
     private int compileShader(String source, int type) {
         int shader = GL20.glCreateShader(type);
         if (shader == 0)
-            Logger.err("Graphics", "Failed to create Shader");
+            Logger.err("Graphics", "Failed to create ShaderProgram");
 
         GL20.glShaderSource(shader, source);
         GL20.glCompileShader(shader);
@@ -107,11 +133,11 @@ public class Shader {
         return shader;
     }
 
+    /**
+     *  Links the shaders to the shaderprogram, checks for errors and loads the uniforms and attributes
+     */
     private void linkProgram() {
         attachShaders();
-
-        uniforms.clear();
-        attributes.clear();
 
         GL20.glLinkProgram(programId);
 
@@ -129,12 +155,20 @@ public class Shader {
         fetchAttributes();
     }
 
+    /**
+     * Attaches the shader to shaderprogram
+     */
     private void attachShaders() {
         GL20.glAttachShader(programId, vertexId);
         GL20.glAttachShader(programId, fragmentId);
     }
 
+    /**
+     * Fetches the uniform names and locations and stores them in a HashMap
+     */
     private void fetchUniforms() {
+        uniforms.clear();
+
         int len = GL20.glGetProgrami(programId, GL20.GL_ACTIVE_UNIFORMS);
         int strLen = GL20.glGetProgrami(programId, GL20.GL_ACTIVE_UNIFORM_MAX_LENGTH);
 
@@ -149,7 +183,12 @@ public class Shader {
         }
     }
 
+    /**
+     * Fetches the attribute names, sizes, types and locations and stores them in a HashMap
+     */
     private void fetchAttributes() {
+        attributes.clear();
+
         int len = GL20.glGetProgrami(programId, GL20.GL_ACTIVE_ATTRIBUTES);
         int strLen = GL20.glGetProgrami(programId, GL20.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH);
 
@@ -169,6 +208,11 @@ public class Shader {
 
     }
 
+    /**
+     * Gets a uniform location of a uniform variable and creates if location wasn't already loaded
+     * @param name The name of the uniform variable
+     * @return The location of the uniform variable in the shader
+     */
     public int getUniformLocation(String name) {
         int location;
         if (!uniforms.containsKey(name)) {
@@ -181,6 +225,11 @@ public class Shader {
         return location;
     }
 
+    /**
+     * Returns the attribute struct with the given name
+     * @param name The name of the attribute
+     * @return The attribute struct with all the data provided
+     */
     public Attrib getAttribute(String name) {
         Attrib attrib = attributes.get(name);
 
@@ -188,10 +237,6 @@ public class Shader {
             Logger.err("Graphics", "Attribute '" + name + "' not found in shader: " + name);
 
         return attrib;
-    }
-
-    public int getAttributeLocation(String name) {
-        return getAttribute(name).location;
     }
 
     public Set<Map.Entry<String, Integer>> getUniformNames() {
@@ -210,47 +255,92 @@ public class Shader {
         return attributes.containsKey(name);
     }
 
+    /**
+     * Set an integer uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
     public void setInt(String name, int value) {
         int location = getUniformLocation(name);
 
         GL20.glUniform1i(location, value);
     }
 
+    /**
+     * Sets a float uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
     public void setFloat(String name, float value) {
         int location = getUniformLocation(name);
 
         GL20.glUniform1f(location, value);
     }
 
+    /**
+     * Sets a Vector2f uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
     public void setVector2f(String name, Vector2f value) {
         int location = getUniformLocation(name);
 
         GL20.glUniform2f(location, value.x, value.y);
     }
 
+    /**
+     * Sets a Vector3f uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
+    public void setVector3f(String name, Vector3f value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniform3f(location, value.x, value.y, value.z);
+    }
+
+    /**
+     * Sets a Vector4f uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
     public void setVector4f(String name, Vector4f value) {
         int location = getUniformLocation(name);
 
         GL20.glUniform4f(location, value.x, value.y, value.z, value.w);
     }
 
+    /**
+     * Sets a Matrix3f uniform variable
+     * @param name The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
     public void setMatrix3f(String name, Matrix3f value) {
         int location = getUniformLocation(name);
 
         GL20.glUniformMatrix3fv(location, true, value.m);
     }
 
-
-    public Shader bind() {
+    /**
+     * Binds the shaderprogram
+     * @return The current shaderprogram
+     */
+    public ShaderProgram bind() {
         GL20.glUseProgram(programId);
 
         return this;
     }
 
+    /**
+     * Unbind the shader program
+     */
     public void unbind() {
         GL20.glUseProgram(0);
     }
 
+    /**
+     * Destroys the shaders and shaderprogram
+     */
     public void destroy() {
         if (programId != 0) {
             if (vertexId != 0) {
@@ -272,6 +362,11 @@ public class Shader {
         Logger.info("Graphics", "Destroyed shader program: " + name);
     }
 
+    /**
+     * Converts an integer type to a String for easy error handling
+     * @param type The integer shader type
+     * @return The name String of the shader
+     */
     private String shaderTypeString(int type) {
         if (type == GL20.GL_FRAGMENT_SHADER)
             return "FRAGMENT_SHADER";
@@ -283,6 +378,11 @@ public class Shader {
             return "SHADER OF UNKNOWN TYPE";
     }
 
+    /**
+     * Binds an attribute to an attribute location
+     * @param name The name of the attribute
+     * @param location The location of the attribute
+     */
     public void bindAttributeLocation(String name, int location) {
         GL20.glBindAttribLocation(programId, location, name);
     }
