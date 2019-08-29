@@ -1,17 +1,15 @@
 package com.hector.engine.graphics;
 
 import com.hector.engine.logging.Logger;
-import com.hector.engine.maths.Matrix3f;
-import com.hector.engine.maths.Vector2f;
-import com.hector.engine.maths.Vector3f;
-import com.hector.engine.maths.Vector4f;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
+import org.joml.*;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,19 +76,21 @@ public class ShaderProgram {
 
     /**
      * Creates the shaderprogram id and checks for failed creation
+     *
      * @return The id of the shaderprogram
      */
     private int createProgram() {
         int program = GL20.glCreateProgram();
 
         if (program == 0)
-            Logger.err("Graphics", "Failed to create new ShaderProgram Program");
+            Logger.err("Graphics", "Failed to create new ShaderProgram");
 
         return program;
     }
 
     /**
      * Loads the shader sourcecode from the asset bundle
+     *
      * @param path The path of the shader source
      * @return The contents of the source file
      */
@@ -104,8 +104,9 @@ public class ShaderProgram {
 
     /**
      * Compiles a shader of a given type and checks for errors
+     *
      * @param source The source code of the shader
-     * @param type The type of shader (VERTEX/FRAGMENT)
+     * @param type   The type of shader (VERTEX/FRAGMENT)
      * @return The id of the created shader
      */
     private int compileShader(String source, int type) {
@@ -116,7 +117,7 @@ public class ShaderProgram {
         GL20.glShaderSource(shader, source);
         GL20.glCompileShader(shader);
 
-        int linkStatus = GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS);
+        int compileStatus = GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS);
         int infoLogLength = GL20.glGetShaderi(shader, GL20.GL_INFO_LOG_LENGTH);
 
         String typeString = shaderTypeString(type);
@@ -125,7 +126,7 @@ public class ShaderProgram {
         if (err.length() != 0)
             Logger.err("Graphics", typeString + " compile log:\n" + err + "\n");
 
-        if (linkStatus == GL11.GL_FALSE)
+        if (compileStatus == GL11.GL_FALSE)
             Logger.err("Graphics", "Failed to compile " + typeString + ": " + name);
 
         Logger.debug("Graphics", "Compiled " + typeString + ": " + name);
@@ -134,7 +135,7 @@ public class ShaderProgram {
     }
 
     /**
-     *  Links the shaders to the shaderprogram, checks for errors and loads the uniforms and attributes
+     * Links the shaders to the shaderprogram, checks for errors and loads the uniforms and attributes
      */
     private void linkProgram() {
         attachShaders();
@@ -210,6 +211,7 @@ public class ShaderProgram {
 
     /**
      * Gets a uniform location of a uniform variable and creates if location wasn't already loaded
+     *
      * @param name The name of the uniform variable
      * @return The location of the uniform variable in the shader
      */
@@ -227,6 +229,7 @@ public class ShaderProgram {
 
     /**
      * Returns the attribute struct with the given name
+     *
      * @param name The name of the attribute
      * @return The attribute struct with all the data provided
      */
@@ -257,7 +260,8 @@ public class ShaderProgram {
 
     /**
      * Set an integer uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setInt(String name, int value) {
@@ -268,7 +272,8 @@ public class ShaderProgram {
 
     /**
      * Sets a float uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setFloat(String name, float value) {
@@ -279,7 +284,8 @@ public class ShaderProgram {
 
     /**
      * Sets a Vector2f uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setVector2f(String name, Vector2f value) {
@@ -290,7 +296,8 @@ public class ShaderProgram {
 
     /**
      * Sets a Vector3f uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setVector3f(String name, Vector3f value) {
@@ -301,7 +308,8 @@ public class ShaderProgram {
 
     /**
      * Sets a Vector4f uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setVector4f(String name, Vector4f value) {
@@ -312,17 +320,35 @@ public class ShaderProgram {
 
     /**
      * Sets a Matrix3f uniform variable
-     * @param name The name of the uniform variable
+     *
+     * @param name  The name of the uniform variable
      * @param value The value of the uniform variable
      */
     public void setMatrix3f(String name, Matrix3f value) {
         int location = getUniformLocation(name);
 
-        GL20.glUniformMatrix3fv(location, true, value.m);
+        FloatBuffer fb = BufferUtils.createFloatBuffer(9);
+        value.get(fb);
+        GL20.glUniformMatrix3fv(location, false, fb);
+    }
+
+    /**
+     * Sets a Matrix4f uniform variable
+     *
+     * @param name  The name of the uniform variable
+     * @param value The value of the uniform variable
+     */
+    public void setMatrix4f(String name, Matrix4f value) {
+        int location = getUniformLocation(name);
+
+        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+        value.get(fb);
+        GL20.glUniformMatrix4fv(location, false, fb);
     }
 
     /**
      * Binds the shaderprogram
+     *
      * @return The current shaderprogram
      */
     public ShaderProgram bind() {
@@ -364,6 +390,7 @@ public class ShaderProgram {
 
     /**
      * Converts an integer type to a String for easy error handling
+     *
      * @param type The integer shader type
      * @return The name String of the shader
      */
@@ -380,7 +407,8 @@ public class ShaderProgram {
 
     /**
      * Binds an attribute to an attribute location
-     * @param name The name of the attribute
+     *
+     * @param name     The name of the attribute
      * @param location The location of the attribute
      */
     public void bindAttributeLocation(String name, int location) {

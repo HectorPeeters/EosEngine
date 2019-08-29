@@ -94,6 +94,7 @@ public final class ResourceManager {
             add(".lua");
             add(".groovy");
             add(".json");
+            add(".comp");
         }});
 
         availableResourceTypes.put(NuklearFontResource.class, new ArrayList<String>() {{

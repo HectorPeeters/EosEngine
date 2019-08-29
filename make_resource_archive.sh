@@ -2,6 +2,9 @@
 
 start=`date +%s.%N`
 
+echo Copying natives...
+cp -r lib/natives/ out/artifacts/GameEngine_jar/
+
 echo Building archive of $(find assets/ -type f | wc -l) assets
 echo
 

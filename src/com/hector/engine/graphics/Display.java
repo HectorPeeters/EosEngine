@@ -11,6 +11,7 @@ import com.hector.engine.input.events.MouseScrollEvent;
 import com.hector.engine.logging.Logger;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -18,8 +19,6 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
-
-import static org.lwjgl.nuklear.Nuklear.nk_input_begin;
 
 public class Display {
 
@@ -31,6 +30,14 @@ public class Display {
             Logger.err("Graphics", "Failed to init GLFW");
             return false;
         }
+
+        GLFW.glfwSetErrorCallback(new GLFWErrorCallback() {
+            @Override
+            public void invoke(int error, long description) {
+                Logger.err("Graphics", "GLFW error [" + error + "]: " + description);
+            }
+        });
+
 
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);

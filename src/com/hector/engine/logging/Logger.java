@@ -104,8 +104,8 @@ public final class Logger {
         log(channelTag, LogType.ERROR, message);
     }
 
-    public static void fatal(String channelTag, Exception e, Object message) {
-        err(channelTag, message);
+    public static void fatal(String channelTag, Object message) {
+        log(channelTag, LogType.FATAL, message);
     }
 
     private static void log(String channelTag, LogType logType, Object message) {
@@ -170,7 +170,8 @@ public final class Logger {
         DEBUG(0, "\u001B[32m"),
         WARNING(1, "\u001B[33m"),
         INFO(2, "\u001B[0m"),
-        ERROR(3, "\u001B[31m");
+        ERROR(3, "\u001B[31m"),
+        FATAL(4, "\u001B[36m");
 
         private final int logLevel;
         private final String colorPrefix;

@@ -10,25 +10,25 @@ import com.hector.engine.graphics.Mesh;
 import com.hector.engine.graphics.ShaderProgram;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
-import com.hector.engine.maths.Matrix3f;
-import com.hector.engine.maths.Vector4f;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Render2DLayer extends RenderLayer {
+public class Render2DLayer extends AbstractRenderLayer {
 
     //Use index buffer if performance problems occur
     private final float[] vertices = new float[]{
-            -0.5f, 0.5f,
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
+            -0.5f, 0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
 
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-            -0.5f, 0.5f,
+            0.5f, -0.5f, 0.0f,
+            0.5f, 0.5f, 0.0f,
+            -0.5f, 0.5f, 0.0f,
     };
 
     private final float[] textureCoords = new float[]{
@@ -58,8 +58,9 @@ public class Render2DLayer extends RenderLayer {
         shader = new ShaderProgram("animation");
         shader.bind();
         shader.setInt("sampler", 0);
-        Matrix3f ortho = new Matrix3f().initOrtho(-1 * aspectRatio, 1 * aspectRatio, 1, -1, -1, 1);
-        shader.setMatrix3f("orthographicMatrix", ortho);
+        Matrix4f ortho = new Matrix4f().ortho(-1 * aspectRatio, 1 * aspectRatio, -1, 1, -1, 1);
+
+        shader.setMatrix4f("orthographicMatrix", ortho);
         shader.unbind();
 
         EventSystem.subscribe(this);
@@ -85,7 +86,6 @@ public class Render2DLayer extends RenderLayer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GL20.glActiveTexture(GL20.GL_TEXTURE0);
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -95,11 +95,12 @@ public class Render2DLayer extends RenderLayer {
         quadMesh.bind();
         quadMesh.enableVertexAttribArrays();
 
-        for (AbstractEntityComponent component : textureComponents) {
-            Matrix3f transformationMatrix = component.getParent().getTransformationMatrix();
+        shader.setMatrix4f("cameraMatrix", Camera.main.getCameraMatrix());
 
-            shader.setMatrix3f("transformationMatrix", transformationMatrix);
-            shader.setMatrix3f("cameraMatrix", Camera.main.getCameraMatrix());
+        for (AbstractEntityComponent component : textureComponents) {
+            Matrix4f transformationMatrix = component.getParent().getTransformationMatrix();
+
+            shader.setMatrix4f("transformationMatrix", transformationMatrix);
 
             if (component instanceof TextureComponent) {
                 TextureComponent texture = (TextureComponent) component;

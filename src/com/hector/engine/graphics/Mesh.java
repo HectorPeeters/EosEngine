@@ -15,13 +15,22 @@ public class Mesh {
     private List<Integer> vboIds = new ArrayList<>();
     private List<Integer> attribArray = new ArrayList<>();
 
+    public Mesh(float[] vertices) {
+        this.vaoId = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoId);
+
+        this.vertexCount = vertices.length / 3;
+
+        attachVbo(vertices, 3, 0);
+    }
+
     public Mesh(float[] vertices, float[] textureCoords) {
         this.vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoId);
 
-        this.vertexCount = vertices.length;
+        this.vertexCount = vertices.length / 3;
 
-        attachVbo(vertices, 2, 0);
+        attachVbo(vertices, 3, 0);
         attachVbo(textureCoords, 2, 1);
     }
 

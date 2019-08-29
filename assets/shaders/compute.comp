@@ -1,0 +1,16 @@
+#version 450 core
+
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+//gl_LocalInvocationID  coordinate in local group (uvec3)
+//gl_WorkGroupSize      size of local group (uvec3)
+//gl_WorkGroupID        coordinate in global group (uvec3)
+//gl_NumWorkGroups      size of global group (uvec3)
+
+layout (binding = 0, rgba32f) uniform writeonly image2D image_out;
+
+void main(void) {
+    ivec2 p  = ivec2(gl_GlobalInvocationID.xy);
+
+    imageStore(image_out, p, vec4(1.0, 0.0, 1.0, 1.0));
+}

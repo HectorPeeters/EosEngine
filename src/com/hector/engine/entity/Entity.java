@@ -1,7 +1,7 @@
 package com.hector.engine.entity;
 
-import com.hector.engine.maths.Matrix3f;
-import com.hector.engine.maths.Vector2f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +15,24 @@ public class Entity {
     private List<AbstractEntityComponent> components;
 
     //region Transform
-    private Vector2f position = new Vector2f(0, 0);
-    private Vector2f scale = new Vector2f(1, 1);
+    private Vector3f position = new Vector3f(0, 0, 0);
+    private Vector3f scale = new Vector3f(1, 1, 1);
     private float rotation = 0f;
     //endregion
 
 
-    public Entity(Vector2f position) {
+    public Entity(Vector3f position) {
         this();
         this.position = position;
     }
 
-    public Entity(Vector2f position, Vector2f scale) {
+    public Entity(Vector3f position, Vector3f scale) {
         this();
         this.position = position;
         this.scale = scale;
     }
 
-    public Entity(Vector2f position, Vector2f scale, float rotation) {
+    public Entity(Vector3f position, Vector3f scale, float rotation) {
         this();
         this.position = position;
         this.scale = scale;
@@ -87,8 +87,8 @@ public class Entity {
         return components;
     }
 
-    public Matrix3f getTransformationMatrix() {
-        return new Matrix3f().initTransformation(position, scale, rotation);
+    public Matrix4f getTransformationMatrix() {
+        return new Matrix4f().translate(position).scale(scale).rotateX(rotation);
     }
 
     public String getName() {
@@ -99,19 +99,19 @@ public class Entity {
         this.name = name;
     }
 
-    public Vector2f getPosition() {
+    public Vector3f getPosition() {
         return position;
     }
 
-    public void setPosition(Vector2f position) {
+    public void setPosition(Vector3f position) {
         this.position = position;
     }
 
-    public Vector2f getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
-    public void setScale(Vector2f scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
     }
 

@@ -29,11 +29,11 @@ public class ComponentDeserializer implements JsonDeserializer<AbstractEntityCom
 //            componentClasses.put(components.getSimpleName(), components);
 //        }
 
-        componentClasses.put(AnimationComponent.class.getSimpleName(), AnimationComponent.class);
         componentClasses.put(TextureComponent.class.getSimpleName(), TextureComponent.class);
+        componentClasses.put(AnimationComponent.class.getSimpleName(), AnimationComponent.class);
         componentClasses.put(RigidbodyComponent.class.getSimpleName(), RigidbodyComponent.class);
-        componentClasses.put(GroovyScriptComponent.class.getSimpleName(), GroovyScriptComponent.class);
         componentClasses.put(AudioSourceComponent.class.getSimpleName(), AudioSourceComponent.class);
+        componentClasses.put(GroovyScriptComponent.class.getSimpleName(), GroovyScriptComponent.class);
         componentClasses.put(AudioListenerComponent.class.getSimpleName(), AudioListenerComponent.class);
 
         Logger.debug("Scene", "Registered " + componentClasses.size() + " components");

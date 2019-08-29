@@ -1,18 +1,18 @@
 #version 330 core
 
-layout (location = 0) in vec2 position;
+layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
 
 out vec2 outTexCoord;
 
-uniform mat3 transformationMatrix;
-uniform mat3 orthographicMatrix;
-uniform mat3 cameraMatrix;
+uniform mat4 transformationMatrix;
+uniform mat4 orthographicMatrix;
+uniform mat4 cameraMatrix;
 
 void main() {
-    vec3 transformedPos = orthographicMatrix * cameraMatrix * transformationMatrix * vec3(position, 1.0);
+    vec4 transformedPos = orthographicMatrix * cameraMatrix * transformationMatrix * vec4(position, 1.0);
 
-    gl_Position = vec4(transformedPos, 1.0);
+    gl_Position = transformedPos;
 
     outTexCoord = texCoord;
 }

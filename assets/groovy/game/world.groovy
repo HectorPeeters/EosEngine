@@ -3,10 +3,10 @@ import com.hector.engine.entity.events.AddEntityEvent
 import com.hector.engine.event.EventSystem
 import com.hector.engine.graphics.components.TextureComponent
 
-import com.hector.engine.maths.Vector2f
 import com.hector.engine.resource.ResourceManager
 
 import com.hector.engine.scripting.components.GroovyScript
+import org.joml.Vector3f
 
 class World extends GroovyScript {
 
@@ -61,7 +61,7 @@ class World extends GroovyScript {
             }
         }
 
-        Entity entity = new Entity(new Vector2f((float) (x), (float) (y)))
+        Entity entity = new Entity(new Vector3f((float) (x), (float) (y), 0))
         entity.addComponent(textureComponent)
         return entity
     }

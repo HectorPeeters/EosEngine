@@ -6,11 +6,11 @@ import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.event.Handler;
 import com.hector.engine.logging.Logger;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.physics.components.RigidbodyComponent;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.AudioResource;
 import com.hector.engine.systems.AbstractSystem;
+import org.joml.Vector3f;
 import org.lwjgl.openal.*;
 
 import java.nio.ByteBuffer;
@@ -65,7 +65,7 @@ public class AudioSystem extends AbstractSystem {
                 AL10.alSource3f(inst.sourceComponent.id, AL10.AL_POSITION, inst.sourceComponent.getParent().getPosition().x, inst.sourceComponent.getParent().getPosition().y, 0);
             }
 
-            Vector2f velocityVector = new Vector2f(0, 0);
+            Vector3f velocityVector = new Vector3f(0, 0, 0);
             if (inst.rb != null)
                 velocityVector = inst.rb.getVelocity();
             AL10.alSource3f(inst.sourceComponent.id, AL10.AL_VELOCITY, velocityVector.x, velocityVector.y, 0);
@@ -75,7 +75,7 @@ public class AudioSystem extends AbstractSystem {
 
         //Update audio listener
         if (audioListenerInstance != null) {
-            Vector2f listenerPosition = audioListenerInstance.listenerComponent.getParent().getPosition();
+            Vector3f listenerPosition = audioListenerInstance.listenerComponent.getParent().getPosition();
             AL10.alListener3f(AL10.AL_POSITION, listenerPosition.x, listenerPosition.y, 0);
 
             if (audioListenerInstance.rb != null)

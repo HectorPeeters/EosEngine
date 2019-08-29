@@ -1,6 +1,6 @@
 package com.hector.engine.resource.markup;
 
-import com.hector.engine.maths.Vector2f;
+import org.joml.Vector2f;
 
 public class MarkupNode {
 

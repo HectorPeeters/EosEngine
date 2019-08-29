@@ -6,7 +6,7 @@ import java.util.List;
 public class LayerStack {
 
     //Last item is item furthest layer
-    private List<RenderLayer> layers;
+    private List<AbstractRenderLayer> layers;
 
     private int overlayIndex = 0;
 
@@ -15,25 +15,25 @@ public class LayerStack {
     }
 
     public void init() {
-        for (RenderLayer layer : layers) {
+        for (AbstractRenderLayer layer : layers) {
             layer.init();
         }
     }
 
     public void preUpdate(float delta) {
-        for (RenderLayer layer : layers) {
+        for (AbstractRenderLayer layer : layers) {
             layer.preUpdate(delta);
         }
     }
 
     public void update(float delta) {
-        for (RenderLayer layer : layers) {
+        for (AbstractRenderLayer layer : layers) {
             layer.update(delta);
         }
     }
 
     public void render() {
-        for (RenderLayer layer : layers) {
+        for (AbstractRenderLayer layer : layers) {
             layer.render();
         }
     }
@@ -45,16 +45,16 @@ public class LayerStack {
     }
 
     public void destroy() {
-        for (RenderLayer layer : layers) {
+        for (AbstractRenderLayer layer : layers) {
             layer.destroy();
         }
     }
 
-    public void addLayer(RenderLayer layer) {
+    public void addLayer(AbstractRenderLayer layer) {
         layers.add(layers.size() - overlayIndex, layer);
     }
 
-    public void addOverlayLayer(RenderLayer layer) {
+    public void addOverlayLayer(AbstractRenderLayer layer) {
         layers.add(layer);
         overlayIndex++;
     }

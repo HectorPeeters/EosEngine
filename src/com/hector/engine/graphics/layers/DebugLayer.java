@@ -8,7 +8,7 @@ import com.hector.engine.input.events.MouseMoveEvent;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.NuklearFontResource;
 import org.lwjgl.nuklear.*;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTTPackContext;
@@ -16,23 +16,14 @@ import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.Platform;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.lwjgl.BufferUtils.createByteBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.nuklear.Nuklear.*;
 import static org.lwjgl.opengl.GL30C.*;
@@ -40,10 +31,9 @@ import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class DebugLayer extends RenderLayer {
+public class DebugLayer extends AbstractRenderLayer {
 
     private static final int BUFFER_INITIAL_SIZE = 4 * 1024;
-
     private static final int MAX_VERTEX_BUFFER = 512 * 1024;
     private static final int MAX_ELEMENT_BUFFER = 128 * 1024;
 
@@ -99,9 +89,18 @@ public class DebugLayer extends RenderLayer {
     public void init() {
         EventSystem.subscribe(this);
 
-        this.ttf = ResourceManager.<NuklearFontResource>getResource("fonts/Roboto-Regular.ttf").getResource();
-
         NkContext ctx = setupInput(win);
+
+        setupFont(ctx);
+
+        for (AbstractDebugWindow window : debugWindows)
+            window.create();
+
+        glfwShowWindow(win);
+    }
+
+    private void setupFont(NkContext ctx) {
+        this.ttf = ResourceManager.<NuklearFontResource>getResource("fonts/Roboto-Regular.ttf").getResource();
 
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
@@ -204,10 +203,6 @@ public class DebugLayer extends RenderLayer {
 
         nk_style_set_font(ctx, default_font);
 
-        for (AbstractDebugWindow window : debugWindows)
-            window.create();
-
-        glfwShowWindow(win);
     }
 
     @Override

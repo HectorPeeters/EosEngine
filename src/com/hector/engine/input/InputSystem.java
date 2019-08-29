@@ -4,8 +4,8 @@ import com.hector.engine.event.Handler;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.input.events.MouseButtonEvent;
 import com.hector.engine.input.events.MouseMoveEvent;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.systems.AbstractSystem;
+import org.joml.Vector2f;
 
 public class InputSystem extends AbstractSystem {
 
@@ -18,6 +18,8 @@ public class InputSystem extends AbstractSystem {
     private static float mouseX;
     private static float mouseY;
 
+//    private List<Controller> controllers;
+
     public InputSystem() {
         super("input", 900);
     }
@@ -26,6 +28,22 @@ public class InputSystem extends AbstractSystem {
     protected void init() {
         keysDown = new boolean[KEY_COUNT];
         buttonsDown = new boolean[BUTTON_COUNT];
+
+//        controllers = new ArrayList<>();
+
+//        Controller[] contrs = ControllerEnvironment.getDefaultEnvironment().getControllers();
+
+//        controllers.addAll(Arrays.asList(contrs));
+    }
+
+    @Override
+    public void preUpdate(float delta) {
+//        for (Controller controller : controllers) {
+//            controller.poll();
+//
+//            if (controller.getType() == Controller.Type.GAMEPAD)
+//                System.out.println(controller.getComponent(Component.Identifier.Axis.X).getPollData());
+//        }
     }
 
     @Handler
@@ -42,11 +60,6 @@ public class InputSystem extends AbstractSystem {
     @Handler
     private void onMouseButtonEvent(MouseButtonEvent event) {
         buttonsDown[event.button] = event.pressed;
-    }
-
-    @Override
-    public void postUpdate(float delta) {
-
     }
 
     @Override

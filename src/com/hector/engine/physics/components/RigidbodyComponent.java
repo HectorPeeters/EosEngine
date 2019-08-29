@@ -1,12 +1,12 @@
 package com.hector.engine.physics.components;
 
 import com.hector.engine.entity.AbstractEntityComponent;
-import com.hector.engine.maths.Vector2f;
+import org.joml.Vector3f;
 
 public class RigidbodyComponent extends AbstractEntityComponent {
 
-    private Vector2f velocity;
-    private Vector2f acceleration;
+    private Vector3f velocity;
+    private Vector3f acceleration;
 
     private float mass;
 
@@ -14,18 +14,18 @@ public class RigidbodyComponent extends AbstractEntityComponent {
 
     public RigidbodyComponent() {
         this.mass = 1;
-        this.velocity = new Vector2f(0, 0);
-        this.acceleration = new Vector2f(0, 0);
+        this.velocity = new Vector3f(0, 0, 0);
+        this.acceleration = new Vector3f(0, 0, 0);
     }
 
     public RigidbodyComponent(float mass) {
         this.mass = mass;
-        this.velocity = new Vector2f(0, 0);
-        this.acceleration = new Vector2f(0, 0);
+        this.velocity = new Vector3f(0, 0, 0);
+        this.acceleration = new Vector3f(0, 0, 0);
     }
 
-    public void addForce(Vector2f force) {
-        acceleration = acceleration.add(force.div(mass));
+    public void addForce(Vector3f force) {
+        acceleration = acceleration.add(force.mul(1 / mass));
     }
 
     public boolean isStatic() {
@@ -36,27 +36,27 @@ public class RigidbodyComponent extends AbstractEntityComponent {
         isStatic = aStatic;
     }
 
-    public void setPosition(Vector2f position) {
+    public void setPosition(Vector3f position) {
         parent.setPosition(position);
     }
 
-    public Vector2f getPosition() {
+    public Vector3f getPosition() {
         return parent.getPosition();
     }
 
-    public Vector2f getVelocity() {
+    public Vector3f getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(Vector2f velocity) {
+    public void setVelocity(Vector3f velocity) {
         this.velocity = velocity;
     }
 
-    public Vector2f getAcceleration() {
+    public Vector3f getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(Vector2f acceleration) {
+    public void setAcceleration(Vector3f acceleration) {
         this.acceleration = acceleration;
     }
 

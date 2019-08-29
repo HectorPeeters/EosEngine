@@ -4,16 +4,16 @@ import com.hector.engine.entity.AbstractEntityComponent;
 import com.hector.engine.entity.events.AddEntityComponentEvent;
 import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.Handler;
-import com.hector.engine.maths.Vector2f;
 import com.hector.engine.physics.components.RigidbodyComponent;
 import com.hector.engine.systems.AbstractSystem;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PhysicsSystem extends AbstractSystem {
 
-    private final Vector2f gravity = new Vector2f(0, -9.81f);
+    private final Vector3f gravity = new Vector3f(0, -9.81f, 0);
 
     private List<RigidbodyComponent> rigidBodyComponents;
 

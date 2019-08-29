@@ -1,6 +1,6 @@
 package com.hector.engine.graphics.layers;
 
-public abstract class RenderLayer {
+public abstract class AbstractRenderLayer {
 
     public abstract void init();
 

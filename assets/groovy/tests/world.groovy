@@ -2,7 +2,6 @@ import com.hector.engine.entity.Entity
 import com.hector.engine.entity.events.AddEntityEvent
 import com.hector.engine.event.EventSystem
 import com.hector.engine.graphics.components.TextureComponent
-import com.hector.engine.maths.Vector2f
 import com.hector.engine.scripting.components.GroovyScript
 
 class World extends GroovyScript {
@@ -37,9 +36,10 @@ class World extends GroovyScript {
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                Vector2f position = new Vector2f(
+                Vector3f position = new Vector3f(
                         (float)(i * TILE_WIDTH_HALF - j * TILE_WIDTH_HALF),
-                        (float)(-5f + i * TILE_HEIGHT_HALF + j * TILE_HEIGHT_HALF)
+                        (float)(-5f + i * TILE_HEIGHT_HALF + j * TILE_HEIGHT_HALF),
+                        0
                 )
 
                 Entity e = new Entity(position)

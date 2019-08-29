@@ -4,14 +4,13 @@ import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
-import com.hector.engine.maths.MathUtils
-import com.hector.engine.maths.Vector2f
 import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource
 
 import com.hector.engine.resource.resources.AudioResource
 import com.hector.engine.scripting.components.GroovyScript
+import org.joml.Vector3f
 import org.lwjgl.glfw.GLFW
 
 class Controller extends GroovyScript {
@@ -43,7 +42,7 @@ class Controller extends GroovyScript {
         animation = parent.getComponent(AnimationComponent.class)
 
         rb = parent.getComponent(RigidbodyComponent.class)
-        rb.acceleration = new Vector2f(0, -1f)
+        rb.acceleration = new Vector3f(0, -1f, 0)
 
         audioSource = parent.getComponent(AudioSourceComponent.class)
 
@@ -97,9 +96,9 @@ class Controller extends GroovyScript {
         }
 
         if (rb.velocity.y < 0) {
-            rb.velocity.y += (-1) * (fallMultiplier - 1) * delta
+            rb.velocity.y -= (fallMultiplier - 1) * delta
         } else if (rb.velocity.y > 0 && !InputSystem.isKeyDown(GLFW.GLFW_KEY_W)) {
-            rb.velocity.y += (-1) * (lowJumpMultiplier - 1) * delta
+            rb.velocity.y -= (lowJumpMultiplier - 1) * delta
         }
 
         if (InputSystem.isKeyDown(GLFW.GLFW_KEY_W) && grounded)
