@@ -34,6 +34,8 @@ class World extends GroovyScript {
         final float TILE_WIDTH_HALF = 0.5f
         final float TILE_HEIGHT_HALF = 0.25f
 
+        List<Entity> entities = new ArrayList<>();
+
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
                 Vector3f position = new Vector3f(
@@ -46,9 +48,11 @@ class World extends GroovyScript {
                 e.scale.y = (float)(2 * TILE_HEIGHT_HALF + (1 / 34f))
                 e.scale.x = (float)(2 * TILE_WIDTH_HALF + (1 / 17f))
                 e.addComponent(new TextureComponent(texture))
-                EventSystem.publish(new AddEntityEvent(e))
+
+                entities.add(e)
             }
         }
+        EventSystem.publish(new AddEntityEvent(entities))
     }
 
 }

@@ -197,14 +197,13 @@ public class ShaderProgram {
         IntBuffer size = BufferUtils.createIntBuffer(1);
 
         for (int i = 0; i < len; i++) {
-            Attrib attrib = new Attrib();
 
-            attrib.name = GL20.glGetActiveAttrib(programId, i, strLen, size, type);
-            attrib.size = size.get(0);
-            attrib.type = type.get(0);
-            attrib.location = GL20.glGetAttribLocation(programId, attrib.name);
+            String name = GL20.glGetActiveAttrib(programId, i, strLen, size, type);
+            int typeValue = type.get(0);
+            int sizeValue = size.get(0);
+            int location = GL20.glGetAttribLocation(programId, name);
 
-            attributes.put(attrib.name, attrib);
+            attributes.put(name, new Attrib(name, typeValue, sizeValue, location));
         }
 
     }
@@ -346,6 +345,12 @@ public class ShaderProgram {
         GL20.glUniformMatrix4fv(location, false, fb);
     }
 
+    public void setMatrix4f(String name, FloatBuffer value) {
+        int location = getUniformLocation(name);
+
+        GL20.glUniformMatrix4fv(location, false, value);
+    }
+
     /**
      * Binds the shaderprogram
      *
@@ -415,11 +420,34 @@ public class ShaderProgram {
         GL20.glBindAttribLocation(programId, location, name);
     }
 
-    protected static class Attrib {
-        String name = null;
-        int type = -1;
-        int size = 0;
-        int location = -1;
+    public static class Attrib {
+        private String name;
+        private int type;
+        private int size;
+        private int location;
+
+        public Attrib(String name, int type, int size, int location) {
+            this.name = name;
+            this.type = type;
+            this.size = size;
+            this.location = location;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
+        public int getLocation() {
+            return location;
+        }
     }
 
 }

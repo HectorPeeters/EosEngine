@@ -1,4 +1,4 @@
-package com.hector.engine.graphics.layers.debugwindows;
+package com.hector.engine.graphics.layers.windows;
 
 import com.hector.engine.graphics.layers.AbstractDebugWindow;
 import com.hector.engine.utils.FloatRingBuffer;

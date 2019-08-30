@@ -2,6 +2,8 @@ package com.hector.engine.graphics.layers;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
+import com.hector.engine.graphics.ShaderProgram;
+import com.hector.engine.graphics.Texture;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.input.events.MouseButtonEvent;
 import com.hector.engine.input.events.MouseMoveEvent;
@@ -14,7 +16,6 @@ import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTTPackContext;
 import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.Platform;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -67,13 +68,10 @@ public class DebugLayer extends AbstractRenderLayer {
     private int display_width, display_height;
 
     private ByteBuffer ttf;
+    private Texture fontTexture;
 
     private int vbo, vao, ebo;
-    private int prog;
-    private int vert_shdr;
-    private int frag_shdr;
-    private int uniform_tex;
-    private int uniform_proj;
+    private ShaderProgram shader;
 
     private List<AbstractDebugWindow> debugWindows = new ArrayList<>();
 
@@ -106,7 +104,8 @@ public class DebugLayer extends AbstractRenderLayer {
         int BITMAP_H = 1024;
 
         int FONT_HEIGHT = 18;
-        int fontTexID = glGenTextures();
+
+        fontTexture = new Texture(BITMAP_W, BITMAP_H);
 
         STBTTFontinfo fontInfo = STBTTFontinfo.create();
         STBTTPackedchar.Buffer cdata = STBTTPackedchar.create(95);
@@ -137,10 +136,9 @@ public class DebugLayer extends AbstractRenderLayer {
             }
             texture.flip();
 
-            glBindTexture(GL_TEXTURE_2D, fontTexID);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, BITMAP_W, BITMAP_H, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, texture);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            fontTexture.bind();
+            fontTexture.setData(0, GL_RGBA8, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, texture);
+            fontTexture.setFilter(GL_LINEAR, GL_LINEAR);
 
             memFree(texture);
             memFree(bitmap);
@@ -199,7 +197,7 @@ public class DebugLayer extends AbstractRenderLayer {
                     }
                 })
                 .texture(it -> it
-                        .id(fontTexID));
+                        .id(fontTexture.getId()));
 
         nk_style_set_font(ctx, default_font);
 
@@ -236,16 +234,13 @@ public class DebugLayer extends AbstractRenderLayer {
         for (AbstractDebugWindow window : debugWindows)
             window.destroy();
 
+        fontTexture.destroy();
+
         Objects.requireNonNull(ctx.clip().copy()).free();
         Objects.requireNonNull(ctx.clip().paste()).free();
         nk_free(ctx);
-
         {
-            glDetachShader(prog, vert_shdr);
-            glDetachShader(prog, frag_shdr);
-            glDeleteShader(vert_shdr);
-            glDeleteShader(frag_shdr);
-            glDeleteProgram(prog);
+            shader.destroy();
             glDeleteTextures(default_font.texture().id());
             glDeleteTextures(null_texture.texture().id());
             glDeleteBuffers(vbo);
@@ -274,14 +269,15 @@ public class DebugLayer extends AbstractRenderLayer {
             glActiveTexture(GL_TEXTURE0);
 
             // setup program
-            glUseProgram(prog);
-            glUniform1i(uniform_tex, 0);
-            glUniformMatrix4fv(uniform_proj, false, stack.floats(
+            shader.bind();
+            shader.setInt("texture", 0);
+            shader.setMatrix4f("projectionMatrix", stack.floats(
                     2.0f / width, 0.0f, 0.0f, 0.0f,
                     0.0f, -2.0f / height, 0.0f, 0.0f,
                     0.0f, 0.0f, -1.0f, 0.0f,
                     -1.0f, 1.0f, 0.0f, 1.0f
             ));
+
             glViewport(0, 0, display_width, display_height);
         }
 
@@ -356,58 +352,13 @@ public class DebugLayer extends AbstractRenderLayer {
     }
 
     private void setupContext() {
-        String NK_SHADER_VERSION = Platform.get() == Platform.MACOSX ? "#version 150\n" : "#version 300 es\n";
-        String vertex_shader =
-                NK_SHADER_VERSION +
-                        "uniform mat4 ProjMtx;\n" +
-                        "in vec2 Position;\n" +
-                        "in vec2 TexCoord;\n" +
-                        "in vec4 Color;\n" +
-                        "out vec2 Frag_UV;\n" +
-                        "out vec4 Frag_Color;\n" +
-                        "void main() {\n" +
-                        "   Frag_UV = TexCoord;\n" +
-                        "   Frag_Color = Color;\n" +
-                        "   gl_Position = ProjMtx * vec4(Position.xy, 0, 1);\n" +
-                        "}\n";
-
-        String fragment_shader =
-                NK_SHADER_VERSION +
-                        "precision mediump float;\n" +
-                        "uniform sampler2D Texture;\n" +
-                        "in vec2 Frag_UV;\n" +
-                        "in vec4 Frag_Color;\n" +
-                        "out vec4 Out_Color;\n" +
-                        "void main(){\n" +
-                        "   Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n" +
-                        "}\n";
-
         nk_buffer_init(cmds, ALLOCATOR, BUFFER_INITIAL_SIZE);
-        prog = glCreateProgram();
-        vert_shdr = glCreateShader(GL_VERTEX_SHADER);
-        frag_shdr = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(vert_shdr, vertex_shader);
-        glShaderSource(frag_shdr, fragment_shader);
-        glCompileShader(vert_shdr);
-        glCompileShader(frag_shdr);
-        if (glGetShaderi(vert_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
-        if (glGetShaderi(frag_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
-        glAttachShader(prog, vert_shdr);
-        glAttachShader(prog, frag_shdr);
-        glLinkProgram(prog);
-        if (glGetProgrami(prog, GL_LINK_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
 
-        uniform_tex = glGetUniformLocation(prog, "Texture");
-        uniform_proj = glGetUniformLocation(prog, "ProjMtx");
-        int attrib_pos = glGetAttribLocation(prog, "Position");
-        int attrib_uv = glGetAttribLocation(prog, "TexCoord");
-        int attrib_col = glGetAttribLocation(prog, "Color");
+        shader = new ShaderProgram("nuklear");
+
+        int attrib_pos = shader.getAttribute("position").getLocation();
+        int attrib_uv = shader.getAttribute("texCoord").getLocation();
+        int attrib_col = shader.getAttribute("color").getLocation();
 
         {
             // buffer setup
@@ -553,6 +504,7 @@ public class DebugLayer extends AbstractRenderLayer {
                 nk_input_scroll(ctx, scroll);
             }
         });
+
         glfwSetCharCallback(win, (window, codepoint) -> nk_input_unicode(ctx, codepoint));
 
         nk_init(ctx, ALLOCATOR, null);
@@ -618,129 +570,5 @@ public class DebugLayer extends AbstractRenderLayer {
         }
 
         nk_input_end(ctx);
-    }
-
-    private NkContext setupCallbacks(long win) {
-        glfwSetCharCallback(win, (window, codepoint) -> nk_input_unicode(ctx, codepoint));
-
-        nk_init(ctx, ALLOCATOR, null);
-        ctx.clip()
-                .copy((handle, text, len) -> {
-                    if (len == 0) {
-                        return;
-                    }
-
-                    try (MemoryStack stack = stackPush()) {
-                        ByteBuffer str = stack.malloc(len + 1);
-                        memCopy(text, memAddress(str), len);
-                        str.put(len, (byte) 0);
-
-                        glfwSetClipboardString(win, str);
-                    }
-                })
-                .paste((handle, edit) -> {
-                    long text = nglfwGetClipboardString(win);
-                    if (text != NULL) {
-                        nnk_textedit_paste(edit, text, nnk_strlen(text));
-                    }
-                });
-
-        setupRenderingContext();
-        return ctx;
-    }
-
-    private void setupRenderingContext() {
-        String NK_SHADER_VERSION = Platform.get() == Platform.MACOSX ? "#version 150\n" : "#version 330 core\n";
-
-        String vertex_shader =
-                NK_SHADER_VERSION +
-                        "uniform mat4 ProjMtx;\n" +
-                        "in vec2 Position;\n" +
-                        "in vec2 TexCoord;\n" +
-                        "in vec4 Color;\n" +
-                        "out vec2 Frag_UV;\n" +
-                        "out vec4 Frag_Color;\n" +
-                        "void main() {\n" +
-                        "   Frag_UV = TexCoord;\n" +
-                        "   Frag_Color = Color;\n" +
-                        "   gl_Position = ProjMtx * vec4(Position.xy, 0, 1);\n" +
-                        "}\n";
-
-        String fragment_shader =
-                NK_SHADER_VERSION +
-                        "precision mediump float;\n" +
-                        "uniform sampler2D Texture;\n" +
-                        "in vec2 Frag_UV;\n" +
-                        "in vec4 Frag_Color;\n" +
-                        "out vec4 Out_Color;\n" +
-                        "void main(){\n" +
-                        "   Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n" +
-                        "}\n";
-
-        nk_buffer_init(cmds, ALLOCATOR, BUFFER_INITIAL_SIZE);
-        prog = glCreateProgram();
-        vert_shdr = glCreateShader(GL_VERTEX_SHADER);
-        frag_shdr = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(vert_shdr, vertex_shader);
-        glShaderSource(frag_shdr, fragment_shader);
-        glCompileShader(vert_shdr);
-        glCompileShader(frag_shdr);
-        if (glGetShaderi(vert_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
-        if (glGetShaderi(frag_shdr, GL_COMPILE_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
-        glAttachShader(prog, vert_shdr);
-        glAttachShader(prog, frag_shdr);
-        glLinkProgram(prog);
-        if (glGetProgrami(prog, GL_LINK_STATUS) != GL_TRUE) {
-            throw new IllegalStateException();
-        }
-
-        uniform_tex = glGetUniformLocation(prog, "Texture");
-        uniform_proj = glGetUniformLocation(prog, "ProjMtx");
-        int attrib_pos = glGetAttribLocation(prog, "Position");
-        int attrib_uv = glGetAttribLocation(prog, "TexCoord");
-        int attrib_col = glGetAttribLocation(prog, "Color");
-
-        {
-            // buffer setup
-            vbo = glGenBuffers();
-            ebo = glGenBuffers();
-            vao = glGenVertexArrays();
-
-            glBindVertexArray(vao);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
-            glEnableVertexAttribArray(attrib_pos);
-            glEnableVertexAttribArray(attrib_uv);
-            glEnableVertexAttribArray(attrib_col);
-
-            glVertexAttribPointer(attrib_pos, 2, GL_FLOAT, false, 20, 0);
-            glVertexAttribPointer(attrib_uv, 2, GL_FLOAT, false, 20, 8);
-            glVertexAttribPointer(attrib_col, 4, GL_UNSIGNED_BYTE, true, 20, 16);
-        }
-
-        {
-            // null texture setup
-            int nullTexID = glGenTextures();
-
-            null_texture.texture().id(nullTexID);
-            null_texture.uv().set(0.5f, 0.5f);
-
-            glBindTexture(GL_TEXTURE_2D, nullTexID);
-            try (MemoryStack stack = stackPush()) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, stack.ints(0xFFFFFFFF));
-            }
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        }
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
     }
 }

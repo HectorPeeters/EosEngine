@@ -1,10 +1,11 @@
-package com.hector.engine.graphics.layers.debugwindows;
+package com.hector.engine.graphics.layers.windows;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.layers.AbstractDebugWindow;
 import com.hector.engine.logging.events.LogEvent;
-import org.lwjgl.nuklear.*;
+import org.lwjgl.nuklear.NkContext;
+import org.lwjgl.nuklear.NkRect;
 import org.lwjgl.system.MemoryStack;
 
 import java.util.ArrayList;
