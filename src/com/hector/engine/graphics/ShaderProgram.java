@@ -95,11 +95,14 @@ public class ShaderProgram {
      * @return The contents of the source file
      */
     private String getShaderSource(String path) {
-        TextResource sourceResource = ResourceManager.<TextResource>getResource(path);
+        TextResource sourceResource = ResourceManager.getResource(path);
 
-        String source = sourceResource.getResource();
+        if (sourceResource == null) {
+            Logger.err("Graphics", "Failed to get text resource: " + path);
+            return null;
+        }
 
-        return source;
+        return sourceResource.getResource();
     }
 
     /**

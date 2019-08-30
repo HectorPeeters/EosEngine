@@ -20,15 +20,8 @@ public class NuklearFontResource extends AbstractResource<ByteBuffer> {
 
     @Override
     public boolean load(AbstractResourceLoader resourceLoader) {
-//        Path path = Paths.get(resource);
-//        if (Files.isReadable(path)) {
-//            try (SeekableByteChannel fc = Files.newByteChannel(path)) {
-//                buffer = createByteBuffer((int) fc.size() + 1);
-//                while (fc.read(buffer) != -1);
-//            }
-//        } else {
         try (
-                InputStream source = resourceLoader.getInputStream(path); //DebugLayer.class.getResourceAsStream(resource);
+                InputStream source = resourceLoader.getInputStream(path);
                 ReadableByteChannel rbc = Channels.newChannel(source)
         ) {
             resource = createByteBuffer(BUFFER_SIZE);

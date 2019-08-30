@@ -7,6 +7,7 @@ import com.hector.engine.graphics.Texture;
 import com.hector.engine.input.events.KeyEvent;
 import com.hector.engine.input.events.MouseButtonEvent;
 import com.hector.engine.input.events.MouseMoveEvent;
+import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.NuklearFontResource;
 import org.lwjgl.nuklear.*;
@@ -55,11 +56,11 @@ public class DebugLayer extends AbstractRenderLayer {
                 .flip();
     }
 
-    private NkContext ctx = NkContext.create();
-    private NkUserFont default_font = NkUserFont.create();
+    private final NkContext ctx = NkContext.create();
+    private final NkUserFont default_font = NkUserFont.create();
 
-    private NkBuffer cmds = NkBuffer.create();
-    private NkDrawNullTexture null_texture = NkDrawNullTexture.create();
+    private final NkBuffer cmds = NkBuffer.create();
+    private final NkDrawNullTexture null_texture = NkDrawNullTexture.create();
 
     private long win;
 
@@ -67,13 +68,12 @@ public class DebugLayer extends AbstractRenderLayer {
 
     private int display_width, display_height;
 
-    private ByteBuffer ttf;
     private Texture fontTexture;
 
     private int vbo, vao, ebo;
     private ShaderProgram shader;
 
-    private List<AbstractDebugWindow> debugWindows = new ArrayList<>();
+    private final List<AbstractDebugWindow> debugWindows = new ArrayList<>();
 
     public DebugLayer(long window) {
         this.win = window;
@@ -98,7 +98,14 @@ public class DebugLayer extends AbstractRenderLayer {
     }
 
     private void setupFont(NkContext ctx) {
-        this.ttf = ResourceManager.<NuklearFontResource>getResource("fonts/Roboto-Regular.ttf").getResource();
+        NuklearFontResource resource = ResourceManager.getResource("fonts/Roboto-Regular.ttf");
+
+        if (resource == null) {
+            Logger.err("Graphics", "Failed to nuklear font resource");
+            return;
+        }
+
+        ByteBuffer ttf = resource.getResource();
 
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
@@ -402,7 +409,7 @@ public class DebugLayer extends AbstractRenderLayer {
 
     @Handler
     private void onMouseMoveEvent(MouseMoveEvent event) {
-        nk_input_motion(ctx, event.xpixel, event.ypixel);
+        nk_input_motion(ctx, event.xPixel, event.yPixel);
     }
 
     @Handler

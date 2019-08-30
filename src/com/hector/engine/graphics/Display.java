@@ -67,12 +67,12 @@ public class Display {
 
         GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> EventSystem.publishImmediate(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS)));
 
-        GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
+        GLFW.glfwSetCursorPosCallback(window, (window, xPos, yPos) -> {
             //Convert to normalized coordinates
-            EventSystem.publishImmediate(new MouseMoveEvent((xpos / width - 0.5f) * 2f, (ypos / height - 0.5f) * 2f, (int) xpos, (int) ypos));
+            EventSystem.publishImmediate(new MouseMoveEvent((xPos / width - 0.5f) * 2f, (yPos / height - 0.5f) * 2f, (int) xPos, (int) yPos));
         });
 
-        GLFW.glfwSetScrollCallback(window, (window, xoffset, yoffset) -> EventSystem.publish(new MouseScrollEvent((float) xoffset, (float) yoffset)));
+        GLFW.glfwSetScrollCallback(window, (window, xOffset, yOffset) -> EventSystem.publish(new MouseScrollEvent((float) xOffset, (float) yOffset)));
 
         GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
             EventSystem.publish(new WindowResizeEvent(w, h));

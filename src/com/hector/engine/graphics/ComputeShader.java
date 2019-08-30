@@ -78,7 +78,12 @@ public class ComputeShader {
     }
 
     private String getShaderSource(String path) {
-        TextResource sourceResource = ResourceManager.<TextResource>getResource(path);
+        TextResource sourceResource = ResourceManager.getResource(path);
+
+        if (sourceResource == null) {
+            Logger.err("Graphics", "Failed to get text resource: " + path);
+            return null;
+        }
 
         return sourceResource.getResource();
     }

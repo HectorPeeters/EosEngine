@@ -15,7 +15,7 @@ public class MarkupParser {
     rotation 34.3
     subItems [
         test 12
-        kakske 13
+        test2 13
     ]
      */
 

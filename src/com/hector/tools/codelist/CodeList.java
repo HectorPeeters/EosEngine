@@ -43,7 +43,12 @@ public class CodeList {
     public List<File> sourceFiles(File file) {
         List<File> result = new ArrayList<>();
 
-        for (File f : file.listFiles()) {
+        File[] subFiles = file.listFiles();
+
+        if (subFiles == null)
+            return result;
+
+        for (File f : subFiles) {
             if (f.isDirectory()) {
                 result.addAll(sourceFiles(f));
             } else {

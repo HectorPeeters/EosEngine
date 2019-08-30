@@ -27,8 +27,8 @@ public class ResourceWindow extends AbstractDebugWindow {
             nk_layout_row_static(ctx, 25, 100, resources.length);
             if (nk_begin(ctx, "Resources", nk_rect(x, y, 400, resources.length * 40 + 50, rect), NK_WINDOW_SCALABLE | NK_WINDOW_MOVABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)) {
 
-                for (int i = 0; i < resources.length; i++) {
-                    String name = "[" + resources[i].getClass().getSimpleName().replace("Resource", "") + "]\t" + resources[i].getPath();
+                for (AbstractResource resource : resources) {
+                    String name = "[" + resource.getClass().getSimpleName().replace("Resource", "") + "]\t" + resource.getPath();
 
                     nk_layout_row_dynamic(ctx, 25, 1);
                     nk_label(ctx, name, NK_TEXT_ALIGN_LEFT);

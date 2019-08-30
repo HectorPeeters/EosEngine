@@ -12,10 +12,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL30C.*;
 import static org.lwjgl.opengl.GL42C.*;
 
 public class RaytraceLayer extends AbstractRenderLayer {
+
     private final float[] vertices = new float[]{
             -1f, 1f, 0f,
             -1f, -1f, 0f,

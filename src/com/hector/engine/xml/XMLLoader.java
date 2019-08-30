@@ -1,5 +1,6 @@
 package com.hector.engine.xml;
 
+import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.resource.resources.TextResource;
 import org.w3c.dom.Document;
@@ -49,7 +50,12 @@ public class XMLLoader {
         }
 
         try {
-            TextResource resource = ResourceManager.<TextResource>getResource(path);
+            TextResource resource = ResourceManager.getResource(path);
+
+            if (resource == null) {
+                Logger.err("Resource", "Failed to get xml file: " + path);
+                return false;
+            }
 
             document = builder.parse(new InputSource(new StringReader(resource.getResource())));
 

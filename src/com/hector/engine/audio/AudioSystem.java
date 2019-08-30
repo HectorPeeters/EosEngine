@@ -121,6 +121,11 @@ public class AudioSystem extends AbstractSystem {
 
         AudioResource resource = ResourceManager.getResource(inst.sourceComponent.path);
 
+        if (resource == null) {
+            Logger.err("Audio", "Failed to get audio source: " + inst.sourceComponent.paused);
+            return;
+        }
+
         inst.sourceComponent.buffer = resource.getResource();
 
         AL10.alSourcei(inst.sourceComponent.id, AL10.AL_BUFFER, inst.sourceComponent.buffer.getBufferId());

@@ -18,7 +18,14 @@ public class LogViewerWindow extends JFrame {
 
         JTabbedPane pane = new JTabbedPane();
 
-        for (File f : new File("logs/").listFiles()) {
+        File[] files = new File("logs/").listFiles();
+
+        if (files == null) {
+            System.err.println("Failed to list log files");
+            return;
+        }
+
+        for (File f : files) {
             if (f.getName().endsWith(".log")) {
                 if (f.length() == 0)
                     continue;

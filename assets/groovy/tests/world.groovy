@@ -34,7 +34,7 @@ class World extends GroovyScript {
         final float TILE_WIDTH_HALF = 0.5f
         final float TILE_HEIGHT_HALF = 0.25f
 
-        List<Entity> entities = new ArrayList<>();
+        List<Entity> entities = new ArrayList<>()
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {

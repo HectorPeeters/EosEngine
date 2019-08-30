@@ -78,7 +78,7 @@ public class AnimationComponent extends AbstractEntityComponent {
         this.playOnce = playOnce;
     }
 
-    public void pauze() {
+    public void pause() {
         isPlaying = false;
     }
 

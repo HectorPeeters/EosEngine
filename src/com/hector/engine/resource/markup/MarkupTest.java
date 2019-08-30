@@ -17,13 +17,13 @@ public class MarkupTest {
                         "scale 2\n" +
                         "subItems [\n" +
                         "   test 12\n" +
-                        "   kakske 13\n" +
+                        "   test2 13\n" +
                         "]");
         String name = nodes.getNode("name").getString();
         Vector2f position = nodes.getNode("position").getVector2f();
         float rotation = nodes.getNode("rotation").getFloat();
-        int kakske = nodes.getNode("subItems").getArray().getNode("test").getInt();
-        System.out.println(kakske);
+        int test2 = nodes.getNode("subItems").getArray().getNode("test").getInt();
+        System.out.println(test2);
 
     }
 

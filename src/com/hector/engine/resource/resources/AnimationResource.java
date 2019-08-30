@@ -17,6 +17,9 @@ public class AnimationResource extends AbstractResource<Animation> {
 
         TextureResource textureResource = ResourceManager.getResource(path.replace(".anim", ""));
 
+        if (textureResource == null)
+            return false;
+
         Texture texture = textureResource.getResource();
 
         if (texture == null)

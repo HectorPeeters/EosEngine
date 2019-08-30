@@ -53,8 +53,8 @@ public class InputSystem extends AbstractSystem {
 
     @Handler
     private void onMouseMoveEvent(MouseMoveEvent event) {
-        mouseX = (float) event.xpos;
-        mouseY = (float) event.ypos;
+        mouseX = (float) event.xPos;
+        mouseY = (float) event.yPos;
     }
 
     @Handler
