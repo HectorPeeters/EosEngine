@@ -17,11 +17,14 @@ public abstract class AbstractProcess {
 
     protected abstract void onUpdate(float delta);
 
-    protected void onSuccess() {}
+    protected void onSuccess() {
+    }
 
-    protected void onFail() {}
+    protected void onFail() {
+    }
 
-    protected void onAbort() {}
+    protected void onAbort() {
+    }
 
 
     public void succeed() {

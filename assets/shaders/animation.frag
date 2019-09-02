@@ -10,8 +10,8 @@ uniform sampler2D sampler;
 uniform vec4 animationData;
 
 void main() {
-    float widthPerFrame = 1f / animationData.x;
-    float heigthPerFrame = 1f / animationData.y;
+    float widthPerFrame = 1.0 / animationData.x;
+    float heigthPerFrame = 1.0 / animationData.y;
 
     int xIndex = int(animationData.z) % int(animationData.x);
     int yIndex = int(animationData.z) / int(animationData.x);

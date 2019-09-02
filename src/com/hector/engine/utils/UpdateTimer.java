@@ -19,6 +19,7 @@ public class UpdateTimer {
 
     /**
      * Takes in the target fps and calculates the ms per frame and sets the lastTime and timer variable.
+     *
      * @param targetFPS The frame rate is used to check when updating needs to happen.
      */
     public UpdateTimer(float targetFPS) {

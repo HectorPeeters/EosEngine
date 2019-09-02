@@ -21,7 +21,7 @@ public final class ResourceManager {
         return loadedResources.values();
     }
 
-    private static void unloadResource(AbstractResource resource) {
+    public static void unloadResource(AbstractResource resource) {
         Iterator iter = loadedResources.entrySet().iterator();
 
         while (iter.hasNext()) {
@@ -101,11 +101,11 @@ public final class ResourceManager {
             add(".ttf");
         }});
 
-        availableResourceTypes.put(TextureResource.class, new ArrayList<String>(){{
+        availableResourceTypes.put(TextureResource.class, new ArrayList<String>() {{
             add(".png");
         }});
 
-        availableResourceTypes.put(AnimationResource.class, new ArrayList<String>(){{
+        availableResourceTypes.put(AnimationResource.class, new ArrayList<String>() {{
             add(".anim");
         }});
 

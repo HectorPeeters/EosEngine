@@ -2,7 +2,7 @@ package com.hector.engine.graphics.layers;
 
 import com.hector.engine.graphics.ComputeShader;
 import com.hector.engine.graphics.FrameBuffer;
-import com.hector.engine.graphics.Mesh;
+import com.hector.engine.graphics.Model;
 import com.hector.engine.graphics.ShaderProgram;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -30,7 +30,7 @@ public class RaytraceLayer extends AbstractRenderLayer {
 
     private FrameBuffer frameBuffer;
 
-    private Mesh quadMesh;
+    private Model quadMesh;
 
     private ShaderProgram quadShader;
 
@@ -51,7 +51,7 @@ public class RaytraceLayer extends AbstractRenderLayer {
     @Override
     public void init() {
         frameBuffer = new FrameBuffer(1920, 1080);
-        quadMesh = new Mesh(vertices);
+        quadMesh = new Model(vertices);
 
         computeShader = new ComputeShader("raytracing");
         initComputeProgram();

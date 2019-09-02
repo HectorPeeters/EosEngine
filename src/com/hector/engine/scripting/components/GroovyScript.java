@@ -3,7 +3,6 @@ package com.hector.engine.scripting.components;
 import com.hector.engine.entity.Entity;
 import com.hector.engine.entity.events.AddEntityEvent;
 import com.hector.engine.event.EventSystem;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public abstract class GroovyScript {
 
@@ -20,7 +19,12 @@ public abstract class GroovyScript {
     }
 
     protected final Entity findEntity(String name) {
-        throw new NotImplementedException();
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

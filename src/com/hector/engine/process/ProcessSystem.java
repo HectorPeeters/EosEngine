@@ -1,8 +1,8 @@
 package com.hector.engine.process;
 
 import com.hector.engine.event.Handler;
-import com.hector.engine.process.events.AddProcessEvent;
 import com.hector.engine.logging.Logger;
+import com.hector.engine.process.events.AddProcessEvent;
 import com.hector.engine.systems.AbstractSystem;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Config>
-    <Entry name="width" value="1920"/>
-    <Entry name="height" value="1080"/>
+    <Entry name="width" value="1280"/>
+    <Entry name="height" value="720"/>
     <Entry name="samples" value="0"/>
 </Config>

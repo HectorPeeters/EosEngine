@@ -54,6 +54,7 @@ public class MarkupNode {
     public MarkupNodeList getArray() {
         return (MarkupNodeList) value;
     }
+
     @Override
     public String toString() {
         return "MarkupNode{" +

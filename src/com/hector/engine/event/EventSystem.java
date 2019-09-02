@@ -24,7 +24,7 @@ public class EventSystem extends AbstractSystem {
     private static int maxQueueSize;
 
     public EventSystem() {
-        super( "event", 100);
+        super("event", 100);
     }
 
     @Override

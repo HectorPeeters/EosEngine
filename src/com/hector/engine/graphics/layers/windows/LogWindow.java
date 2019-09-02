@@ -49,7 +49,7 @@ public class LogWindow extends AbstractDebugWindow {
 
     private String getLogString() {
         StringBuilder result = new StringBuilder();
-        for(String s : log)
+        for (String s : log)
             result.append(s).append("\n");
 
         return result.toString();

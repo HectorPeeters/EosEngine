@@ -1,7 +1,6 @@
 package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 
@@ -11,7 +10,12 @@ public class FileResourceLoader extends AbstractResourceLoader {
 
     @Override
     public String[] listFiles(String path) {
-        throw new NotImplementedException();
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

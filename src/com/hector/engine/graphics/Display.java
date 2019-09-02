@@ -25,7 +25,12 @@ public class Display {
     private long window;
     private boolean closing = false;
 
+    private int width, height;
+
     public boolean create(int width, int height, int samples) {
+        this.width = width;
+        this.height = height;
+
         if (!GLFW.glfwInit()) {
             Logger.err("Graphics", "Failed to init GLFW");
             return false;
@@ -37,7 +42,6 @@ public class Display {
                 Logger.err("Graphics", "GLFW error [" + error + "]: " + description);
             }
         });
-
 
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
@@ -54,31 +58,6 @@ public class Display {
             Logger.err("Graphics", "Failed to create GLFW window");
             return false;
         }
-
-        GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
-                GLFW.glfwSetWindowShouldClose(window, true);
-
-            if (action == GLFW.GLFW_REPEAT)
-                return;
-
-            EventSystem.publishImmediate(new KeyEvent(key, action == GLFW.GLFW_PRESS));
-        });
-
-        GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> EventSystem.publishImmediate(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS)));
-
-        GLFW.glfwSetCursorPosCallback(window, (window, xPos, yPos) -> {
-            //Convert to normalized coordinates
-            EventSystem.publishImmediate(new MouseMoveEvent((xPos / width - 0.5f) * 2f, (yPos / height - 0.5f) * 2f, (int) xPos, (int) yPos));
-        });
-
-        GLFW.glfwSetScrollCallback(window, (window, xOffset, yOffset) -> EventSystem.publish(new MouseScrollEvent((float) xOffset, (float) yOffset)));
-
-        GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
-            EventSystem.publish(new WindowResizeEvent(w, h));
-
-            GL11.glViewport(0, 0, w, h);
-        });
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
@@ -112,7 +91,36 @@ public class Display {
 
         GL11.glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 
+        setupCallbacks();
+
         return true;
+    }
+
+    private void setupCallbacks() {
+        GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
+                GLFW.glfwSetWindowShouldClose(window, true);
+
+            if (action == GLFW.GLFW_REPEAT)
+                return;
+
+            EventSystem.publishImmediate(new KeyEvent(key, action == GLFW.GLFW_PRESS));
+        });
+
+        GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> EventSystem.publishImmediate(new MouseButtonEvent(button, action == GLFW.GLFW_PRESS)));
+
+        GLFW.glfwSetCursorPosCallback(window, (window, xPos, yPos) -> {
+            //Convert to normalized coordinates
+            EventSystem.publishImmediate(new MouseMoveEvent((xPos / width - 0.5f) * 2f, (yPos / height - 0.5f) * 2f, (int) xPos, (int) yPos));
+        });
+
+        GLFW.glfwSetScrollCallback(window, (window, xOffset, yOffset) -> EventSystem.publish(new MouseScrollEvent((float) xOffset, (float) yOffset)));
+
+        GLFW.glfwSetWindowSizeCallback(window, (window, w, h) -> {
+            EventSystem.publish(new WindowResizeEvent(w, h));
+
+            GL11.glViewport(0, 0, w, h);
+        });
     }
 
     public void update() {

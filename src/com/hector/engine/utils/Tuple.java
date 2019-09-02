@@ -2,6 +2,7 @@ package com.hector.engine.utils;
 
 /**
  * This is a very basic Tuple implementation. Pretty self explanatory.
+ *
  * @param <X>
  * @param <Y>
  */

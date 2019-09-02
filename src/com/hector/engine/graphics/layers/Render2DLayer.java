@@ -6,7 +6,7 @@ import com.hector.engine.entity.events.RemoveEntityComponentEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.event.Handler;
 import com.hector.engine.graphics.Camera;
-import com.hector.engine.graphics.Mesh;
+import com.hector.engine.graphics.Model;
 import com.hector.engine.graphics.ShaderProgram;
 import com.hector.engine.graphics.components.AnimationComponent;
 import com.hector.engine.graphics.components.TextureComponent;
@@ -43,7 +43,7 @@ public class Render2DLayer extends AbstractRenderLayer {
 
     private ShaderProgram shader;
 
-    private Mesh quadMesh;
+    private Model quadMesh;
 
     private List<AbstractEntityComponent> textureComponents = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class Render2DLayer extends AbstractRenderLayer {
 
         EventSystem.subscribe(this);
 
-        quadMesh = new Mesh(vertices, textureCoords);
+        quadMesh = new Model(vertices, textureCoords);
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);

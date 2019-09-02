@@ -26,7 +26,6 @@ public abstract class LayerInputEvent {
     }
 
 
-
     public class LayerKeyPressedEvent extends LayerInputEvent {
 
         public final int keycode;

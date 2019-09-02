@@ -9,6 +9,7 @@ import com.hector.engine.input.InputSystem;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.physics.PhysicsSystem;
 import com.hector.engine.process.ProcessSystem;
+import com.hector.engine.resource.ResourceBuilder;
 import com.hector.engine.resource.ResourceManager;
 import com.hector.engine.scene.SceneSystem;
 import com.hector.engine.scripting.ScriptSystem;
@@ -47,6 +48,10 @@ public class Engine {
     }
 
     private void init() {
+        if (DEV_BUILD) {
+            ResourceBuilder.makeResourceArchive();
+        }
+
         long startTime = System.currentTimeMillis();
         NativesLoader.loadNatives();
 
@@ -81,6 +86,12 @@ public class Engine {
 
     private void update(float delta) {
         manager.updateSystems(delta);
+
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void render() {
@@ -88,7 +99,7 @@ public class Engine {
     }
 
     @Handler
-    private void onExitReceived(EngineStateEvent event) {
+    private void onEngineStateEventReceived(EngineStateEvent event) {
         switch (event.state) {
             case STOP:
                 running = false;

@@ -1,12 +1,8 @@
 package com.hector.engine.resource;
 
 import com.hector.engine.logging.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -76,12 +72,22 @@ public class ZipResourceLoader extends AbstractResourceLoader {
 
     @Override
     public String[] listFiles(String path) {
-        throw new NotImplementedException();
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void setupZipFile() {
         if (zipFile != null)
             return;
+
+        if (!new File(ZIP_FILE).exists()) {
+            System.err.println("No asset resource file found!");
+            System.exit(-1);
+        }
 
         try {
             zipFile = new ZipFile(ZIP_FILE);

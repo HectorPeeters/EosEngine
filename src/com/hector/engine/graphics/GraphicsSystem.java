@@ -38,6 +38,7 @@ public class GraphicsSystem extends AbstractSystem {
         debugLayer.addWindow(new ProfileWindow());
 
         layerStack.addLayer(render2DLayer);
+//        layerStack.addLayer(new Render3DLayer(width, height));
 //        layerStack.addLayer(new RaytraceLayer());
         layerStack.addOverlayLayer(debugLayer);
         layerStack.init();
