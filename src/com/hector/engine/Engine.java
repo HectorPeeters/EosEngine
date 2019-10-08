@@ -38,8 +38,10 @@ public class Engine {
             while (timer.shouldUpdateFPS())
                 update((float) timer.getDelta());
 
-            if (timer.shouldUpdateSecond())
-                Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
+//            if (timer.shouldUpdateSecond()) {
+//                Logger.debug("Engine", "FPS: " + timer.getFrames() + ", UPS: " + timer.getUpdates());
+//                Profiling.printProfilingInfo();
+//            }
 
             render();
         }
@@ -51,6 +53,8 @@ public class Engine {
         if (DEV_BUILD) {
             ResourceBuilder.makeResourceArchive();
         }
+
+        Logger.init();
 
         long startTime = System.currentTimeMillis();
         NativesLoader.loadNatives();
@@ -71,7 +75,6 @@ public class Engine {
 
         manager.subscribe();
 
-        Logger.init();
         Logger.info("Engine", "Started engine");
 
         EventSystem.subscribe(this);
@@ -86,12 +89,6 @@ public class Engine {
 
     private void update(float delta) {
         manager.updateSystems(delta);
-
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void render() {
@@ -100,17 +97,10 @@ public class Engine {
 
     @Handler
     private void onEngineStateEventReceived(EngineStateEvent event) {
-        switch (event.state) {
-            case STOP:
-                running = false;
-                break;
-            case PAUSE:
-                break;
-            case UNPAUSE:
-                break;
-
-            default:
-                Logger.warn("Engine", "Engine state not handled");
+        if (event.state == EngineStateEvent.EngineState.STOP) {
+            running = false;
+        } else {
+            Logger.warn("Engine", "Engine state not handled");
         }
     }
 

@@ -112,12 +112,15 @@ vec3 color(ray r, sphere s[2]) {
         color += c * 0.5 * frac;
         frac *= 0.5;
 
+        if (frac <= 0.02)
+        break;
         //        r.origin = hit_record.origin;
         vec3 target = temp.p + temp.normal + rand_unit_sphere();
         r.direction = target - r.origin;
     }
 
     return color;
+
 }
 
 const vec3 lower_left = vec3(-2, -1, -1);

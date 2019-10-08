@@ -139,6 +139,12 @@ public class ComputeShader {
         GL43.glUniform1i(GL43.glGetUniformLocation(programId, name), value);
     }
 
+    public void uniform1f(String name, float value) {
+        int location = getUniformLocation(name);
+
+        GL43.glUniform1f(location, value);
+    }
+
     public void uniform3f(String name, Vector3f value) {
         int location = getUniformLocation(name);
 

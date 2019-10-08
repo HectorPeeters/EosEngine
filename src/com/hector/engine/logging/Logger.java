@@ -1,8 +1,6 @@
 package com.hector.engine.logging;
 
 import com.hector.engine.Engine;
-import com.hector.engine.event.EventSystem;
-import com.hector.engine.logging.events.LogEvent;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,69 +22,11 @@ public final class Logger {
 
     private static long startTime;
 
-    private static boolean initialized = false;
-
     public static void init() {
         startTime = System.currentTimeMillis();
 
         Logger.info("Logger", "Initialized logger");
-
-        initialized = true;
     }
-
-   /* private static boolean loadConfig(String configFile) {
-        logChannels.clear();
-
-        XMLLoader loader = new XMLLoader(configFile);
-        if (!loader.load()) {
-            System.err.println("Failed to load log file: " + configFile);
-            return false;
-        }
-
-        Element root = loader.getDocumentElement();
-        if (!root.getNodeName().equals("Logging")) {
-            System.err.println("Failed to load log config file: Root node incorrect");
-            return false;
-        }
-
-        logLevelFilter = 0;
-        if (root.hasAttribute("filter_level")) {
-            try {
-                logLevelFilter = Integer.parseInt(root.getAttribute("filter_level"));
-            } catch (NumberFormatException ignored) {
-                Logger.warn("Logger", "Invalid log level filter value");
-            }
-        }
-
-        NodeList list = root.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.item(i);
-
-            if (!node.getNodeName().equals("Log"))
-                continue;
-
-            Element element = (Element) node;
-
-            String tag = element.getAttribute("channel");
-            boolean debugger = element.getAttribute("debugger").equals("1");
-            boolean file = element.getAttribute("file").equals("1");
-
-            LogChannel logChannel = new LogChannel(tag, debugger, file);
-
-            logChannels.put(tag, logChannel);
-
-            if (file) {
-                try {
-                    fileWriters.put(tag, new BufferedWriter(new FileWriter(new File("logs/" + tag.toLowerCase() + ".log"))));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Logger.err("Logger", "Failed to create FileWriter for log channel: " + tag);
-                }
-            }
-        }
-
-        return true;
-    }*/
 
     public static void debug(String channelTag, Object message) {
         log(channelTag, LogType.DEBUG, message);
@@ -115,12 +55,12 @@ public final class Logger {
         if (!Engine.DEV_BUILD)
             return;
 
-        String fullMessage = "[" + logType.name().charAt(0) + "] [" + channelTag + "] " + message;
+        String fullMessage = (System.currentTimeMillis() - startTime) + " [" + logType.name().charAt(0) + "] [" + channelTag + "] " + message;
 
         System.out.println(logType.colorPrefix + fullMessage + ANSI_RESET);
 
-        if (initialized)
-            EventSystem.publish(new LogEvent(fullMessage, logType.logLevel));
+//        if (initialized)
+//            EventSystem.publish(new LogEvent(fullMessage, logType.logLevel));
 
         if (!fileWriters.containsKey(channelTag)) {
             try {

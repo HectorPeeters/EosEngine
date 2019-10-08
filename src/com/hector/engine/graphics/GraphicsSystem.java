@@ -5,8 +5,8 @@ import com.hector.engine.EngineStateEvent;
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.graphics.layers.DebugLayer;
 import com.hector.engine.graphics.layers.LayerStack;
+import com.hector.engine.graphics.layers.RaytraceLayer;
 import com.hector.engine.graphics.layers.Render2DLayer;
-import com.hector.engine.graphics.layers.windows.ProfileWindow;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.systems.AbstractSystem;
 import org.lwjgl.opengl.GL11;
@@ -35,11 +35,11 @@ public class GraphicsSystem extends AbstractSystem {
 //        debugLayer.addWindow(new TestWindow());
 //        debugLayer.addWindow(new LogWindow());
 //        debugLayer.addWindow(new ResourceWindow());
-        debugLayer.addWindow(new ProfileWindow());
+//        debugLayer.addWindow(new ProfileWindow());
 
-        layerStack.addLayer(render2DLayer);
+//        layerStack.addLayer(render2DLayer);
 //        layerStack.addLayer(new Render3DLayer(width, height));
-//        layerStack.addLayer(new RaytraceLayer());
+        layerStack.addLayer(new RaytraceLayer());
         layerStack.addOverlayLayer(debugLayer);
         layerStack.init();
 

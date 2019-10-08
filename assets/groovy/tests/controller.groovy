@@ -4,6 +4,7 @@ import com.hector.engine.graphics.Animation
 import com.hector.engine.graphics.Camera
 import com.hector.engine.graphics.components.AnimationComponent
 import com.hector.engine.input.InputSystem
+import com.hector.engine.logging.Logger
 import com.hector.engine.physics.components.RigidbodyComponent
 import com.hector.engine.resource.ResourceManager
 import com.hector.engine.resource.resources.AnimationResource

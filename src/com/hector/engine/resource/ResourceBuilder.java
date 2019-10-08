@@ -21,8 +21,15 @@ public class ResourceBuilder {
 
             ZipOutputStream zos = new ZipOutputStream(fos);
 
+            File[] files = assetsFolder.listFiles();
+
+            if (files == null) {
+                System.err.println("Folder \'" + assetsFolder.getAbsolutePath() + "\' does not exist");
+                return;
+            }
+
             //TODO: handle files in assets/ folder as well
-            for (File f : assetsFolder.listFiles()) {
+            for (File f : files) {
                 if (f.isDirectory())
                     totalSize += addDirToZipArchive(zos, f, "");
             }
@@ -35,7 +42,7 @@ public class ResourceBuilder {
 
         System.out.println("Finished building resource archive (" + humanReadableByteCount(totalSize, false) + ")");
 
-        System.out.println("\n\n\n\n");
+        System.out.println("\n\n");
     }
 
     public static long addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parrentDirectoryName) throws IOException {
@@ -55,7 +62,7 @@ public class ResourceBuilder {
             }
             return total;
         } else {
-            System.out.println("Adding " + zipEntryName + "...");
+//            System.out.println("Adding " + zipEntryName + "...");
             byte[] buffer = new byte[1024];
             FileInputStream fis = new FileInputStream(fileToZip);
             zos.putNextEntry(new ZipEntry(zipEntryName));

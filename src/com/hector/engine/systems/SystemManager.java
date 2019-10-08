@@ -2,6 +2,7 @@ package com.hector.engine.systems;
 
 import com.hector.engine.event.EventSystem;
 import com.hector.engine.logging.Logger;
+import com.hector.engine.profiling.Profiling;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -50,8 +51,11 @@ public class SystemManager {
         for (AbstractSystem system : systems)
             system.preUpdate(delta);
 
-        for (AbstractSystem system : systems)
+        for (AbstractSystem system : systems) {
+            Profiling.start("System " + system.name);
             system.update(delta);
+            Profiling.stop("System " + system.name);
+        }
 
         for (AbstractSystem system : systems)
             system.postUpdate(delta);

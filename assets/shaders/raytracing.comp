@@ -113,15 +113,13 @@ vec3 trace(vec3 origin, vec3 dir) {
     /* Intersect the ray with all boxes */
     if (!intersectBoxes(origin, dir, hinfo))
     return vec3(0.0);// <- nothing hit, return black
+
     /*
      * hitinfo will give use the index of the box.
      * So, get the actual box with that index.
      */
     box b = boxes[hinfo.i];
-    /*
-     * And compute some gray scale color based on the index to
-     * just allow us to visually differentiate the boxes.
-     */
+
     return vec3(float(hinfo.i+1) / NUM_BOXES);
 }
 

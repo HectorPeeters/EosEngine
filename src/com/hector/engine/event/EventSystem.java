@@ -18,6 +18,7 @@ public class EventSystem extends AbstractSystem {
 
     private static final int MAX_EVENTS_PER_FRAME = 100;
 
+    //BlockingQueue
     private static BlockingQueue<Object> eventQueue;
     private static Map<Class, CopyOnWriteArrayList<Tuple<Method, Object>>> subscriptions;
 
@@ -30,8 +31,8 @@ public class EventSystem extends AbstractSystem {
     @Override
     public void init() {
         maxQueueSize = config.getInt("max_queue_size");
-//        int threadAmount = config.getInt("thread_amount");
-        eventQueue = new ArrayBlockingQueue<>(1000);
+        int threadAmount = config.getInt("thread_amount");
+        eventQueue = new ArrayBlockingQueue<>(maxQueueSize);
         subscriptions = new ConcurrentHashMap<>();
     }
 
@@ -53,7 +54,6 @@ public class EventSystem extends AbstractSystem {
             if (messagesThisFrame >= MAX_EVENTS_PER_FRAME)
                 break;
         }
-
     }
 
     @Override
@@ -88,6 +88,7 @@ public class EventSystem extends AbstractSystem {
             if (eventQueue.size() == maxQueueSize)
                 Logger.warn("Event", "Max queue size of " + maxQueueSize + " reached");
 
+//            eventQueue.add(message);
             eventQueue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();

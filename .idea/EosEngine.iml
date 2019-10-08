@@ -20,5 +20,7 @@
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="org.joml:joml:1.9.17" level="project" />
     <orderEntry type="library" name="org.l33tlabs.twl:pngdecoder:1.0" level="project" />
+    <orderEntry type="library" name="lwjgl-assimp" level="project" />
+    <orderEntry type="library" name="groovy-2.5.8 (2)" level="application" />
   </component>
 </module>

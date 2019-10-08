@@ -43,17 +43,19 @@ public class RaytraceLayer extends AbstractRenderLayer {
     private Matrix4f invViewProjMatrix = new Matrix4f();
     private Vector3f tmpVector = new Vector3f(0, 0, 0);
     private Vector3f cameraPosition = new Vector3f(0, 0, 0);
-    private Vector3f cameraLookAt = new Vector3f(0.0f, 0.5f, 0.0f);
+    private Vector3f cameraLookAt = new Vector3f(0.0f, 1f, 0.0f);
     private Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
 
     private ComputeShader computeShader;
+
+    private float time;
 
     @Override
     public void init() {
         frameBuffer = new FrameBuffer(1920, 1080);
         quadMesh = new Model(vertices);
 
-        computeShader = new ComputeShader("raytracing");
+        computeShader = new ComputeShader("raytracing_spheres");
         initComputeProgram();
         quadShader = new ShaderProgram("quad");
         initQuadProgram();
@@ -81,6 +83,7 @@ public class RaytraceLayer extends AbstractRenderLayer {
 
     @Override
     public void update(float delta) {
+        time += delta;
         computeShader.bind();
 
         cameraPosition.set(0, 2.0f, 3.0f);
@@ -115,6 +118,7 @@ public class RaytraceLayer extends AbstractRenderLayer {
         computeShader.uniform3f("ray10", tmpVector);
         invViewProjMatrix.transformProject(tmpVector.set(1, 1, 0)).sub(cameraPosition);
         computeShader.uniform3f("ray11", tmpVector);
+        computeShader.uniform1f("time", time);
 
         /*
          * Bind level 0 of framebuffer texture as writable image in the shader. This
