@@ -7,8 +7,17 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * A helper class to generate the asset archive instead of using platform dependant scripts. With this system we are
+ * also able to process resources before making the archive.
+ *
+ * @author HectorPeeters
+ */
 public class ResourceBuilder {
 
+    /**
+     * Creates the resource archive from the assets/ folder.
+     */
     public static void makeResourceArchive() {
         System.out.println("Started building asset archive...");
         File assetsFolder = new File("../../../assets/");
@@ -45,14 +54,23 @@ public class ResourceBuilder {
         System.out.println("\n\n");
     }
 
-    public static long addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parrentDirectoryName) throws IOException {
+    /**
+     * Adds a file to the zip archive
+     *
+     * @param zos                 The {@link ZipOutputStream} to store the file in
+     * @param fileToZip           The file to store in the zip
+     * @param parentDirectoryName The name of the parent directory for proper file hierarchy
+     * @return The amount of bytes added to the zip file
+     * @throws IOException When reading the file fails
+     */
+    private static long addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parentDirectoryName) throws IOException {
         if (fileToZip == null || !fileToZip.exists()) {
             return 0;
         }
 
         String zipEntryName = fileToZip.getName();
-        if (parrentDirectoryName != null && !parrentDirectoryName.isEmpty()) {
-            zipEntryName = parrentDirectoryName + "/" + fileToZip.getName();
+        if (parentDirectoryName != null && !parentDirectoryName.isEmpty()) {
+            zipEntryName = parentDirectoryName + "/" + fileToZip.getName();
         }
 
         if (fileToZip.isDirectory()) {
@@ -76,7 +94,14 @@ public class ResourceBuilder {
         }
     }
 
-    public static String humanReadableByteCount(long bytes, boolean si) {
+    /**
+     * Small utility method to convert byte amount to a human readable format
+     *
+     * @param bytes The amount of bytes
+     * @param si    Whether or not we should convert to SI unit
+     * @return The human readable {@link String}
+     */
+    private static String humanReadableByteCount(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit) return bytes + " B";
         int exp = (int) (Math.log(bytes) / Math.log(unit));

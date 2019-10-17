@@ -5,9 +5,9 @@ import com.hector.engine.xml.XMLConfigFile;
 
 public abstract class AbstractSystem {
 
-    protected final String name;
-    protected final int initPriority;
-    protected XMLConfigFile config;
+    private final String name;
+    private final int initPriority;
+    private XMLConfigFile config;
 
     public AbstractSystem(String name, int initPriority) {
         this.name = name;
@@ -54,6 +54,10 @@ public abstract class AbstractSystem {
 
     public int getInitPriority() {
         return initPriority;
+    }
+
+    public XMLConfigFile getConfig() {
+        return config;
     }
 
     @Override

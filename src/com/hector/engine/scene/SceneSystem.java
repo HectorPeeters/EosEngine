@@ -18,7 +18,7 @@ public class SceneSystem extends AbstractSystem {
 
     @Override
     protected void init() {
-        String startSceneFile = "scenes/" + config.getString("start_scene");
+        String startSceneFile = "scenes/" + getConfig().getString("start_scene");
 
         Scene scene = loadScene(startSceneFile);
 

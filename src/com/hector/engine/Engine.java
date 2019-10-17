@@ -73,8 +73,6 @@ public class Engine {
         manager.addSystem(SceneSystem.class);
         manager.initSystems();
 
-        manager.subscribe();
-
         Logger.info("Engine", "Started engine");
 
         EventSystem.subscribe(this);

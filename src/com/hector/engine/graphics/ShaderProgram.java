@@ -44,8 +44,15 @@ public class ShaderProgram {
     /**
      * A map of all the attributes in the vertex and fragment shader
      */
-    private Map<String, Attrib> attributes = new HashMap<>();
+    private Map<String, ShaderAttribute> attributes = new HashMap<>();
 
+    /**
+     * Constructor taking in a name and the shader source as a {@link String}
+     *
+     * @param name           The name of the shaderprogram
+     * @param vertexSource   The vertex source
+     * @param fragmentSource The fragment source
+     */
     public ShaderProgram(String name, String vertexSource, String fragmentSource) {
         this.name = name;
 
@@ -59,6 +66,11 @@ public class ShaderProgram {
         Logger.info("Graphics", "Compiled shader program: " + name);
     }
 
+    /**
+     * Constructor loading shader from a file (name.vert and name.frag)
+     *
+     * @param name The name of the shaderprogram
+     */
     public ShaderProgram(String name) {
         this.name = name;
         String vertexPath = "shaders/" + name + ".vert";
@@ -206,7 +218,7 @@ public class ShaderProgram {
             int sizeValue = size.get(0);
             int location = GL20.glGetAttribLocation(programId, name);
 
-            attributes.put(name, new Attrib(name, typeValue, sizeValue, location));
+            attributes.put(name, new ShaderAttribute(name, typeValue, sizeValue, location));
         }
 
     }
@@ -235,8 +247,8 @@ public class ShaderProgram {
      * @param name The name of the attribute
      * @return The attribute struct with all the data provided
      */
-    public Attrib getAttribute(String name) {
-        Attrib attrib = attributes.get(name);
+    public ShaderAttribute getAttribute(String name) {
+        ShaderAttribute attrib = attributes.get(name);
 
         if (attrib == null)
             Logger.err("Graphics", "Attribute '" + name + "' not found in shader: " + name);
@@ -244,11 +256,16 @@ public class ShaderProgram {
         return attrib;
     }
 
+    /**
+     * Fetches all the uniform variables of the shader program
+     *
+     * @return A set containing all the uniform variables
+     */
     public Set<Map.Entry<String, Integer>> getUniformNames() {
         return uniforms.entrySet();
     }
 
-    public Set<Map.Entry<String, Attrib>> getAttributeNames() {
+    public Set<Map.Entry<String, ShaderAttribute>> getAttributeNames() {
         return attributes.entrySet();
     }
 
@@ -423,13 +440,36 @@ public class ShaderProgram {
         GL20.glBindAttribLocation(programId, location, name);
     }
 
-    public static class Attrib {
+    /**
+     * This class represents a shader attribute.
+     */
+    public static class ShaderAttribute {
+
+        public static final int TYPE_F_VEC2 = 35664;
+        public static final int TYPE_F_VEC3 = 35665;
+        public static final int TYPE_F_VEC4 = 35666;
+
+        /**
+         * The name of the shader attribute.
+         */
         private String name;
+
+        /**
+         * The type of the shader attribute.
+         */
         private int type;
+
+        /**
+         * The size of the shader attribute.
+         */
         private int size;
+
+        /**
+         * The location of the shader attribute.
+         */
         private int location;
 
-        public Attrib(String name, int type, int size, int location) {
+        ShaderAttribute(String name, int type, int size, int location) {
             this.name = name;
             this.type = type;
             this.size = size;

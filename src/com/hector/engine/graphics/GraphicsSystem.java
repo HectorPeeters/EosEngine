@@ -23,9 +23,9 @@ public class GraphicsSystem extends AbstractSystem {
     @Override
     protected void init() {
         display = new Display();
-        int width = config.getInt("width");
-        int height = config.getInt("height");
-        int samples = config.getInt("samples");
+        int width = getConfig().getInt("width");
+        int height = getConfig().getInt("height");
+        int samples = getConfig().getInt("samples");
         display.create(width, height, samples);
 
         layerStack = new LayerStack();
