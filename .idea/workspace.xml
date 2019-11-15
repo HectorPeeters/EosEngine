@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SPLITTER_PROPORTION" value="0.527551" />
+  </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="GameEngine:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="47641fd2-ca9f-4414-b38c-32300b7d5295" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/directory-watcher-0.9.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jna-5.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/log4j-1.2.14.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/slf4j-api-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/slf4j-api-1.7.26.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/slf4j-log4j12-1.5.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/hector/engine/FileWatch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/hector/engine/FileWatchTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/GameEngine_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/GameEngine_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/config/scene.xml" beforeDir="false" afterPath="$PROJECT_DIR$/assets/config/scene.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/NativesLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/NativesLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/event/EventSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/event/EventSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/logging/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/logging/Logger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/resource/AbstractResourceLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/resource/AbstractResourceLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/resource/FileResourceLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/resource/FileResourceLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/hector/engine/resource/ResourceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/hector/engine/resource/ResourceManager.java" afterDir="false" />
+    </list>
+    <list id="e3513f4a-e0ae-4bdf-8157-f026268b0ecf" name="Revert &quot;Added missing resource files&quot;" comment="Revert &quot;Added missing resource files&quot;&#10;&#10;This reverts commit 264430f9">
+      <change beforePath="$PROJECT_DIR$/assets/textures/cubemaps/sand/pz.png" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/EosEngine$Engine.ic" NAME="Engine Coverage Results" MODIFIED="1546347187002" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.hector.engine.*</FILTER>
+    </SUITE>
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myFlattenPackages" value="true" />
+    <option name="myElementSize" value="404" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="FxmlFile" />
+        <option value="GLSL Shader" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="264430f94c9250d92fcff50050c46bb0a4d6ed22" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1QFZOeCYmQmaQrMMViE4ww2wG0x" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="true" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="controller&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/groovy/controller.groovy&#10;Controll&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/groovy/controller.groovy&#10;control&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/groovy/controller.groovy&#10;controll&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/groovy/controller.groovy&#10;contt&#9;PSI&#9;JAVA://com.sun.javafx.scene.traversal.ContainerTabOrder&#10;animation.fra&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/shaders/animation.frag&#10;animation.vert&#9;FILE&#9;file:///home/hector/Dev/Java/EosEngine/assets/shaders/animation.vert&#10;.groovy&#9;FILE&#9;file:///home/hector/Dev/Java/GameEngine/assets/groovy/test.groovy&#10;basic.fra&#9;FILE&#9;file:///home/hector/Dev/Java/GameEngine/assets/shaders/basic.frag&#10;basic.vert&#9;FILE&#9;file:///home/hector/Dev/Java/GameEngine/assets/shaders/basic.vert" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="ToolWindowMessages.ShowToolbar" value="false" />
+    <property name="ToolWindowStatistic.ShowToolbar" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1567245825135" />
+    <property name="last.edited.regexp" value="[test] this is a test [test]" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets/shaders" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.16113281" />
+    <property name="project.structure.side.proportion" value="0.32130384" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.hector.engine.resource." />
+      <recent name="com.hector.engine.resource.resources" />
+      <recent name="com.hector.engine.entity" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hecto\Desktop\Dev\Java\EosEngine\assets\shaders" />
+      <recent name="C:\Users\hecto\Desktop\Dev\Java\EosEngine\out\artifacts\GameEngine_jar" />
+      <recent name="$PROJECT_DIR$/assets/models" />
+      <recent name="$PROJECT_DIR$/assets/shaders" />
+      <recent name="$PROJECT_DIR$/out/artifacts/GameEngine_jar" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.hector.engine.maths" />
+      <recent name="com.hector.engine.resource.resources" />
+      <recent name="com.hector.engine.event" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/groovy/tests" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/lib/natives/natives-linux" />
+      <recent name="$PROJECT_DIR$/lib/natives" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JAR Application.Game">
+    <configuration name="CodeList" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hector.tools.codelist.CodeList" />
+      <module name="EosEngine" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hector.tools.codelist.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Engine" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hector.engine.Engine" />
+      <module name="EosEngine" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=out/artifacts/GameEngine_jar/natives/natives-windows -Dorg.lwjgl.util.Debug=true" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hector.engine.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileWatchTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hector.engine.FileWatchTest" />
+      <module name="EosEngine" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hector.engine.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogViewer" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hector.tools.logviewer.LogViewer" />
+      <module name="EosEngine" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hector.tools.logviewer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Game" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/GameEngine_jar/GameEngine.jar" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\hecto\Desktop\Dev\Java\EosEngine\out\artifacts\GameEngine_jar\" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="GameEngine:jar" />
+        </option>
+        <option name="RunConfigurationTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="Engine" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
+      <module name="Engine" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Engine" />
+      <item itemvalue="Application.LogViewer" />
+      <item itemvalue="Application.CodeList" />
+      <item itemvalue="Application.FileWatchTest" />
+      <item itemvalue="JAR Application.Game" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FileWatchTest" />
+        <item itemvalue="Application.CodeList" />
+        <item itemvalue="Application.CodeList" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="47641fd2-ca9f-4414-b38c-32300b7d5295" name="Default Changelist" comment="" />
+      <created>1536864533227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1536864533227</updated>
+      <workItem from="1568040517828" duration="1326000" />
+      <workItem from="1568984167165" duration="31000" />
+      <workItem from="1569171137749" duration="203000" />
+      <workItem from="1570516589808" duration="665000" />
+      <workItem from="1570517273758" duration="311000" />
+      <workItem from="1570524806930" duration="4041000" />
+      <workItem from="1570534341683" duration="326000" />
+      <workItem from="1570534685234" duration="23000" />
+      <workItem from="1570534726345" duration="21000" />
+      <workItem from="1571304562616" duration="4277000" />
+      <workItem from="1571308863022" duration="96000" />
+      <workItem from="1571308977878" duration="539000" />
+      <workItem from="1571311236928" duration="629000" />
+      <workItem from="1571315917863" duration="6665000" />
+      <workItem from="1571325440644" duration="348000" />
+      <workItem from="1571497208016" duration="10000" />
+      <workItem from="1571940947503" duration="46000" />
+      <workItem from="1572884192795" duration="166000" />
+      <workItem from="1573810102702" duration="267000" />
+    </task>
+    <task id="LOCAL-00034" summary="Added very basic sprite animation">
+      <created>1542220572058</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1542220572058</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added play once and isPlaying field to AnimationComponent">
+      <created>1542221300412</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1542221300412</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Added basic character control script">
+      <created>1542223839168</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1542223839168</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Added AnimationResource">
+      <created>1542230967259</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1542230967259</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Fixed libraries and added licenses">
+      <created>1542264361194</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1542264361194</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Added more animation and scripting features">
+      <created>1542265451211</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1542265451211</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Fixed animation bugs">
+      <created>1542297945234</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1542297945234</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Added very basic camera">
+      <created>1542308062606</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1542308062606</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Added basic geometry classes">
+      <created>1545840314012</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1545840314012</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Fixed and added assets directory">
+      <created>1545861879935</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1545861879936</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Added Gson and basic SceneLoader">
+      <created>1545863542000</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1545863542000</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added json scene loading! Still lots of hacky code...">
+      <created>1545948362548</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1545948362548</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Fixed some warnings and updated README">
+      <created>1545948505621</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1545948505621</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Added gson library to git">
+      <created>1545948666752</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1545948666752</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Migrated the whole scene to json file">
+      <created>1545948896628</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1545948896628</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Migrated the whole scene to json file">
+      <created>1545992266419</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1545992266419</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Improved entity component deserialization">
+      <created>1546000901181</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1546000901182</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Very basic eventsystem V2">
+      <created>1546552188944</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1546552188944</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Started working on audio system">
+      <created>1546809863288</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1546809863289</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Fixed GraphicsSystem texture render bug and started working on tilemap class. Small other improvements">
+      <created>1547069052471</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1547069052471</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Optimized EntitySystem">
+      <created>1547069794514</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1547069794514</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Started working on scene switching">
+      <created>1547106012677</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1547106012681</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Runs again! Fixed some bugs and removed broken features">
+      <created>1552067039053</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1552067039053</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Started working on OpenAL support">
+      <created>1552073101913</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1552073101913</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Working audio with moving listener and source! Needs a lot of optimization.">
+      <created>1552074718225</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1552074718225</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Added basic Tiled map">
+      <created>1552075753966</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1552075753966</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Cleaned up audio system and simplified graphics system">
+      <created>1552125900364</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1552125900365</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Added global audio, added program to output all code in project and updated README.md">
+      <created>1552237910649</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1552237910650</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Rewritten audio system">
+      <created>1552426045101</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1552426045102</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Added global sources">
+      <created>1552854646172</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1552854646173</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Added mouse input">
+      <created>1552979574416</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1552979574417</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Started working on font rendering">
+      <created>1558359061676</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1558359061677</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Rewritten renderer">
+      <created>1561661520384</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1561661520386</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Added sounds and missing native library">
+      <created>1561661726877</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1561661726877</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Added samples to graphics config">
+      <created>1562341103835</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1562341103839</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Added non working nuklear support!">
+      <created>1562522872709</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1562522872709</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Nuklear working fine! Rest of game broken...">
+      <created>1562654927067</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1562654927067</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Removed nuklear demo">
+      <created>1562654964345</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1562654964346</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Fixed Nuklear and added basic resource view!">
+      <created>1562695348954</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1562695348955</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Added profile window">
+      <created>1562698384645</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1562698384645</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Fixed Nuklear font loading!">
+      <created>1564090350948</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1564090350948</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Added COMPUTE SHADER!!! And changed everything to joml and 3d mode!">
+      <created>1567108183978</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1567108183979</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Cleaned up shaders, ported nuklear code to engine code">
+      <created>1567155427270</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1567155427270</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Cleaned up codebase and fixed small null exception errros">
+      <created>1567156506731</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1567156506731</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Fixed native library mess! Windows now working fine">
+      <created>1567429897225</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1567429897225</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Added resource packer instead of half working script, experimented with sphere raytracing">
+      <created>1570528777837</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1570528777838</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Added missing resource files">
+      <created>1570534404517</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1570534404518</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Added missing resource files">
+      <created>1570534555785</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1570534555785</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Minor changes and started documenting whole engine">
+      <created>1571317020461</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1571317020461</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.anim" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+    <MESSAGE value="Working audio with moving listener and source! Needs a lot of optimization." />
+    <MESSAGE value="Added basic Tiled map" />
+    <MESSAGE value="Cleaned up audio system and simplified graphics system" />
+    <MESSAGE value="Added global audio, added program to output all code in project and updated README.md" />
+    <MESSAGE value="Rewritten audio system" />
+    <MESSAGE value="Added global listeners" />
+    <MESSAGE value="Added global sources" />
+    <MESSAGE value="Added mouse input" />
+    <MESSAGE value="Started working on font rendering" />
+    <MESSAGE value="Rewritten renderer" />
+    <MESSAGE value="Added sounds and missing native library" />
+    <MESSAGE value="Added samples to graphics config" />
+    <MESSAGE value="Added non working nuklear support!" />
+    <MESSAGE value="Nuklear working fine! Rest of game broken..." />
+    <MESSAGE value="Removed nuklear demo" />
+    <MESSAGE value="Fixed Nuklear and added basic resource view!" />
+    <MESSAGE value="Added profile window" />
+    <MESSAGE value="Fixed Nuklear font loading!" />
+    <MESSAGE value="Added COMPUTE SHADER!!! And changed everything to joml and 3d mode!" />
+    <MESSAGE value="Cleaned up shaders, ported nuklear code to engine code" />
+    <MESSAGE value="Cleaned up codebase and fixed small null exception errros" />
+    <MESSAGE value="Fixed native library mess! Windows now working fine" />
+    <MESSAGE value="Added resource packer instead of half working script, experimented with sphere raytracing" />
+    <MESSAGE value="Added missing resource files" />
+    <MESSAGE value="Minor changes and started documenting whole engine" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor changes and started documenting whole engine" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="keys" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>keys</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+</project>
