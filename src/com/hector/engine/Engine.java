@@ -50,7 +50,7 @@ public class Engine {
     }
 
     private void init() {
-        if (DEV_BUILD) {
+        if (!DEV_BUILD) {
             ResourceBuilder.makeResourceArchive();
         }
 

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.joml:joml:1.9.17" type="repository">
+    <properties maven-id="org.joml:joml:1.9.17" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/joml-1.9.17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

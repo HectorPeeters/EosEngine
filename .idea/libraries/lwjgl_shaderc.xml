@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="lwjgl-shaderc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl-shaderc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

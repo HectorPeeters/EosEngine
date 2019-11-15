@@ -6,7 +6,7 @@ import java.io.*;
 
 public class FileResourceLoader extends AbstractResourceLoader {
 
-    private static final String ASSET_DIR = "assets/";
+    private static final String ASSET_DIR = "../../../assets/";
 
     @Override
     public String[] listFiles(String path) {

@@ -1,5 +1,6 @@
 package com.hector.engine.resource;
 
+import com.hector.engine.Engine;
 import com.hector.engine.logging.Logger;
 import com.hector.engine.resource.resources.*;
 
@@ -81,7 +82,7 @@ public final class ResourceManager {
     }
 
     public static void init() {
-        resourceLoader = new ZipResourceLoader();
+        resourceLoader = Engine.DEV_BUILD ? new FileResourceLoader() :  new ZipResourceLoader();
 
         loadedResources = new HashMap<>();
         availableResourceTypes = new HashMap<>();

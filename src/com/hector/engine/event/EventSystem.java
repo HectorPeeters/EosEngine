@@ -16,7 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Class handling all event related stuff. From executing events to adding eventhandlers.
- *
  * @author HectorPeeters
  */
 public class EventSystem extends AbstractSystem {

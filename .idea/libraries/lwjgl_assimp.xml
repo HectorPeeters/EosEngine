@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="lwjgl-assimp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/lwjgl-assimp.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
